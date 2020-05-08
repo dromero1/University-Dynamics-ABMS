@@ -10,6 +10,7 @@ public class TickConverter {
 	}
 
 	public static double[] tickToDayTime(double tick) {
+		// TODO Check this method
 		double day = Math.floor(((tick / TICKS_PER_DAY) % 7) + 1);
 		double hours = (((tick / TICKS_PER_DAY) % 7) + 1 - day) * TICKS_PER_DAY;
 		double[] dayTime = { day, hours };
