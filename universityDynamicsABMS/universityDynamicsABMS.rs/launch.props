@@ -1,0 +1,6 @@
+#
+#Thu May 07 15:36:44 COT 2020
+incoming=tcp\://127.0.0.1\:5555
+outgoing=tcp\://127.0.0.1\:5556
+scenario=..\\universityScheduleAbms.rs
+working.directory=../
