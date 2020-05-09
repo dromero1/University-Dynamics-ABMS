@@ -5,5 +5,19 @@
 	<classpathentry exported="true" kind="con" path="GROOVY_DSL_SUPPORT"/>
 	<classpathentry kind="con" path="GROOVY_SUPPORT"/>
 	<classpathentry kind="con" path="REPAST_SIMPHONY_SUPPORT"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/antlr4-runtime-4.7.2.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/commons-lang3-3.8.1.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/commons-text-1.6.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/fastutil-8.2.2.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/guava-28.0-jre.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/jgrapht-bundle-1.4.0.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/jgrapht-core-1.4.0.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/jgrapht-demo-1.4.0.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/jgrapht-ext-1.4.0.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/jgrapht-guava-1.4.0.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/jgrapht-io-1.4.0.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/jgrapht-opt-1.4.0.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/jgraphx-3.9.8.1.jar"/>
+	<classpathentry kind="lib" path="E:/repast-workspace/universityDynamicsABMS/universityDynamicsABMS/lib/jheaps-0.11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

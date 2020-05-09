@@ -11,9 +11,9 @@ import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-/*import org.jgrapht.Graph;
+import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;*/
+import org.jgrapht.graph.DefaultWeightedEdge;
 import org.opengis.feature.simple.SimpleFeature;
 import config.DBFeatures;
 import model.Group;
@@ -105,7 +105,7 @@ public class Reader {
 		return new ArrayList<Group>(groups.values());
 	}
 
-	/*public static Graph<String, DefaultWeightedEdge> readRoutes(String filename) {
+	public static Graph<String, DefaultWeightedEdge> readRoutes(String filename) {
 		Graph<String, DefaultWeightedEdge> routes = new DefaultDirectedWeightedGraph<String, DefaultWeightedEdge>(
 				DefaultWeightedEdge.class);
 		try {
@@ -151,6 +151,6 @@ public class Reader {
 			e.printStackTrace();
 		}
 		return routes;
-	}*/
+	}
 
 }

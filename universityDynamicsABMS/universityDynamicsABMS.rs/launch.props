@@ -1,5 +1,5 @@
 #
-#Sat May 09 00:46:56 COT 2020
+#Sat May 09 01:10:09 COT 2020
 incoming=tcp\://127.0.0.1\:5555
 outgoing=tcp\://127.0.0.1\:5556
 scenario=..\\universityDynamicsABMS.rs
