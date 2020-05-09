@@ -9,10 +9,6 @@ public abstract class GISPolygon {
 	protected String id;
 	protected Geography<Object> geography;
 
-	public GISPolygon(Geometry geometry) {
-		this.geometry = geometry;
-	}
-
 	public GISPolygon(String id, Geometry geometry) {
 		this.id = id;
 		this.geometry = geometry;

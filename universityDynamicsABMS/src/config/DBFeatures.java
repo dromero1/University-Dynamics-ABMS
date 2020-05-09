@@ -19,4 +19,11 @@ public class DBFeatures {
 
 	public static final int ROOM_COLUMN = 7;
 
+	// Routes database
+	public static final int ORIGIN_COLUMN = 0;
+
+	public static final int DESTINATION_COLUMN = 1;
+
+	public static final int DISTANCE_COLUMN = 2;
+
 }

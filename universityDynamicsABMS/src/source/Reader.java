@@ -11,6 +11,9 @@ import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+/*import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import org.jgrapht.graph.DefaultWeightedEdge;*/
 import org.opengis.feature.simple.SimpleFeature;
 import config.DBFeatures;
 import model.Group;
@@ -101,5 +104,53 @@ public class Reader {
 		}
 		return new ArrayList<Group>(groups.values());
 	}
+
+	/*public static Graph<String, DefaultWeightedEdge> readRoutes(String filename) {
+		Graph<String, DefaultWeightedEdge> routes = new DefaultDirectedWeightedGraph<String, DefaultWeightedEdge>(
+				DefaultWeightedEdge.class);
+		try {
+			File file = new File(filename);
+			Scanner scanner = new Scanner(file);
+			boolean first = true;
+			while (scanner.hasNextLine()) {
+				String data = scanner.nextLine();
+				if (first) {
+					first = false;
+					continue;
+				}
+				String[] elements = data.split(";");
+				// Group attributes
+				String origin = "";
+				String destination = "";
+				double weight = 0.0;
+				// Extract elements
+				for (int i = 0; i < elements.length; i++) {
+					switch (i) {
+					case DBFeatures.ORIGIN_COLUMN:
+						origin = elements[i];
+						break;
+					case DBFeatures.DESTINATION_COLUMN:
+						destination = elements[i];
+						break;
+					case DBFeatures.DISTANCE_COLUMN:
+						weight = Double.parseDouble(elements[i]);
+						break;
+					default:
+						break;
+					}
+				}
+				if (!routes.containsVertex(origin))
+					routes.addVertex(origin);
+				if (!routes.containsVertex(destination))
+					routes.addVertex(destination);
+				DefaultWeightedEdge edge = routes.addEdge(origin, destination);
+				routes.setEdgeWeight(edge, weight);
+			}
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return routes;
+	}*/
 
 }
