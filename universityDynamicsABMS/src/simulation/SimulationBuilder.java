@@ -2,11 +2,9 @@ package simulation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.traverse.DepthFirstIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -67,6 +65,11 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * Limbo
 	 */
 	private GISLimbo limbo;
+
+	/**
+	 * Routes
+	 */
+	private Graph<String, DefaultWeightedEdge> routes;
 
 	/**
 	 * Build simulation
@@ -136,13 +139,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		ArrayList<Group> groups = Reader.readGroupsDatabase(Paths.GROUPS_DATABASE);
 
 		// Read routes
-		Graph<String, DefaultWeightedEdge> routes = Reader.readRoutes(Paths.ROUTES_DATABASE);
-
-		Iterator<String> iter = new DepthFirstIterator<>(routes);
-		while (iter.hasNext()) {
-			String vertex = iter.next();
-			System.out.println("Vertex " + vertex + " is connected to: " + routes.outgoingEdgesOf(vertex).toString());
-		}
+		this.routes = Reader.readRoutes(Paths.ROUTES_DATABASE);
 
 		// Add students to simulation
 		ArrayList<Student> students = createStudents(4000, campus, geography);
