@@ -201,7 +201,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
-			double area = RandomHelper.nextDoubleFromTo(0, 20);
+			double area = RandomHelper.nextDoubleFromTo(3, 20);
 			GISInOut inOut = new GISInOut(id, geometry, area);
 			inOuts.put(id, inOut);
 		}
