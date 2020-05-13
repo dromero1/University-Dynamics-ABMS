@@ -153,25 +153,29 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	}
 
 	public GISLimbo getLimbo() {
-		return limbo;
+		return this.limbo;
 	}
 
 	public HashMap<String, GISInOut> getInOuts() {
-		return inOuts;
+		return this.inOuts;
 	}
 
 	public HashMap<String, GISTeachingFacility> getTeachingFacilities() {
-		return teachingFacilities;
+		return this.teachingFacilities;
 	}
 
 	public HashMap<String, GISEatingPlace> getEatingPlaces() {
-		return eatingPlaces;
+		return this.eatingPlaces;
 	}
 
 	public HashMap<String, GISSharedArea> getSharedAreas() {
-		return sharedAreas;
+		return this.sharedAreas;
 	}
 
+	public Graph<String, DefaultWeightedEdge> getRoutes() {
+		return this.routes;
+	}
+	
 	private Geography<Object> getGeographyProjection(Context<Object> context) {
 		GeographyParameters<Object> params = new GeographyParameters<Object>();
 		GeographyFactory geographyFactory = GeographyFactoryFinder.createGeographyFactory(null);

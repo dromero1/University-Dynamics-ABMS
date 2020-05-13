@@ -183,7 +183,7 @@ public class Student {
 	 * Whether or not the student is currently busy learning
 	 */
 	public boolean isLearning() {
-		return learning;
+		return this.learning;
 	}
 
 	/**
