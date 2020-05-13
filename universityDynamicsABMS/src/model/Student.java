@@ -21,9 +21,9 @@ import util.TickConverter;
 public class Student {
 
 	/**
-	 * Arrival, departure, and leaving delay
+	 * Arrival delta
 	 */
-	private static final double STEP_DELAY = 1.0 / 6;
+	private static final double ARRIVAL_DELTA = 1.0 / 6;
 
 	/**
 	 * Academic schedule
@@ -31,8 +31,7 @@ public class Student {
 	private Schedule schedule;
 
 	/**
-	 * Learning flag. Determines whether the student is currently busy learning or
-	 * not.
+	 * Learning flag. Determines whether the student is currently learning or not.
 	 */
 	private boolean learning;
 
@@ -81,30 +80,23 @@ public class Student {
 	}
 
 	/**
-	 * Attend an academic activity
+	 * Attend an academic activity at a teaching facility
 	 * 
 	 * @param teachingFacilityId Id of the teaching facility
 	 */
 	public void attendActivity(String teachingFacilityId) {
 		HashMap<String, GISTeachingFacility> teachingFacilities = this.contextBuilder.getTeachingFacilities();
-		if (teachingFacilities.containsKey(teachingFacilityId)) {
-			// Move to teaching facility
-			GISTeachingFacility teachingFacility = teachingFacilities.get(teachingFacilityId);
-			moveToPolygon(teachingFacility);
-			// Update learning flag
-			this.learning = true;
-		}
+		GISTeachingFacility teachingFacility = teachingFacilities.get(teachingFacilityId);
+		moveToPolygon(teachingFacility, "activateLearningMode");
 	}
 
 	/**
 	 * Leave an academic activity. The student determines what to do next. If he/she
-	 * has an activity in less than STEP_DELAY ticks he/she prefers to go there. In
-	 * the other case, the student goes to have fun.
+	 * has an activity in less than ARRIVAL_DELTA ticks he/she prefers to go there.
+	 * In the other case, the student goes to have fun.
 	 */
 	public void leaveActivity() {
-		// Update learning flag
-		this.learning = false;
-		// Determine what to do next
+		deactivateLearningMode();
 		double tick = RepastEssentials.GetTickCount();
 		double[] dayTime = TickConverter.tickToDayTime(tick);
 		double day = dayTime[0];
@@ -112,11 +104,11 @@ public class Student {
 		AcademicActivity nextActivity = this.schedule.getNextAcademicActivity(day, hour);
 		if (nextActivity != null) {
 			double delta = nextActivity.getStartTime() - hour;
-			if (delta < STEP_DELAY) {
+			if (delta < ARRIVAL_DELTA) {
 				attendActivity(nextActivity.getTeachingFacilityId());
 			} else {
 				EventScheduler eventScheduler = EventScheduler.getInstance();
-				eventScheduler.scheduleRecurringEvent(STEP_DELAY, this, TickConverter.TICKS_PER_WEEK, "haveFun");
+				eventScheduler.scheduleOneTimeEvent(ARRIVAL_DELTA, this, "haveFun");
 			}
 		}
 	}
@@ -125,35 +117,31 @@ public class Student {
 	 * Go have lunch at a designated eating place
 	 */
 	public void haveLunch() {
-		// Move to random eating place
 		Object[] eatingPlaces = this.contextBuilder.getEatingPlaces().values().toArray();
-		moveToRandomPolygon(eatingPlaces);
+		moveToRandomPolygon(eatingPlaces, "");
 	}
 
 	/**
 	 * Go have fun at a shared area
 	 */
 	public void haveFun() {
-		// Move to random shared area
 		Object[] sharedAreas = this.contextBuilder.getSharedAreas().values().toArray();
-		moveToRandomPolygon(sharedAreas);
+		moveToRandomPolygon(sharedAreas, "");
 	}
 
 	/**
 	 * Move to random in-out spot and vanish to limbo
 	 */
 	public void returnHome() {
-		moveToRandomInOutSpot();
-		EventScheduler eventScheduler = EventScheduler.getInstance();
-		eventScheduler.scheduleRecurringEvent(STEP_DELAY, this, TickConverter.TICKS_PER_WEEK, "vanishToLimbo");
+		moveToRandomInOutSpot("vanishToLimbo");
 	}
 
 	/**
 	 * Move to random in-out spot
 	 */
-	public void moveToRandomInOutSpot() {
+	public void moveToRandomInOutSpot(String method) {
 		Object[] inOuts = this.contextBuilder.getInOuts().values().toArray();
-		moveToRandomPolygon(inOuts);
+		moveToRandomPolygon(inOuts, method);
 	}
 
 	/**
@@ -161,7 +149,7 @@ public class Student {
 	 */
 	public void vanishToLimbo() {
 		GISLimbo limbo = this.contextBuilder.getLimbo();
-		moveToPolygon(limbo);
+		moveToPolygon(limbo, "");
 	}
 
 	/**
@@ -199,6 +187,20 @@ public class Student {
 	}
 
 	/**
+	 * Activate learning mode
+	 */
+	public void activateLearningMode() {
+		this.learning = true;
+	}
+
+	/**
+	 * Deactivate learning mode
+	 */
+	public void deactivateLearningMode() {
+		this.learning = false;
+	}
+
+	/**
 	 * Schedule arrivals and departures
 	 */
 	private void scheduleArrivalsAndDepartures() {
@@ -206,10 +208,10 @@ public class Student {
 		ArrayList<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
 			AcademicActivity firstActivity = schedule.getFirstAcademicActivityInDay(day);
-			double startTime = firstActivity.getStartTime() - STEP_DELAY;
+			double startTime = firstActivity.getStartTime() - ARRIVAL_DELTA;
 			double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK,
-					"moveToRandomInOutSpot");
+					"moveToRandomInOutSpot", "");
 			AcademicActivity lastActivity = schedule.getLastAcademicActivityInDay(day);
 			double endTime = lastActivity.getEndTime();
 			ticksToEvent = TickConverter.dayTimeToTicks(day, endTime);
@@ -241,24 +243,29 @@ public class Student {
 	 * 
 	 * @param polygons Array of polygons to choose
 	 */
-	private void moveToRandomPolygon(Object[] polygons) {
+	private void moveToRandomPolygon(Object[] polygons, String method) {
 		int i = RandomHelper.nextIntFromTo(0, polygons.length - 1);
 		GISPolygon selectedPolygon = (GISPolygon) polygons[i];
-		moveToPolygon(selectedPolygon);
+		moveToPolygon(selectedPolygon, method);
 	}
 
 	/**
 	 * Move to an specific polygon
 	 * 
 	 * @param polygon Polygon to go to
+	 * @param method  Method to call after arriving to polygon
 	 */
-	private void moveToPolygon(GISPolygon polygon) {
+	private void moveToPolygon(GISPolygon polygon, String method) {
 		Geometry geometry = polygon.getGeometry();
 		List<Coordinate> coordinates = GeometryUtil.generateRandomPointsInPolygon(geometry, 1);
 		GeometryFactory geometryFactory = new GeometryFactory();
 		Coordinate coordinate = coordinates.get(0);
 		Point destination = geometryFactory.createPoint(coordinate);
 		this.geography.move(this, destination);
+		if (!method.isEmpty()) {
+			EventScheduler eventScheduler = EventScheduler.getInstance();
+			eventScheduler.scheduleOneTimeEvent(1.0 / 3600, this, method);
+		}
 	}
 
 }
