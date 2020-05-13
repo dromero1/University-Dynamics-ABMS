@@ -142,7 +142,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		this.routes = Reader.readRoutes(Paths.ROUTES_DATABASE);
 
 		// Add students to simulation
-		ArrayList<Student> students = createStudents(4000, campus, geography);
+		ArrayList<Student> students = createStudents(4000, geography);
 		for (Student student : students) {
 			student.setSchedule(Heuristics.getRandomSchedule(groups));
 			student.planWeeklyEvents();
@@ -271,7 +271,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return parkingLots;
 	}
 
-	private ArrayList<Student> createStudents(int studentCount, GISCampus campus, Geography<Object> geography) {
+	private ArrayList<Student> createStudents(int studentCount, Geography<Object> geography) {
 		ArrayList<Student> students = new ArrayList<Student>();
 		for (int i = 0; i < studentCount; i++) {
 			Student student = new Student(geography, this);
