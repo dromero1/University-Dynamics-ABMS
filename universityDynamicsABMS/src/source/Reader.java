@@ -52,7 +52,7 @@ public class Reader {
 					continue;
 				}
 				String[] elements = data.split(";");
-				// Group attributes
+				// Attributes
 				String id = "";
 				int capacity = 0;
 				int day = 0;
@@ -103,6 +103,44 @@ public class Reader {
 			e.printStackTrace();
 		}
 		return new ArrayList<Group>(groups.values());
+	}
+
+	public static HashMap<String, Double> readFacilityAreas(String filename) {
+		HashMap<String, Double> areas = new HashMap<String, Double>();
+		try {
+			File file = new File(filename);
+			Scanner scanner = new Scanner(file);
+			boolean first = true;
+			while (scanner.hasNextLine()) {
+				String data = scanner.nextLine();
+				if (first) {
+					first = false;
+					continue;
+				}
+				String[] elements = data.split(";");
+				// Attributes
+				String id = "";
+				double area = 0;
+				// Extract elements
+				for (int i = 0; i < elements.length; i++) {
+					switch (i) {
+					case DBFeatures.FACILITY_ID:
+						id = elements[i];
+						break;
+					case DBFeatures.FACILITY_AREA:
+						area = Double.parseDouble(elements[i]);
+						break;
+					default:
+						break;
+					}
+				}
+				areas.put(id, area);
+			}
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return areas;
 	}
 
 	public static Graph<String, DefaultWeightedEdge> readRoutes(String filename) {

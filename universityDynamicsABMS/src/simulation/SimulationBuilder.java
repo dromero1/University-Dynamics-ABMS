@@ -17,14 +17,15 @@ import gis.GISOtherFacility;
 import gis.GISParkingLot;
 import gis.GISSharedArea;
 import gis.GISTeachingFacility;
+import gis.GISVehicleInOut;
 import model.Group;
 import model.Heuristics;
+import model.Probabilities;
 import model.Student;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.gis.GeographyFactory;
 import repast.simphony.context.space.gis.GeographyFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
-import repast.simphony.random.RandomHelper;
 import repast.simphony.space.gis.Geography;
 import repast.simphony.space.gis.GeographyParameters;
 import source.Reader;
@@ -55,6 +56,11 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * In-Out spots
 	 */
 	private HashMap<String, GISInOut> inOuts;
+
+	/**
+	 * Vehicle in-out spots
+	 */
+	private HashMap<String, GISVehicleInOut> vehicleInOuts;
 
 	/**
 	 * Parking lots
@@ -135,14 +141,21 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 			context.add(inOut);
 		}
 
-		// Read groups
-		ArrayList<Group> groups = Reader.readGroupsDatabase(Paths.GROUPS_DATABASE);
+		// Initialize vehicle in-out spots
+		this.vehicleInOuts = readVehicleInOuts();
+		for (GISVehicleInOut vehicleInOut : vehicleInOuts.values()) {
+			vehicleInOut.setGeometryInGeography(geography);
+			context.add(vehicleInOut);
+		}
 
 		// Read routes
 		this.routes = Reader.readRoutes(Paths.ROUTES_DATABASE);
 
+		// Read groups
+		ArrayList<Group> groups = Reader.readGroupsDatabase(Paths.GROUPS_DATABASE);
+
 		// Add students to simulation
-		ArrayList<Student> students = createStudents(4000, geography);
+		ArrayList<Student> students = createStudents(3200, geography);
 		for (Student student : students) {
 			student.setSchedule(Heuristics.getRandomSchedule(groups));
 			student.planWeeklyEvents();
@@ -160,6 +173,10 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return this.inOuts;
 	}
 
+	public HashMap<String, GISVehicleInOut> getVehicleInOuts() {
+		return this.vehicleInOuts;
+	}
+
 	public HashMap<String, GISTeachingFacility> getTeachingFacilities() {
 		return this.teachingFacilities;
 	}
@@ -175,7 +192,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	public Graph<String, DefaultWeightedEdge> getRoutes() {
 		return this.routes;
 	}
-	
+
 	private Geography<Object> getGeographyProjection(Context<Object> context) {
 		GeographyParameters<Object> params = new GeographyParameters<Object>();
 		GeographyFactory geographyFactory = GeographyFactoryFinder.createGeographyFactory(null);
@@ -198,23 +215,39 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISInOut> readInOuts() {
 		HashMap<String, GISInOut> inOuts = new HashMap<String, GISInOut>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.INOUTS_GEOMETRY_SHAPEFILE);
+		HashMap<String, Double> areas = Reader.readFacilityAreas(Paths.INOUT_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
-			double area = RandomHelper.nextDoubleFromTo(3, 20);
+			double area = areas.get(id);
 			GISInOut inOut = new GISInOut(id, geometry, area);
 			inOuts.put(id, inOut);
 		}
 		return inOuts;
 	}
 
-	private HashMap<String, GISTeachingFacility> readTeachingFacilities() {
-		HashMap<String, GISTeachingFacility> teachingFacilities = new HashMap<String, GISTeachingFacility>();
-		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.TEACHING_FACILITIES_GEOMETRY_SHAPEFILE);
+	private HashMap<String, GISVehicleInOut> readVehicleInOuts() {
+		HashMap<String, GISVehicleInOut> vehicleInOuts = new HashMap<String, GISVehicleInOut>();
+		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.VEHICLE_INOUTS_GEOMETRY_SHAPEFILE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
-			double area = RandomHelper.nextDoubleFromTo(100, 1000);
+			GISVehicleInOut vehicleInOut = new GISVehicleInOut(id, geometry);
+			vehicleInOuts.put(id, vehicleInOut);
+		}
+		return vehicleInOuts;
+	}
+
+	private HashMap<String, GISTeachingFacility> readTeachingFacilities() {
+		HashMap<String, GISTeachingFacility> teachingFacilities = new HashMap<String, GISTeachingFacility>();
+		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.TEACHING_FACILITIES_GEOMETRY_SHAPEFILE);
+		HashMap<String, Double> areas = Reader.readFacilityAreas(Paths.TEACHING_AREAS_DATABASE);
+		for (SimpleFeature feature : features) {
+			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
+			String id = (String) feature.getAttribute(1);
+			if (!areas.containsKey(id))
+				System.out.println(id);
+			double area = areas.get(id);
 			GISTeachingFacility teachingFacility = new GISTeachingFacility(id, geometry, area);
 			teachingFacilities.put(id, teachingFacility);
 		}
@@ -224,10 +257,11 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISSharedArea> readSharedAreas() {
 		HashMap<String, GISSharedArea> sharedAreas = new HashMap<String, GISSharedArea>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.SHARED_AREAS_GEOMETRY_SHAPEFILE);
+		HashMap<String, Double> areas = Reader.readFacilityAreas(Paths.SHARED_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
-			double area = RandomHelper.nextDoubleFromTo(10, 400);
+			double area = areas.get(id);
 			GISSharedArea sharedArea = new GISSharedArea(id, geometry, area);
 			sharedAreas.put(id, sharedArea);
 		}
@@ -237,10 +271,11 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISEatingPlace> readEatingPlaces() {
 		HashMap<String, GISEatingPlace> eatingPlaces = new HashMap<String, GISEatingPlace>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.EATING_PLACES_GEOMETRY_SHAPEFILE);
+		HashMap<String, Double> areas = Reader.readFacilityAreas(Paths.EATING_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
-			double area = RandomHelper.nextDoubleFromTo(100, 1000);
+			double area = areas.get(id);
 			GISEatingPlace eatingPlace = new GISEatingPlace(id, geometry, area);
 			eatingPlaces.put(id, eatingPlace);
 		}
@@ -274,7 +309,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private ArrayList<Student> createStudents(int studentCount, Geography<Object> geography) {
 		ArrayList<Student> students = new ArrayList<Student>();
 		for (int i = 0; i < studentCount; i++) {
-			Student student = new Student(geography, this);
+			boolean isVehicleUser = Probabilities.getRandomVehicleUsage();
+			Student student = new Student(geography, this, isVehicleUser);
 			students.add(student);
 		}
 		return students;

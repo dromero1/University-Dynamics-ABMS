@@ -15,11 +15,7 @@
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
-      <string>gis.GISCampus</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
-    <entry>
-      <string>gis.GISLimbo</string>
+      <string>gis.GISVehicleInOut</string>
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
@@ -27,16 +23,24 @@
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
-      <string>gis.GISTeachingFacility</string>
+      <string>gis.GISLimbo</string>
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
-      <string>gis.GISSharedArea</string>
+      <string>gis.GISCampus</string>
+      <string>styles.GISPolygonStyle</string>
+    </entry>
+    <entry>
+      <string>gis.GISTeachingFacility</string>
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
       <string>model.Student</string>
       <string>repast.simphony.visualization.gis3D.style.EditedMarkStyle</string>
+    </entry>
+    <entry>
+      <string>gis.GISSharedArea</string>
+      <string>styles.GISPolygonStyle</string>
     </entry>
   </styles>
   <editedStyles>
@@ -53,11 +57,7 @@
       <null/>
     </entry>
     <entry>
-      <string>gis.GISCampus</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>gis.GISLimbo</string>
+      <string>gis.GISVehicleInOut</string>
       <null/>
     </entry>
     <entry>
@@ -65,16 +65,24 @@
       <null/>
     </entry>
     <entry>
+      <string>gis.GISLimbo</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>gis.GISCampus</string>
+      <null/>
+    </entry>
+    <entry>
       <string>gis.GISTeachingFacility</string>
       <null/>
     </entry>
     <entry>
-      <string>gis.GISSharedArea</string>
-      <null/>
+      <string>model.Student</string>
+      <string>model.Student.style_0.xml</string>
     </entry>
     <entry>
-      <string>model.Student</string>
-      <string>model.Student.style_5.xml</string>
+      <string>gis.GISSharedArea</string>
+      <null/>
     </entry>
   </editedStyles>
   <netStyles/>
@@ -87,13 +95,13 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1464954286</hashCode>
+    <hashCode>-830723722</hashCode>
   </schedParams>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
       <string>gis.GISInOut</string>
-      <int>4</int>
+      <int>5</int>
     </entry>
     <entry>
       <string>gis.GISOtherFacility</string>
@@ -101,7 +109,11 @@
     </entry>
     <entry>
       <string>gis.GISEatingPlace</string>
-      <int>5</int>
+      <int>7</int>
+    </entry>
+    <entry>
+      <string>gis.GISVehicleInOut</string>
+      <int>4</int>
     </entry>
     <entry>
       <string>gis.GISParkingLot</string>
@@ -117,11 +129,11 @@
     </entry>
     <entry>
       <string>gis.GISTeachingFacility</string>
-      <int>7</int>
+      <int>8</int>
     </entry>
     <entry>
       <string>model.Student</string>
-      <int>8</int>
+      <int>9</int>
     </entry>
     <entry>
       <string>gis.GISSharedArea</string>

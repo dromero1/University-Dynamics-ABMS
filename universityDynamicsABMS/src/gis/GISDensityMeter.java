@@ -13,6 +13,17 @@ public class GISDensityMeter extends GISPolygon {
 		this.area = area;
 	}
 
+	public double countAgents() {
+		int count = 0;
+		ContainsQuery<Object> containsQuery = new ContainsQuery<Object>(this.geography, this.geometry);
+		for (Object object : containsQuery.query()) {
+			if (object instanceof Student) {
+				count++;
+			}
+		}
+		return count;
+	}
+
 	public double measureDensity() {
 		int count = 0;
 		ContainsQuery<Object> containsQuery = new ContainsQuery<Object>(this.geography, this.geometry);

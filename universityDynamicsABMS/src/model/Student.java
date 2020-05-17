@@ -36,6 +36,12 @@ public class Student {
 	private boolean learning;
 
 	/**
+	 * Vehicle user flag. Determines whether the student enters the campus by car or
+	 * by foot.
+	 */
+	private boolean isVehicleUser;
+
+	/**
 	 * Time to lunch
 	 */
 	private double lunchTime;
@@ -61,12 +67,13 @@ public class Student {
 	 * @param geography      Reference to geography projection
 	 * @param contextBuilder Reference to the simulation builder
 	 */
-	public Student(Geography<Object> geography, SimulationBuilder contextBuilder) {
+	public Student(Geography<Object> geography, SimulationBuilder contextBuilder, boolean isVehicleUser) {
 		this.geography = geography;
 		this.contextBuilder = contextBuilder;
 		this.learning = false;
 		this.lunchTime = Probabilities.getRandomLunchTime();
 		this.lunchDuration = Probabilities.getRandomLunchDuration();
+		this.isVehicleUser = isVehicleUser;
 		vanishToLimbo();
 	}
 
@@ -140,7 +147,12 @@ public class Student {
 	 * Move to random in-out spot
 	 */
 	public void moveToRandomInOutSpot(String method) {
-		Object[] inOuts = this.contextBuilder.getInOuts().values().toArray();
+		Object[] inOuts = null;
+		if (isVehicleUser) {
+			inOuts = this.contextBuilder.getVehicleInOuts().values().toArray();
+		} else {
+			inOuts = this.contextBuilder.getInOuts().values().toArray();
+		}
 		moveToRandomPolygon(inOuts, method);
 	}
 

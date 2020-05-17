@@ -26,4 +26,9 @@ public class DBFeatures {
 
 	public static final int DISTANCE_COLUMN = 2;
 
+	// Facility areas database
+	public static final int FACILITY_ID = 0;
+
+	public static final int FACILITY_AREA = 1;
+
 }
