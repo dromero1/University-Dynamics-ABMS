@@ -12,12 +12,9 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
-
 import gis.GISEatingPlace;
 import gis.GISInOut;
 import gis.GISLimbo;
-import gis.GISOtherFacility;
-import gis.GISParkingLot;
 import gis.GISPolygon;
 import gis.GISSharedArea;
 import gis.GISTeachingFacility;
