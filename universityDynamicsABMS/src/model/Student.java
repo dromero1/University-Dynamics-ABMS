@@ -3,13 +3,25 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.SingleSourcePaths;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+import org.jgrapht.graph.DefaultWeightedEdge;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+
+import gis.GISEatingPlace;
+import gis.GISInOut;
 import gis.GISLimbo;
+import gis.GISOtherFacility;
+import gis.GISParkingLot;
 import gis.GISPolygon;
+import gis.GISSharedArea;
 import gis.GISTeachingFacility;
+import gis.GISVehicleInOut;
 import repast.simphony.essentials.RepastEssentials;
 import repast.simphony.gis.util.GeometryUtil;
 import repast.simphony.random.RandomHelper;
@@ -60,6 +72,11 @@ public class Student {
 	 * Reference to simulation builder
 	 */
 	private SimulationBuilder contextBuilder;
+
+	/**
+	 * Current polygon
+	 */
+	private GISPolygon currentPolygon;
 
 	/**
 	 * Create a new student agent
@@ -161,6 +178,8 @@ public class Student {
 	 */
 	public void vanishToLimbo() {
 		GISLimbo limbo = this.contextBuilder.getLimbo();
+		if (currentPolygon == null)
+			currentPolygon = limbo;
 		moveToPolygon(limbo, "");
 	}
 
@@ -189,6 +208,21 @@ public class Student {
 						"leaveActivity");
 			}
 		}
+	}
+
+	/**
+	 * Relocate to an specific polygon
+	 * 
+	 * @param polygon Polygon to go to
+	 */
+	public void relocate(GISPolygon polygon) {
+		Geometry geometry = polygon.getGeometry();
+		List<Coordinate> coordinates = GeometryUtil.generateRandomPointsInPolygon(geometry, 1);
+		GeometryFactory geometryFactory = new GeometryFactory();
+		Coordinate coordinate = coordinates.get(0);
+		Point destination = geometryFactory.createPoint(coordinate);
+		this.geography.move(this, destination);
+		this.currentPolygon = polygon;
 	}
 
 	/**
@@ -262,22 +296,77 @@ public class Student {
 	}
 
 	/**
-	 * Move to an specific polygon
+	 * Move to an specific polygon. Find the shortest route and traverse the route
+	 * graph.
 	 * 
 	 * @param polygon Polygon to go to
 	 * @param method  Method to call after arriving to polygon
 	 */
 	private void moveToPolygon(GISPolygon polygon, String method) {
-		Geometry geometry = polygon.getGeometry();
-		List<Coordinate> coordinates = GeometryUtil.generateRandomPointsInPolygon(geometry, 1);
-		GeometryFactory geometryFactory = new GeometryFactory();
-		Coordinate coordinate = coordinates.get(0);
-		Point destination = geometryFactory.createPoint(coordinate);
-		this.geography.move(this, destination);
-		if (!method.isEmpty()) {
-			EventScheduler eventScheduler = EventScheduler.getInstance();
-			eventScheduler.scheduleOneTimeEvent(1.0 / 3600, this, method);
+		EventScheduler eventScheduler = EventScheduler.getInstance();
+		Graph<String, DefaultWeightedEdge> routes = this.contextBuilder.getRoutes();
+		// Select source and sink
+		String source = currentPolygon.getId();
+		String sink = polygon.getId();
+		// Find shortest path
+		DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(routes);
+		SingleSourcePaths<String, DefaultWeightedEdge> iPaths = dijkstraAlg.getPaths(source);
+		GraphPath<String, DefaultWeightedEdge> path = iPaths.getPath(sink);
+		List<String> vertexes = path.getVertexList();
+		List<DefaultWeightedEdge> edges = path.getEdgeList();
+		// Select random walking speed
+		double speed = Probabilities.getRandomWalkingSpeed();
+		// Traverse path
+		double totalTime = 0.0;
+		for (int i = 0; i < vertexes.size(); i++) {
+			String id = vertexes.get(i + 1);
+			GISPolygon nextPolygon = getPolygonById(id);
+			DefaultWeightedEdge edge = edges.get(i);
+			double meters = routes.getEdgeWeight(edge);
+			double minutes = meters / speed;
+			double ticks = TickConverter.minutesToTicks(minutes);
+			eventScheduler.scheduleOneTimeEvent(ticks, this, "relocate", nextPolygon);
+			totalTime += minutes;
 		}
+		// Schedule method
+		if (!method.isEmpty()) {
+			totalTime += 1;
+			double ticks = TickConverter.minutesToTicks(totalTime);
+			eventScheduler.scheduleOneTimeEvent(ticks, this, method);
+		}
+	}
+
+	/**
+	 * Get polygon by id
+	 * 
+	 * @param id Polygon Id
+	 */
+	private GISPolygon getPolygonById(String id) {
+		HashMap<String, GISTeachingFacility> teachingFacilities = this.contextBuilder.getTeachingFacilities();
+		if (teachingFacilities.containsKey(id))
+			return teachingFacilities.get(id);
+
+		HashMap<String, GISSharedArea> sharedAreas = this.contextBuilder.getSharedAreas();
+		if (sharedAreas.containsKey(id))
+			return sharedAreas.get(id);
+
+		HashMap<String, GISEatingPlace> eatingPlaces = this.contextBuilder.getEatingPlaces();
+		if (eatingPlaces.containsKey(id))
+			return eatingPlaces.get(id);
+
+		HashMap<String, GISInOut> inOuts = this.contextBuilder.getInOuts();
+		if (inOuts.containsKey(id))
+			return inOuts.get(id);
+
+		HashMap<String, GISVehicleInOut> vehicleInOuts = this.contextBuilder.getVehicleInOuts();
+		if (vehicleInOuts.containsKey(id))
+			return vehicleInOuts.get(id);
+
+		GISLimbo limbo = this.contextBuilder.getLimbo();
+		if (id == limbo.getId())
+			return limbo;
+
+		return null;
 	}
 
 }

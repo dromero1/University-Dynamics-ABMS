@@ -2,6 +2,7 @@ package util;
 
 public class TickConverter {
 
+	public static final double TICKS_PER_MINUTE = 1.0 / 60;
 	public static final double TICKS_PER_WEEK = 168;
 	public static final double TICKS_PER_DAY = 24;
 
@@ -17,4 +18,8 @@ public class TickConverter {
 		return dayTime;
 	}
 
+	public static double minutesToTicks(double minutes) {
+		return minutes * TICKS_PER_MINUTE;
+	}
+	
 }

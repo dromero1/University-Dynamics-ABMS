@@ -11,6 +11,8 @@ public class Probabilities {
 	public static final double MAX_LUNCH_TIME = 14;
 	public static final double MEAN_LUNCH_DURATION = 40;
 	public static final double STD_LUNCH_DURATION = 10;
+	public static final double MIN_WALKING_SPEED = 70; // [m]/[min]
+	public static final double MAX_WALKING_SPEED = 100; // [m]/[min]
 
 	public static double getRandomLunchTime() {
 		return RandomHelper.nextDoubleFromTo(MIN_LUNCH_TIME, MAX_LUNCH_TIME);
@@ -27,5 +29,9 @@ public class Probabilities {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		return r < vehicleUsageRatio;
 	}
-	
+
+	public static double getRandomWalkingSpeed() {
+		return RandomHelper.nextDoubleFromTo(MIN_WALKING_SPEED, MAX_WALKING_SPEED);
+	}
+
 }

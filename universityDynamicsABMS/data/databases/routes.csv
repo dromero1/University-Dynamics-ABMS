@@ -1,3 +1,5 @@
 ﻿Origen;Destino;Distancia (m)
+LIM;GAG;0
+GAG;B38;100
 B38;ZBIB;60
 ZBIB;ZPLA;45
