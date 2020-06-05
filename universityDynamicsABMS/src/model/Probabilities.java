@@ -9,8 +9,8 @@ public class Probabilities {
 
 	public static final double MIN_LUNCH_TIME = 11.5;
 	public static final double MAX_LUNCH_TIME = 14;
-	public static final double MEAN_LUNCH_DURATION = 40;
-	public static final double STD_LUNCH_DURATION = 10;
+	public static final double MEAN_LUNCH_DURATION = 0.66;
+	public static final double STD_LUNCH_DURATION = 0.16;
 	public static final double MIN_WALKING_SPEED = 70; // [m]/[min]
 	public static final double MAX_WALKING_SPEED = 100; // [m]/[min]
 
