@@ -18,6 +18,7 @@ import gis.GISLimbo;
 import gis.GISPolygon;
 import gis.GISSharedArea;
 import gis.GISTeachingFacility;
+import gis.GISTransitArea;
 import gis.GISVehicleInOut;
 import repast.simphony.essentials.RepastEssentials;
 import repast.simphony.gis.util.GeometryUtil;
@@ -175,9 +176,12 @@ public class Student {
 	 */
 	public void vanishToLimbo() {
 		GISLimbo limbo = this.contextBuilder.getLimbo();
-		if (currentPolygon == null)
+		if (currentPolygon == null) {
 			currentPolygon = limbo;
-		moveToPolygon(limbo, "");
+			relocate(currentPolygon);
+		} else {
+			moveToPolygon(limbo, "");
+		}
 	}
 
 	/**
@@ -309,21 +313,22 @@ public class Student {
 		DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(routes);
 		SingleSourcePaths<String, DefaultWeightedEdge> iPaths = dijkstraAlg.getPaths(source);
 		GraphPath<String, DefaultWeightedEdge> path = iPaths.getPath(sink);
+		System.out.println(path);
 		List<String> vertexes = path.getVertexList();
 		List<DefaultWeightedEdge> edges = path.getEdgeList();
 		// Select random walking speed
 		double speed = Probabilities.getRandomWalkingSpeed();
 		// Traverse path
 		double totalTime = 0.0;
-		for (int i = 0; i < vertexes.size(); i++) {
+		for (int i = 0; i < vertexes.size() - 1; i++) {
 			String id = vertexes.get(i + 1);
 			GISPolygon nextPolygon = getPolygonById(id);
 			DefaultWeightedEdge edge = edges.get(i);
 			double meters = routes.getEdgeWeight(edge);
 			double minutes = meters / speed;
-			double ticks = TickConverter.minutesToTicks(minutes);
-			eventScheduler.scheduleOneTimeEvent(ticks, this, "relocate", nextPolygon);
 			totalTime += minutes;
+			double ticks = TickConverter.minutesToTicks(totalTime);
+			eventScheduler.scheduleOneTimeEvent(ticks, this, "relocate", nextPolygon);
 		}
 		// Schedule method
 		if (!method.isEmpty()) {
@@ -359,8 +364,12 @@ public class Student {
 		if (vehicleInOuts.containsKey(id))
 			return vehicleInOuts.get(id);
 
+		HashMap<String, GISTransitArea> transitAreas = this.contextBuilder.getTransitAreas();
+		if (transitAreas.containsKey(id))
+			return transitAreas.get(id);
+
 		GISLimbo limbo = this.contextBuilder.getLimbo();
-		if (id == limbo.getId())
+		if (id.equals(limbo.getId()))
 			return limbo;
 
 		return null;

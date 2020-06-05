@@ -20,6 +20,8 @@ public final class Paths {
 	
 	public static final String PARKING_LOTS_GEOMETRY_SHAPEFILE = "./data/maps/Parqueaderos-polygon.shp";
 
+	public static final String TRANSIT_AREAS_GEOMETRY_SHAPEFILE = "./data/maps/Transito-polygon.shp";
+	
 	public static final String GROUPS_DATABASE = "./data/databases/groups.csv";
 
 	public static final String ROUTES_DATABASE = "./data/databases/routes.csv";

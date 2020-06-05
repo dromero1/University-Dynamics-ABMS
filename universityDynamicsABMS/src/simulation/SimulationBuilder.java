@@ -17,6 +17,7 @@ import gis.GISOtherFacility;
 import gis.GISParkingLot;
 import gis.GISSharedArea;
 import gis.GISTeachingFacility;
+import gis.GISTransitArea;
 import gis.GISVehicleInOut;
 import model.Group;
 import model.Heuristics;
@@ -66,6 +67,11 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * Parking lots
 	 */
 	private HashMap<String, GISParkingLot> parkingLots;
+
+	/**
+	 * Transit areas
+	 */
+	private HashMap<String, GISTransitArea> transitAreas;
 
 	/**
 	 * Limbo
@@ -148,6 +154,13 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 			context.add(vehicleInOut);
 		}
 
+		// Initialize transit areas
+		this.transitAreas = readTransitAreas();
+		for (GISTransitArea transitArea : transitAreas.values()) {
+			transitArea.setGeometryInGeography(geography);
+			context.add(transitArea);
+		}
+
 		// Read routes
 		this.routes = Reader.readRoutes(Paths.ROUTES_DATABASE);
 
@@ -187,6 +200,10 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 
 	public HashMap<String, GISSharedArea> getSharedAreas() {
 		return this.sharedAreas;
+	}
+
+	public HashMap<String, GISTransitArea> getTransitAreas() {
+		return this.transitAreas;
 	}
 
 	public Graph<String, DefaultWeightedEdge> getRoutes() {
@@ -236,6 +253,18 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 			vehicleInOuts.put(id, vehicleInOut);
 		}
 		return vehicleInOuts;
+	}
+
+	private HashMap<String, GISTransitArea> readTransitAreas() {
+		HashMap<String, GISTransitArea> transitAreas = new HashMap<String, GISTransitArea>();
+		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.TRANSIT_AREAS_GEOMETRY_SHAPEFILE);
+		for (SimpleFeature feature : features) {
+			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
+			String id = (String) feature.getAttribute(1);
+			GISTransitArea transitArea = new GISTransitArea(id, geometry);
+			transitAreas.put(id, transitArea);
+		}
+		return transitAreas;
 	}
 
 	private HashMap<String, GISTeachingFacility> readTeachingFacilities() {
