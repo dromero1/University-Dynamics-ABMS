@@ -4,7 +4,7 @@ public final class Paths {
 
 	public static final String CAMPUS_GEOMETRY_SHAPEFILE = "./data/maps/Campus-polygon.shp";
 
-	public static final String LIMBO_GEOMETRY_SHAPEFILE = "./data/maps/Salida_de_estudiantes-polygon.shp";
+	public static final String LIMBOS_GEOMETRY_SHAPEFILE = "./data/maps/Limbos-polygon.shp";
 
 	public static final String TEACHING_FACILITIES_GEOMETRY_SHAPEFILE = "./data/maps/Bloques-polygon.shp";
 

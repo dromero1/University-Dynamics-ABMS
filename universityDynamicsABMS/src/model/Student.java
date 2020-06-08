@@ -172,10 +172,12 @@ public class Student {
 	}
 
 	/**
-	 * Vanish to limbo. 'Limbo' emulates what's off campus.
+	 * Vanish to limbo. A limbo emulates what's off campus.
 	 */
 	public void vanishToLimbo() {
-		GISLimbo limbo = this.contextBuilder.getLimbo();
+		Object[] limbos = this.contextBuilder.getLimbos().values().toArray();
+		int i = RandomHelper.nextIntFromTo(0, limbos.length - 1);
+		GISLimbo limbo = (GISLimbo) limbos[i];
 		if (currentPolygon == null) {
 			currentPolygon = limbo;
 			relocate(currentPolygon);
@@ -367,9 +369,9 @@ public class Student {
 		if (transitAreas.containsKey(id))
 			return transitAreas.get(id);
 
-		GISLimbo limbo = this.contextBuilder.getLimbo();
-		if (id.equals(limbo.getId()))
-			return limbo;
+		HashMap<String, GISLimbo> limbos = this.contextBuilder.getLimbos();
+		if (limbos.containsKey(id))
+			return limbos.get(id);
 
 		return null;
 	}

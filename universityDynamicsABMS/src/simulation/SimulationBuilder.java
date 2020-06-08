@@ -74,9 +74,9 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISTransitArea> transitAreas;
 
 	/**
-	 * Limbo
+	 * Limbos
 	 */
-	private GISLimbo limbo;
+	private HashMap<String, GISLimbo> limbos;
 
 	/**
 	 * Routes
@@ -135,10 +135,12 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 			context.add(parkingLot);
 		}
 
-		// Initialize limbo
-		this.limbo = readLimbo();
-		limbo.setGeometryInGeography(geography);
-		context.add(limbo);
+		// Initialize limbos
+		this.limbos = readLimbos();
+		for (GISLimbo limbo : this.limbos.values()) {
+			limbo.setGeometryInGeography(geography);
+			context.add(limbo);
+		}
 
 		// Initialize in-outs spots
 		this.inOuts = readInOuts();
@@ -178,8 +180,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return context;
 	}
 
-	public GISLimbo getLimbo() {
-		return this.limbo;
+	public HashMap<String, GISLimbo> getLimbos() {
+		return this.limbos;
 	}
 
 	public HashMap<String, GISInOut> getInOuts() {
@@ -223,10 +225,16 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return new GISCampus(geometry);
 	}
 
-	private GISLimbo readLimbo() {
-		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.LIMBO_GEOMETRY_SHAPEFILE);
-		Geometry geometry = (MultiPolygon) features.get(0).getDefaultGeometry();
-		return new GISLimbo(geometry);
+	private HashMap<String, GISLimbo> readLimbos() {
+		HashMap<String, GISLimbo> limbos = new HashMap<String, GISLimbo>();
+		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.LIMBOS_GEOMETRY_SHAPEFILE);
+		for (SimpleFeature feature : features) {
+			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
+			String id = (String) feature.getAttribute(1);
+			GISLimbo limbo = new GISLimbo(id, geometry);
+			limbos.put(id, limbo);
+		}
+		return limbos;
 	}
 
 	private HashMap<String, GISInOut> readInOuts() {
