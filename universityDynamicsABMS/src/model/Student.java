@@ -313,7 +313,6 @@ public class Student {
 		DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(routes);
 		SingleSourcePaths<String, DefaultWeightedEdge> iPaths = dijkstraAlg.getPaths(source);
 		GraphPath<String, DefaultWeightedEdge> path = iPaths.getPath(sink);
-		System.out.println(path);
 		List<String> vertexes = path.getVertexList();
 		List<DefaultWeightedEdge> edges = path.getEdgeList();
 		// Select random walking speed
