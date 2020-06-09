@@ -24,6 +24,7 @@ import repast.simphony.essentials.RepastEssentials;
 import repast.simphony.gis.util.GeometryUtil;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.gis.Geography;
+import repast.simphony.util.collections.Pair;
 import simulation.EventScheduler;
 import simulation.SimulationBuilder;
 import util.TickConverter;
@@ -52,16 +53,6 @@ public class Student {
 	private boolean isVehicleUser;
 
 	/**
-	 * Time to lunch
-	 */
-	private double lunchTime;
-
-	/**
-	 * Time spend eating lunch
-	 */
-	private double lunchDuration;
-
-	/**
 	 * Reference to geography projection
 	 */
 	private Geography<Object> geography;
@@ -86,8 +77,6 @@ public class Student {
 		this.geography = geography;
 		this.contextBuilder = contextBuilder;
 		this.learning = false;
-		this.lunchTime = Probabilities.getRandomLunchTime();
-		this.lunchDuration = Probabilities.getRandomLunchDuration();
 		this.isVehicleUser = isVehicleUser;
 		vanishToLimbo();
 	}
@@ -275,14 +264,14 @@ public class Student {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		ArrayList<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
-			AcademicActivity lastActivity = schedule.getLastAcademicActivityInDay(day);
-			double endTime = lastActivity.getEndTime();
-			if (endTime < lunchTime + lunchDuration) {
+			Pair<Double, Double> lunch = Heuristics.getRandomLunchTime(schedule, day);
+			if (lunch == null)
 				continue;
-			}
+			double lunchTime = lunch.getFirst();
+			double lunchDuration = lunch.getSecond();
 			double ticksToEvent = TickConverter.dayTimeToTicks(day, lunchTime);
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "haveLunch");
-			ticksToEvent += this.lunchDuration;
+			ticksToEvent += lunchDuration;
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "haveFun");
 		}
 	}

@@ -7,8 +7,8 @@ import repast.simphony.random.RandomHelper;
 
 public class Probabilities {
 
-	public static final double MIN_LUNCH_TIME = 11.5;
-	public static final double MAX_LUNCH_TIME = 14;
+	public static final double MIN_LUNCH_TIME = 11;
+	public static final double MAX_LUNCH_TIME = 15;
 	public static final double MEAN_LUNCH_DURATION = 0.66;
 	public static final double STD_LUNCH_DURATION = 0.16;
 	public static final double MIN_WALKING_SPEED = 70; // [m]/[min]

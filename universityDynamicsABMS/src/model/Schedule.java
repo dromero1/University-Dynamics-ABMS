@@ -92,6 +92,25 @@ public class Schedule {
 		return nextActivity;
 	}
 
+	public boolean collides(int day, double eventStart, double duration) {
+		for (Group group : groups) {
+			for (AcademicActivity activity : group.getAcademicActivities()) {
+				if (activity.getDay() == day) {
+					double activityStart = activity.getStartTime();
+					double activityEnd = activity.getEndTime();
+					double eventEnd = eventStart + duration;
+					if ((eventEnd >= activityStart && eventEnd <= activityEnd)
+							|| (eventStart >= activityStart && eventStart <= activityEnd)) {
+						return true;
+					} else {
+						continue;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public String toString() {
 		return "Schedule [groups=" + groups + "]";
