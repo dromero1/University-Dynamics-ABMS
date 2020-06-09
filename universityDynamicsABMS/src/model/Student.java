@@ -129,7 +129,7 @@ public class Student {
 	 */
 	public void haveLunch() {
 		Object[] eatingPlaces = this.contextBuilder.getEatingPlaces().values().toArray();
-		moveToRandomPolygon(eatingPlaces, "");
+		moveToRandomPolygon(eatingPlaces, "", true);
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class Student {
 	 */
 	public void haveFun() {
 		Object[] sharedAreas = this.contextBuilder.getSharedAreas().values().toArray();
-		moveToRandomPolygon(sharedAreas, "");
+		moveToRandomPolygon(sharedAreas, "", true);
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class Student {
 		} else {
 			inOuts = this.contextBuilder.getInOuts().values().toArray();
 		}
-		moveToRandomPolygon(inOuts, method);
+		moveToRandomPolygon(inOuts, method, false);
 	}
 
 	/**
@@ -279,11 +279,18 @@ public class Student {
 	/**
 	 * Move to random polygon
 	 * 
-	 * @param polygons Array of polygons to choose
+	 * @param polygons    Array of polygons to choose
+	 * @param method      Method to call after arriving to polygon
+	 * @param weightBased Random weight-based selection
 	 */
-	private void moveToRandomPolygon(Object[] polygons, String method) {
-		int i = RandomHelper.nextIntFromTo(0, polygons.length - 1);
-		GISPolygon selectedPolygon = (GISPolygon) polygons[i];
+	private void moveToRandomPolygon(Object[] polygons, String method, boolean weightBased) {
+		GISPolygon selectedPolygon = null;
+		if (!weightBased) {
+			int i = RandomHelper.nextIntFromTo(0, polygons.length - 1);
+			selectedPolygon = (GISPolygon) polygons[i];
+		} else {
+			selectedPolygon = Probabilities.getRandomPolygonWeightBased(polygons);
+		}
 		moveToPolygon(selectedPolygon, method);
 	}
 

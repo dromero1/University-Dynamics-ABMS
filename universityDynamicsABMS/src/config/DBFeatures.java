@@ -31,4 +31,6 @@ public class DBFeatures {
 
 	public static final int FACILITY_AREA = 1;
 
+	public static final int FACILITY_WEIGHT = 2;
+
 }

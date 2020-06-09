@@ -17,6 +17,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.opengis.feature.simple.SimpleFeature;
 import config.DBFeatures;
 import model.Group;
+import repast.simphony.util.collections.Pair;
 
 public class Reader {
 
@@ -105,8 +106,8 @@ public class Reader {
 		return new ArrayList<Group>(groups.values());
 	}
 
-	public static HashMap<String, Double> readFacilityAreas(String filename) {
-		HashMap<String, Double> areas = new HashMap<String, Double>();
+	public static HashMap<String, Pair<Double, Double>> readFacilityAreas(String filename) {
+		HashMap<String, Pair<Double, Double>> areas = new HashMap<String, Pair<Double, Double>>();
 		try {
 			File file = new File(filename);
 			Scanner scanner = new Scanner(file);
@@ -121,6 +122,7 @@ public class Reader {
 				// Attributes
 				String id = "";
 				double area = 0;
+				double weight = 0;
 				// Extract elements
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
@@ -130,11 +132,14 @@ public class Reader {
 					case DBFeatures.FACILITY_AREA:
 						area = Double.parseDouble(elements[i]);
 						break;
+					case DBFeatures.FACILITY_WEIGHT:
+						weight = Double.parseDouble(elements[i]);
+						break;
 					default:
 						break;
 					}
 				}
-				areas.put(id, area);
+				areas.put(id, new Pair<Double, Double>(area, weight));
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {

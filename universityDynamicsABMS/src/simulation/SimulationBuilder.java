@@ -27,8 +27,11 @@ import repast.simphony.context.Context;
 import repast.simphony.context.space.gis.GeographyFactory;
 import repast.simphony.context.space.gis.GeographyFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
+import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.parameter.Parameters;
 import repast.simphony.space.gis.Geography;
 import repast.simphony.space.gis.GeographyParameters;
+import repast.simphony.util.collections.Pair;
 import source.Reader;
 
 public class SimulationBuilder implements ContextBuilder<Object> {
@@ -170,7 +173,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		ArrayList<Group> groups = Reader.readGroupsDatabase(Paths.GROUPS_DATABASE);
 
 		// Add students to simulation
-		ArrayList<Student> students = createStudents(3200, geography);
+		Parameters simParams = RunEnvironment.getInstance().getParameters();
+		ArrayList<Student> students = createStudents(simParams.getInteger("students"), geography);
 		for (Student student : students) {
 			student.setSchedule(Heuristics.getRandomSchedule(groups));
 			student.planWeeklyEvents();
@@ -240,12 +244,13 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISInOut> readInOuts() {
 		HashMap<String, GISInOut> inOuts = new HashMap<String, GISInOut>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.INOUTS_GEOMETRY_SHAPEFILE);
-		HashMap<String, Double> areas = Reader.readFacilityAreas(Paths.INOUT_AREAS_DATABASE);
+		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.INOUT_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
-			double area = areas.get(id);
-			GISInOut inOut = new GISInOut(id, geometry, area);
+			double area = areas.get(id).getFirst();
+			double weight = areas.get(id).getSecond();
+			GISInOut inOut = new GISInOut(id, geometry, area, weight);
 			inOuts.put(id, inOut);
 		}
 		return inOuts;
@@ -278,14 +283,15 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISTeachingFacility> readTeachingFacilities() {
 		HashMap<String, GISTeachingFacility> teachingFacilities = new HashMap<String, GISTeachingFacility>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.TEACHING_FACILITIES_GEOMETRY_SHAPEFILE);
-		HashMap<String, Double> areas = Reader.readFacilityAreas(Paths.TEACHING_AREAS_DATABASE);
+		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.TEACHING_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
 			if (!areas.containsKey(id))
 				System.out.println(id);
-			double area = areas.get(id);
-			GISTeachingFacility teachingFacility = new GISTeachingFacility(id, geometry, area);
+			double area = areas.get(id).getFirst();
+			double weight = areas.get(id).getSecond();
+			GISTeachingFacility teachingFacility = new GISTeachingFacility(id, geometry, area, weight);
 			teachingFacilities.put(id, teachingFacility);
 		}
 		return teachingFacilities;
@@ -294,12 +300,13 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISSharedArea> readSharedAreas() {
 		HashMap<String, GISSharedArea> sharedAreas = new HashMap<String, GISSharedArea>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.SHARED_AREAS_GEOMETRY_SHAPEFILE);
-		HashMap<String, Double> areas = Reader.readFacilityAreas(Paths.SHARED_AREAS_DATABASE);
+		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.SHARED_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
-			double area = areas.get(id);
-			GISSharedArea sharedArea = new GISSharedArea(id, geometry, area);
+			double area = areas.get(id).getFirst();
+			double weight = areas.get(id).getSecond();
+			GISSharedArea sharedArea = new GISSharedArea(id, geometry, area, weight);
 			sharedAreas.put(id, sharedArea);
 		}
 		return sharedAreas;
@@ -308,12 +315,13 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISEatingPlace> readEatingPlaces() {
 		HashMap<String, GISEatingPlace> eatingPlaces = new HashMap<String, GISEatingPlace>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.EATING_PLACES_GEOMETRY_SHAPEFILE);
-		HashMap<String, Double> areas = Reader.readFacilityAreas(Paths.EATING_AREAS_DATABASE);
+		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.EATING_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
-			double area = areas.get(id);
-			GISEatingPlace eatingPlace = new GISEatingPlace(id, geometry, area);
+			double area = areas.get(id).getFirst();
+			double weight = areas.get(id).getSecond();
+			GISEatingPlace eatingPlace = new GISEatingPlace(id, geometry, area, weight);
 			eatingPlaces.put(id, eatingPlace);
 		}
 		return eatingPlaces;

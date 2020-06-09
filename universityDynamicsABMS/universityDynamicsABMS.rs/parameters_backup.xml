@@ -6,7 +6,13 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
-				<parameter name="vehicleUsageRatio" displayName="Proporción de uso de vehículos" type="double" 
+				<parameter name="students" displayName="Students" type="int" 
+						defaultValue="3200" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+				<parameter name="vehicleUsageRatio" displayName="Vehicle Usage Ratio" type="double" 
 						defaultValue="0.3" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"

@@ -4,13 +4,15 @@ import com.vividsolutions.jts.geom.Geometry;
 import model.Student;
 import repast.simphony.query.space.gis.ContainsQuery;
 
-public class GISDensityMeter extends GISPolygon {
+public class GISDensityMeter extends GISPolygon implements Comparable<GISDensityMeter> {
 
 	protected double area;
+	protected double weight;
 
-	public GISDensityMeter(String id, Geometry geometry, double area) {
+	public GISDensityMeter(String id, Geometry geometry, double area, double weight) {
 		super(id, geometry);
 		this.area = area;
+		this.weight = weight;
 	}
 
 	public double countAgents() {
@@ -35,6 +37,25 @@ public class GISDensityMeter extends GISPolygon {
 			}
 		}
 		return count / area;
+	}
+
+	@Override
+	public int compareTo(GISDensityMeter densityMeter) {
+		if (weight > densityMeter.getWeight()) {
+			return 1;
+		} else if (weight < densityMeter.getWeight()) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
+
+	public double getArea() {
+		return area;
+	}
+
+	public double getWeight() {
+		return weight;
 	}
 
 }
