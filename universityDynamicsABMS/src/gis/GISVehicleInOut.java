@@ -2,10 +2,10 @@ package gis;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-public class GISVehicleInOut extends GISPolygon {
+public class GISVehicleInOut extends GISDensityMeter {
 
-	public GISVehicleInOut(String id, Geometry geometry) {
-		super(id, geometry);
+	public GISVehicleInOut(String id, Geometry geometry, double area, double weight) {
+		super(id, geometry, area, weight);
 	}
 
 }

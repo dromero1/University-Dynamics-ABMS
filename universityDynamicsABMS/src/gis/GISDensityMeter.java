@@ -51,11 +51,11 @@ public class GISDensityMeter extends GISPolygon implements Comparable<GISDensity
 	}
 
 	public double getArea() {
-		return area;
+		return this.area;
 	}
 
 	public double getWeight() {
-		return weight;
+		return this.weight;
 	}
 
 }

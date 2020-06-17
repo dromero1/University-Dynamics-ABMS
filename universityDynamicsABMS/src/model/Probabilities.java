@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import cern.jet.random.Normal;
 import gis.GISDensityMeter;
 import gis.GISPolygon;

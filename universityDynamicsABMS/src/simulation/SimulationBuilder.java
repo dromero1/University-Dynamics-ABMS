@@ -259,10 +259,13 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISVehicleInOut> readVehicleInOuts() {
 		HashMap<String, GISVehicleInOut> vehicleInOuts = new HashMap<String, GISVehicleInOut>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.VEHICLE_INOUTS_GEOMETRY_SHAPEFILE);
+		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.VEHICLE_INOUT_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
-			GISVehicleInOut vehicleInOut = new GISVehicleInOut(id, geometry);
+			double area = areas.get(id).getFirst();
+			double weight = areas.get(id).getSecond();
+			GISVehicleInOut vehicleInOut = new GISVehicleInOut(id, geometry, area, weight);
 			vehicleInOuts.put(id, vehicleInOut);
 		}
 		return vehicleInOuts;

@@ -33,11 +33,11 @@ public class Group {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public int getCapacity() {
-		return capacity;
+		return this.capacity;
 	}
 
 	public ArrayList<AcademicActivity> getAcademicActivities() {

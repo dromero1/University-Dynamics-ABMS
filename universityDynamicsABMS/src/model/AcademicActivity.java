@@ -17,23 +17,23 @@ public class AcademicActivity {
 	}
 
 	public int getDay() {
-		return day;
+		return this.day;
 	}
 
 	public double getStartTime() {
-		return startTime;
+		return this.startTime;
 	}
 
 	public double getEndTime() {
-		return endTime;
+		return this.endTime;
 	}
 
 	public String getTeachingFacilityId() {
-		return teachingFacilityId;
+		return this.teachingFacilityId;
 	}
 
 	public String getRoom() {
-		return room;
+		return this.room;
 	}
 
 	@Override

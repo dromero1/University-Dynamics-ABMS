@@ -8,6 +8,7 @@ public abstract class GISPolygon {
 	protected Geometry geometry;
 	protected String id;
 	protected Geography<Object> geography;
+	protected int relocationCount;
 
 	public GISPolygon(String id, Geometry geometry) {
 		this.id = id;
@@ -19,12 +20,22 @@ public abstract class GISPolygon {
 		this.geography.move(this, geometry);
 	}
 
+	public void onRelocation() {
+		this.relocationCount++;
+	}
+
+	public int countRelocations() {
+		int count = this.relocationCount;
+		this.relocationCount = 0;
+		return count;
+	}
+
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public Geometry getGeometry() {
-		return geometry;
+		return this.geometry;
 	}
 
 }

@@ -1,7 +1,7 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.7.0">
-  <name>DensityTimeSeries</name>
+  <name>ArrivalsTimeSeries</name>
   <type>NON_AGGREGATE</type>
-  <sourceType>gis.GISDensityMeter</sourceType>
+  <sourceType>gis.GISInOut</sourceType>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
@@ -20,24 +20,16 @@
       <string>id</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>id</id>
-        <className>gis.GISDensityMeter</className>
+        <className>gis.GISInOut</className>
         <methodName>getId</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>density</string>
+      <string>relocations</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>density</id>
-        <className>gis.GISDensityMeter</className>
-        <methodName>measureDensity</methodName>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>students</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>students</id>
-        <className>gis.GISDensityMeter</className>
-        <methodName>countAgents</methodName>
+        <id>relocations</id>
+        <className>gis.GISInOut</className>
+        <methodName>countRelocations</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

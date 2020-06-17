@@ -30,6 +30,8 @@ public final class Paths {
 
 	public static final String INOUT_AREAS_DATABASE = "./data/databases/inout-areas.csv";
 
+	public static final String VEHICLE_INOUT_AREAS_DATABASE = "./data/databases/vehicle-inout-areas.csv";
+	
 	public static final String EATING_AREAS_DATABASE = "./data/databases/eating-areas.csv";
 
 	public static final String SHARED_AREAS_DATABASE = "./data/databases/shared-areas.csv";

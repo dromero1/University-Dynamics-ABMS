@@ -109,9 +109,9 @@ public class Student {
 	public void leaveActivity() {
 		deactivateLearningMode();
 		double tick = RepastEssentials.GetTickCount();
-		double[] dayTime = TickConverter.tickToDayTime(tick);
-		double day = dayTime[0];
-		double hour = dayTime[1];
+		Pair<Double, Double> dayTime = TickConverter.tickToDayTime(tick);
+		double day = dayTime.getFirst();
+		double hour = dayTime.getSecond();
 		AcademicActivity nextActivity = this.schedule.getNextAcademicActivity(day, hour);
 		if (nextActivity != null) {
 			double delta = nextActivity.getStartTime() - hour;
@@ -157,7 +157,7 @@ public class Student {
 		} else {
 			inOuts = this.contextBuilder.getInOuts().values().toArray();
 		}
-		moveToRandomPolygon(inOuts, method, false);
+		moveToRandomPolygon(inOuts, method, true);
 	}
 
 	/**
@@ -218,6 +218,13 @@ public class Student {
 	}
 
 	/**
+	 * Notify relocation to current polygon
+	 */
+	public void notifyRelocation() {
+		this.currentPolygon.onRelocation();
+	}
+
+	/**
 	 * Whether or not the student is currently busy learning
 	 */
 	public boolean isLearning() {
@@ -249,7 +256,7 @@ public class Student {
 			double startTime = firstActivity.getStartTime() - ARRIVAL_DELTA;
 			double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK,
-					"moveToRandomInOutSpot", "");
+					"moveToRandomInOutSpot", "notifyRelocation");
 			AcademicActivity lastActivity = schedule.getLastAcademicActivityInDay(day);
 			double endTime = lastActivity.getEndTime();
 			ticksToEvent = TickConverter.dayTimeToTicks(day, endTime);
