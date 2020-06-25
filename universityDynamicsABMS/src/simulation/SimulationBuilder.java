@@ -307,8 +307,6 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
-			if (!areas.containsKey(id))
-				System.out.println(id);
 			double area = areas.get(id).getFirst();
 			double weight = areas.get(id).getSecond();
 			GISTeachingFacility teachingFacility = new GISTeachingFacility(id, geometry, area, weight);
