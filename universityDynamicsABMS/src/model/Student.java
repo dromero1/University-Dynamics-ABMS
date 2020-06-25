@@ -125,7 +125,7 @@ public class Student {
 				attendActivity(nextActivity.getTeachingFacilityId());
 			} else {
 				EventScheduler eventScheduler = EventScheduler.getInstance();
-				eventScheduler.scheduleOneTimeEvent(ARRIVAL_DELTA, this, "haveFun");
+				eventScheduler.scheduleOneTimeEvent(1, this, "haveFun");
 			}
 		}
 	}
@@ -310,6 +310,8 @@ public class Student {
 
 	/**
 	 * Update action's values estimations
+	 * 
+	 * @param polygonId Id of a polygon
 	 */
 	private void updateActionValueEstimates(String polygonId) {
 		if (this.actionValueEstimates.containsKey(polygonId)) {
@@ -329,7 +331,7 @@ public class Student {
 			double Q = estimation.getFirst();
 			int N = estimation.getSecond();
 			N = N + 1;
-			double step = 0.1; // (1 / N)
+			double step = 0.1;
 			Q = Q + step * (R - Q);
 			estimation.setFirst(Q);
 			estimation.setSecond(N);

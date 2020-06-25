@@ -5,7 +5,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class GISVehicleInOut extends GISDensityMeter {
 
 	/**
-	 * Create new geo-spatial vehicle in-out spot
+	 * Create a new geo-spatial vehicle in-out spot
 	 * 
 	 * @param id       Polygon id
 	 * @param geometry Reference to geometry

@@ -26,7 +26,7 @@ public abstract class GISPolygon {
 	protected int relocationCount;
 
 	/**
-	 * Create new geo-spatial polygon
+	 * Create a new geo-spatial polygon
 	 * 
 	 * @param id       Polygon id
 	 * @param geometry Reference to geometry

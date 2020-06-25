@@ -5,7 +5,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class GISSharedArea extends GISDensityMeter {
 
 	/**
-	 * Create new geo-spatial shared area
+	 * Create a new geo-spatial shared area
 	 * 
 	 * @param id       Polygon id
 	 * @param geometry Reference to geometry

@@ -14,8 +14,13 @@ import repast.simphony.util.collections.Pair;
 
 public class Heuristics {
 
+	/**
+	 * Create a new random schedule for a student
+	 * 
+	 * @param groups List of available groups
+	 */
 	public static Schedule getRandomSchedule(ArrayList<Group> groups) {
-		int toEnroll = 6;
+		int toEnroll = Probabilities.getRandomGroupsToEnrollTo();
 		int enrolled = 0;
 		Collections.shuffle(groups);
 		Schedule schedule = new Schedule();
@@ -31,6 +36,12 @@ public class Heuristics {
 		return schedule;
 	}
 
+	/**
+	 * Select a random time to lunch at specific day
+	 * 
+	 * @param schedule Student's schedule
+	 * @param day      Day
+	 */
 	public static Pair<Double, Double> getRandomLunchTime(Schedule schedule, int day) {
 		Pair<Double, Double> lunch = null;
 		AcademicActivity firstActivity = schedule.getFirstAcademicActivityInDay(day);
@@ -50,6 +61,11 @@ public class Heuristics {
 		return lunch;
 	}
 
+	/**
+	 * Find shortest paths between all points using Dijkstra's algorithm
+	 * 
+	 * @param routes Graph of routes
+	 */
 	public static HashMap<String, GraphPath<String, DefaultWeightedEdge>> findShortestPaths(
 			Graph<String, DefaultWeightedEdge> routes) {
 		HashMap<String, GraphPath<String, DefaultWeightedEdge>> paths = new HashMap<String, GraphPath<String, DefaultWeightedEdge>>();
@@ -60,7 +76,7 @@ public class Heuristics {
 				String id = source + "-" + sink;
 				if (!paths.containsKey(id)) {
 					GraphPath<String, DefaultWeightedEdge> path = iPaths.getPath(sink);
-					paths.put(source + "-" + sink, path);
+					paths.put(id, path);
 				}
 			}
 		}

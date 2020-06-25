@@ -5,7 +5,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class GISInOut extends GISDensityMeter {
 
 	/**
-	 * Create new geo-spatial in-out spot
+	 * Create a new geo-spatial in-out spot
 	 * 
 	 * @param id       Polygon id
 	 * @param geometry Reference to geometry

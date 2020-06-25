@@ -5,7 +5,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class GISOtherFacility extends GISPolygon {
 
 	/**
-	 * Create new geo-spatial generic facility
+	 * Create a new geo-spatial generic facility
 	 * 
 	 * @param id       Polygon id
 	 * @param geometry Reference to geometry

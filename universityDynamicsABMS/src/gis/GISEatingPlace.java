@@ -5,7 +5,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class GISEatingPlace extends GISDensityMeter {
 
 	/**
-	 * Create new geo-spatial eating place
+	 * Create a new geo-spatial eating place
 	 * 
 	 * @param id       Polygon id
 	 * @param geometry Reference to geometry

@@ -10,7 +10,7 @@ public class GISCampus extends GISPolygon {
 	public static final String CAMPUS_ID = "CMP";
 
 	/**
-	 * Create new geo-spatial campus
+	 * Create a new geo-spatial campus
 	 * 
 	 * @param geometry Reference to geometry
 	 */

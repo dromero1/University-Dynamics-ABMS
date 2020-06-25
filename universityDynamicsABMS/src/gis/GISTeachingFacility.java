@@ -5,7 +5,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class GISTeachingFacility extends GISDensityMeter {
 
 	/**
-	 * Create new geo-spatial teaching facility
+	 * Create a new geo-spatial teaching facility
 	 * 
 	 * @param id       Polygon id
 	 * @param geometry Reference to geometry

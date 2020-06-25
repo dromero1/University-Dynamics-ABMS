@@ -5,7 +5,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class GISParkingLot extends GISPolygon {
 
 	/**
-	 * Create new geo-spatial parking lot
+	 * Create a new geo-spatial parking lot
 	 * 
 	 * @param id       Polygon id
 	 * @param geometry Reference to geometry

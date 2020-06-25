@@ -5,7 +5,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class GISLimbo extends GISPolygon {
 
 	/**
-	 * Create new geo-spatial limbo
+	 * Create a new geo-spatial limbo
 	 * 
 	 * @param id       Polygon id
 	 * @param geometry Reference to geometry

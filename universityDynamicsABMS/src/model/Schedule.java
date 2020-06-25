@@ -6,24 +6,39 @@ import java.util.Set;
 
 public class Schedule {
 
+	/**
+	 * List of groups
+	 */
 	private ArrayList<Group> groups;
 
+	/**
+	 * Create a new schedule
+	 */
 	public Schedule() {
 		this.groups = new ArrayList<Group>();
 	}
 
+	/**
+	 * Create a new academic activity
+	 * 
+	 * @param groups List of groups
+	 */
 	public Schedule(ArrayList<Group> groups) {
 		this.groups = groups;
 	}
 
+	/**
+	 * Add group to schedule
+	 * 
+	 * @param group Group
+	 */
 	public void addGroup(Group group) {
 		groups.add(group);
 	}
 
-	public ArrayList<Group> getGroups() {
-		return groups;
-	}
-
+	/**
+	 * Get list of days in campus
+	 */
 	public ArrayList<Integer> getCampusDays() {
 		ArrayList<Integer> campusDays = new ArrayList<Integer>();
 		Set<Integer> days = new HashSet<Integer>();
@@ -38,6 +53,11 @@ public class Schedule {
 		return campusDays;
 	}
 
+	/**
+	 * Get the first academic activity in an specific day
+	 * 
+	 * @param day Day
+	 */
 	public AcademicActivity getFirstAcademicActivityInDay(int day) {
 		AcademicActivity firstActivity = null;
 		for (Group group : groups) {
@@ -56,6 +76,11 @@ public class Schedule {
 		return firstActivity;
 	}
 
+	/**
+	 * Get the last academic activity in an specific day
+	 * 
+	 * @param day Day
+	 */
 	public AcademicActivity getLastAcademicActivityInDay(int day) {
 		AcademicActivity lastActivity = null;
 		for (Group group : groups) {
@@ -74,6 +99,12 @@ public class Schedule {
 		return lastActivity;
 	}
 
+	/**
+	 * Get the next academic activity in an specific day after a certain hour
+	 * 
+	 * @param day  Day
+	 * @param hour Hour
+	 */
 	public AcademicActivity getNextAcademicActivity(double day, double hour) {
 		AcademicActivity nextActivity = null;
 		for (Group group : groups) {
@@ -92,6 +123,13 @@ public class Schedule {
 		return nextActivity;
 	}
 
+	/**
+	 * Checks whether a proposed event collides with the current schedule
+	 * 
+	 * @param day        Day
+	 * @param eventStart Event's start
+	 * @param duration   Event's duration
+	 */
 	public boolean collides(int day, double eventStart, double duration) {
 		for (Group group : groups) {
 			for (AcademicActivity activity : group.getAcademicActivities()) {
@@ -111,9 +149,11 @@ public class Schedule {
 		return false;
 	}
 
-	@Override
-	public String toString() {
-		return "Schedule [groups=" + groups + "]";
+	/**
+	 * Get list of groups
+	 */
+	public ArrayList<Group> getGroups() {
+		return groups;
 	}
 
 }
