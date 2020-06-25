@@ -1,6 +1,6 @@
 <repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.7.0">
-  <name>DensityFileSink</name>
-  <dataSet>DensityTimeSeries</dataSet>
+  <name>DensitiesFileSink</name>
+  <dataSet>DensitiesTimeSeries</dataSet>
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
@@ -9,6 +9,6 @@
     <string>density</string>
     <string>students</string>
   </sourceIds>
-  <fileName>output/ModelOutputDensity.csv</fileName>
+  <fileName>output/ModelOutputDensities.csv</fileName>
   <addTimeStamp>true</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>
