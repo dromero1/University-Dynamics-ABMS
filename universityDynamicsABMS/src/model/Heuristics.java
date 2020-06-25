@@ -2,6 +2,13 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+
+import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.SingleSourcePaths;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+import org.jgrapht.graph.DefaultWeightedEdge;
 
 import repast.simphony.util.collections.Pair;
 
@@ -41,6 +48,23 @@ public class Heuristics {
 			}
 		}
 		return lunch;
+	}
+
+	public static HashMap<String, GraphPath<String, DefaultWeightedEdge>> findShortestPaths(
+			Graph<String, DefaultWeightedEdge> routes) {
+		HashMap<String, GraphPath<String, DefaultWeightedEdge>> paths = new HashMap<String, GraphPath<String, DefaultWeightedEdge>>();
+		DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(routes);
+		for (String source : routes.vertexSet()) {
+			SingleSourcePaths<String, DefaultWeightedEdge> iPaths = dijkstraAlg.getPaths(source);
+			for (String sink : routes.vertexSet()) {
+				String id = source + "-" + sink;
+				if (!paths.containsKey(id)) {
+					GraphPath<String, DefaultWeightedEdge> path = iPaths.getPath(sink);
+					paths.put(source + "-" + sink, path);
+				}
+			}
+		}
+		return paths;
 	}
 
 }

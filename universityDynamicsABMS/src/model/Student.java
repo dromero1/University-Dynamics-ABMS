@@ -5,23 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
-import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.SingleSourcePaths;
-import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
-import gis.GISEatingPlace;
-import gis.GISInOut;
+import gis.GISDensityMeter;
 import gis.GISLimbo;
 import gis.GISPolygon;
-import gis.GISSharedArea;
-import gis.GISTeachingFacility;
-import gis.GISTransitArea;
-import gis.GISVehicleInOut;
+import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.essentials.RepastEssentials;
 import repast.simphony.gis.util.GeometryUtil;
+import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.gis.Geography;
 import repast.simphony.util.collections.Pair;
@@ -68,6 +63,16 @@ public class Student {
 	private GISPolygon currentPolygon;
 
 	/**
+	 * Action's values estimates
+	 */
+	private HashMap<String, Pair<Double, Integer>> actionValueEstimates;
+
+	/**
+	 * Last reward
+	 */
+	private double lastReward;
+	
+	/**
 	 * Create a new student agent
 	 * 
 	 * @param geography      Reference to geography projection
@@ -78,6 +83,7 @@ public class Student {
 		this.contextBuilder = contextBuilder;
 		this.learning = false;
 		this.isVehicleUser = isVehicleUser;
+		initValueEstimations();
 		vanishToLimbo();
 	}
 
@@ -96,8 +102,8 @@ public class Student {
 	 * @param teachingFacilityId Id of the teaching facility
 	 */
 	public void attendActivity(String teachingFacilityId) {
-		HashMap<String, GISTeachingFacility> teachingFacilities = this.contextBuilder.getTeachingFacilities();
-		GISTeachingFacility teachingFacility = teachingFacilities.get(teachingFacilityId);
+		HashMap<String, GISPolygon> teachingFacilities = this.contextBuilder.getTeachingFacilities();
+		GISPolygon teachingFacility = teachingFacilities.get(teachingFacilityId);
 		moveToPolygon(teachingFacility, "activateLearningMode");
 	}
 
@@ -128,16 +134,14 @@ public class Student {
 	 * Go have lunch at a designated eating place
 	 */
 	public void haveLunch() {
-		Object[] eatingPlaces = this.contextBuilder.getEatingPlaces().values().toArray();
-		moveToRandomPolygon(eatingPlaces, "", true);
+		moveToRandomPolygon(this.contextBuilder.getEatingPlaces(), "", true);
 	}
 
 	/**
 	 * Go have fun at a shared area
 	 */
 	public void haveFun() {
-		Object[] sharedAreas = this.contextBuilder.getSharedAreas().values().toArray();
-		moveToRandomPolygon(sharedAreas, "", true);
+		moveToRandomPolygon(this.contextBuilder.getSharedAreas(), "", true);
 	}
 
 	/**
@@ -151,11 +155,11 @@ public class Student {
 	 * Move to random in-out spot
 	 */
 	public void moveToRandomInOutSpot(String method) {
-		Object[] inOuts = null;
+		HashMap<String, GISPolygon> inOuts = null;
 		if (isVehicleUser) {
-			inOuts = this.contextBuilder.getVehicleInOuts().values().toArray();
+			inOuts = this.contextBuilder.getVehicleInOuts();
 		} else {
-			inOuts = this.contextBuilder.getInOuts().values().toArray();
+			inOuts = this.contextBuilder.getInOuts();
 		}
 		moveToRandomPolygon(inOuts, method, true);
 	}
@@ -167,12 +171,9 @@ public class Student {
 		Object[] limbos = this.contextBuilder.getLimbos().values().toArray();
 		int i = RandomHelper.nextIntFromTo(0, limbos.length - 1);
 		GISLimbo limbo = (GISLimbo) limbos[i];
-		if (currentPolygon == null) {
+		if (currentPolygon == null)
 			currentPolygon = limbo;
-			relocate(currentPolygon);
-		} else {
-			moveToPolygon(limbo, "");
-		}
+		relocate(limbo);
 	}
 
 	/**
@@ -180,7 +181,7 @@ public class Student {
 	 */
 	public void planWeeklyEvents() {
 		// Schedule simple events
-		scheduleArrivalsAndDepartures();
+		scheduleDepartures();
 		scheduleLunch();
 		// Schedule activity timetable
 		EventScheduler eventScheduler = EventScheduler.getInstance();
@@ -188,7 +189,7 @@ public class Student {
 			for (AcademicActivity activity : group.getAcademicActivities()) {
 				// Schedule activity attendance
 				int day = activity.getDay();
-				double startTime = activity.getStartTime();
+				double startTime = activity.getStartTime() - ARRIVAL_DELTA;
 				String teachingFacilityId = activity.getTeachingFacilityId();
 				double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
 				eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK,
@@ -215,13 +216,8 @@ public class Student {
 		Point destination = geometryFactory.createPoint(coordinate);
 		this.geography.move(this, destination);
 		this.currentPolygon = polygon;
-	}
-
-	/**
-	 * Notify relocation to current polygon
-	 */
-	public void notifyRelocation() {
 		this.currentPolygon.onRelocation();
+		updateActionValueEstimates(polygon.getId());
 	}
 
 	/**
@@ -231,6 +227,13 @@ public class Student {
 		return this.learning;
 	}
 
+	/**
+	 * Get last reward
+	 */
+	public double getLastReward() {
+		return this.lastReward;
+	}
+	
 	/**
 	 * Activate learning mode
 	 */
@@ -244,22 +247,17 @@ public class Student {
 	public void deactivateLearningMode() {
 		this.learning = false;
 	}
-
+	
 	/**
-	 * Schedule arrivals and departures
+	 * Schedule departures
 	 */
-	private void scheduleArrivalsAndDepartures() {
+	private void scheduleDepartures() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		ArrayList<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
-			AcademicActivity firstActivity = schedule.getFirstAcademicActivityInDay(day);
-			double startTime = firstActivity.getStartTime() - ARRIVAL_DELTA;
-			double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
-			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK,
-					"moveToRandomInOutSpot", "notifyRelocation");
 			AcademicActivity lastActivity = schedule.getLastAcademicActivityInDay(day);
 			double endTime = lastActivity.getEndTime();
-			ticksToEvent = TickConverter.dayTimeToTicks(day, endTime);
+			double ticksToEvent = TickConverter.dayTimeToTicks(day, endTime);
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "returnHome");
 		}
 	}
@@ -284,19 +282,79 @@ public class Student {
 	}
 
 	/**
+	 * Initialize action's values estimations
+	 */
+	private void initValueEstimations() {
+		this.actionValueEstimates = new HashMap<String, Pair<Double, Integer>>();
+		HashMap<String, GISPolygon> sharedAreas = this.contextBuilder.getSharedAreas();
+		for (String key : sharedAreas.keySet()) {
+			double r = RandomHelper.nextDoubleFromTo(0, 1);
+			this.actionValueEstimates.put(key, new Pair<Double, Integer>(r, 0));
+		}
+		HashMap<String, GISPolygon> eatingPlaces = this.contextBuilder.getEatingPlaces();
+		for (String key : eatingPlaces.keySet()) {
+			double r = RandomHelper.nextDoubleFromTo(0, 1);
+			this.actionValueEstimates.put(key, new Pair<Double, Integer>(r, 0));
+		}
+		HashMap<String, GISPolygon> inOuts = this.contextBuilder.getInOuts();
+		for (String key : inOuts.keySet()) {
+			double r = RandomHelper.nextDoubleFromTo(0, 1);
+			this.actionValueEstimates.put(key, new Pair<Double, Integer>(r, 0));
+		}
+		HashMap<String, GISPolygon> vehicleInOuts = this.contextBuilder.getVehicleInOuts();
+		for (String key : vehicleInOuts.keySet()) {
+			double r = RandomHelper.nextDoubleFromTo(0, 1);
+			this.actionValueEstimates.put(key, new Pair<Double, Integer>(r, 0));
+		}
+	}
+
+	/**
+	 * Update action's values estimations
+	 */
+	private void updateActionValueEstimates(String polygonId) {
+		if (this.actionValueEstimates.containsKey(polygonId)) {
+			Pair<Double, Integer> estimation = actionValueEstimates.get(polygonId);
+			GISDensityMeter densityPolygon = (GISDensityMeter) getPolygonById(polygonId);
+			double density = densityPolygon.measureDensity();
+			Parameters simParams = RunEnvironment.getInstance().getParameters();
+			double socialDistancing = simParams.getDouble("socialDistancing");
+			double reference = 1.0 / socialDistancing;
+			// Incremental sample average
+			double R = 0.0;
+			if (density < reference) {
+				R = 1 - density;
+			} else {
+				R = -density;
+			}
+			double Q = estimation.getFirst();
+			int N = estimation.getSecond();
+			N = N + 1;
+			double step = 0.1; // (1 / N)
+			Q = Q + step * (R - Q);
+			estimation.setFirst(Q);
+			estimation.setSecond(N);
+			this.actionValueEstimates.put(polygonId, estimation);
+			this.lastReward = R;
+		}
+	}
+
+	/**
 	 * Move to random polygon
 	 * 
-	 * @param polygons    Array of polygons to choose
+	 * @param polygons    Map of polygons to choose from
 	 * @param method      Method to call after arriving to polygon
 	 * @param weightBased Random weight-based selection
 	 */
-	private void moveToRandomPolygon(Object[] polygons, String method, boolean weightBased) {
+	private void moveToRandomPolygon(HashMap<String, GISPolygon> polygons, String method, boolean weightBased) {
 		GISPolygon selectedPolygon = null;
-		if (!weightBased) {
-			int i = RandomHelper.nextIntFromTo(0, polygons.length - 1);
-			selectedPolygon = (GISPolygon) polygons[i];
-		} else {
+		Parameters simParams = RunEnvironment.getInstance().getParameters();
+		boolean banditApproach = simParams.getBoolean("banditApproach");
+		if (banditApproach) {
+			selectedPolygon = Probabilities.getRandomPolygonBanditBased(polygons, this.actionValueEstimates);
+		} else if (weightBased) {
 			selectedPolygon = Probabilities.getRandomPolygonWeightBased(polygons);
+		} else {
+			selectedPolygon = Probabilities.getRandomPolygon(polygons);
 		}
 		moveToPolygon(selectedPolygon, method);
 	}
@@ -310,14 +368,13 @@ public class Student {
 	 */
 	private void moveToPolygon(GISPolygon polygon, String method) {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		Graph<String, DefaultWeightedEdge> routes = this.contextBuilder.getRoutes();
 		// Select source and sink
 		String source = currentPolygon.getId();
 		String sink = polygon.getId();
 		// Find shortest path
-		DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(routes);
-		SingleSourcePaths<String, DefaultWeightedEdge> iPaths = dijkstraAlg.getPaths(source);
-		GraphPath<String, DefaultWeightedEdge> path = iPaths.getPath(sink);
+		Graph<String, DefaultWeightedEdge> routes = this.contextBuilder.getRoutes();
+		HashMap<String, GraphPath<String, DefaultWeightedEdge>> shortestPaths = this.contextBuilder.getShortestPaths();
+		GraphPath<String, DefaultWeightedEdge> path = shortestPaths.get(source + "-" + sink);
 		List<String> vertexes = path.getVertexList();
 		List<DefaultWeightedEdge> edges = path.getEdgeList();
 		// Select random walking speed
@@ -348,31 +405,31 @@ public class Student {
 	 * @param id Polygon Id
 	 */
 	private GISPolygon getPolygonById(String id) {
-		HashMap<String, GISTeachingFacility> teachingFacilities = this.contextBuilder.getTeachingFacilities();
+		HashMap<String, GISPolygon> teachingFacilities = this.contextBuilder.getTeachingFacilities();
 		if (teachingFacilities.containsKey(id))
 			return teachingFacilities.get(id);
 
-		HashMap<String, GISSharedArea> sharedAreas = this.contextBuilder.getSharedAreas();
+		HashMap<String, GISPolygon> sharedAreas = this.contextBuilder.getSharedAreas();
 		if (sharedAreas.containsKey(id))
 			return sharedAreas.get(id);
 
-		HashMap<String, GISEatingPlace> eatingPlaces = this.contextBuilder.getEatingPlaces();
+		HashMap<String, GISPolygon> eatingPlaces = this.contextBuilder.getEatingPlaces();
 		if (eatingPlaces.containsKey(id))
 			return eatingPlaces.get(id);
 
-		HashMap<String, GISInOut> inOuts = this.contextBuilder.getInOuts();
+		HashMap<String, GISPolygon> inOuts = this.contextBuilder.getInOuts();
 		if (inOuts.containsKey(id))
 			return inOuts.get(id);
 
-		HashMap<String, GISVehicleInOut> vehicleInOuts = this.contextBuilder.getVehicleInOuts();
+		HashMap<String, GISPolygon> vehicleInOuts = this.contextBuilder.getVehicleInOuts();
 		if (vehicleInOuts.containsKey(id))
 			return vehicleInOuts.get(id);
 
-		HashMap<String, GISTransitArea> transitAreas = this.contextBuilder.getTransitAreas();
+		HashMap<String, GISPolygon> transitAreas = this.contextBuilder.getTransitAreas();
 		if (transitAreas.containsKey(id))
 			return transitAreas.get(id);
 
-		HashMap<String, GISLimbo> limbos = this.contextBuilder.getLimbos();
+		HashMap<String, GISPolygon> limbos = this.contextBuilder.getLimbos();
 		if (limbos.containsKey(id))
 			return limbos.get(id);
 

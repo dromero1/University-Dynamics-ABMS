@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.opengis.feature.simple.SimpleFeature;
 import com.vividsolutions.jts.geom.Geometry;
@@ -15,6 +16,7 @@ import gis.GISInOut;
 import gis.GISLimbo;
 import gis.GISOtherFacility;
 import gis.GISParkingLot;
+import gis.GISPolygon;
 import gis.GISSharedArea;
 import gis.GISTeachingFacility;
 import gis.GISTransitArea;
@@ -39,52 +41,57 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	/**
 	 * Teaching facilities
 	 */
-	private HashMap<String, GISTeachingFacility> teachingFacilities;
+	private HashMap<String, GISPolygon> teachingFacilities;
 
 	/**
 	 * Shared areas
 	 */
-	private HashMap<String, GISSharedArea> sharedAreas;
+	private HashMap<String, GISPolygon> sharedAreas;
 
 	/**
 	 * Eating places
 	 */
-	private HashMap<String, GISEatingPlace> eatingPlaces;
+	private HashMap<String, GISPolygon> eatingPlaces;
 
 	/**
 	 * Other facilities
 	 */
-	private HashMap<String, GISOtherFacility> otherFacitilies;
+	private HashMap<String, GISPolygon> otherFacitilies;
 
 	/**
 	 * In-Out spots
 	 */
-	private HashMap<String, GISInOut> inOuts;
+	private HashMap<String, GISPolygon> inOuts;
 
 	/**
 	 * Vehicle in-out spots
 	 */
-	private HashMap<String, GISVehicleInOut> vehicleInOuts;
+	private HashMap<String, GISPolygon> vehicleInOuts;
 
 	/**
 	 * Parking lots
 	 */
-	private HashMap<String, GISParkingLot> parkingLots;
+	private HashMap<String, GISPolygon> parkingLots;
 
 	/**
 	 * Transit areas
 	 */
-	private HashMap<String, GISTransitArea> transitAreas;
+	private HashMap<String, GISPolygon> transitAreas;
 
 	/**
 	 * Limbos
 	 */
-	private HashMap<String, GISLimbo> limbos;
+	private HashMap<String, GISPolygon> limbos;
 
 	/**
 	 * Routes
 	 */
 	private Graph<String, DefaultWeightedEdge> routes;
+
+	/**
+	 * Shortest paths between all vertexes
+	 */
+	private HashMap<String, GraphPath<String, DefaultWeightedEdge>> shortestPaths;
 
 	/**
 	 * Build simulation
@@ -105,69 +112,72 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 
 		// Initialize teaching facilities
 		this.teachingFacilities = readTeachingFacilities();
-		for (GISTeachingFacility teachingFacility : this.teachingFacilities.values()) {
+		for (GISPolygon teachingFacility : this.teachingFacilities.values()) {
 			teachingFacility.setGeometryInGeography(geography);
 			context.add(teachingFacility);
 		}
 
 		// Initialize shared areas
 		this.sharedAreas = readSharedAreas();
-		for (GISSharedArea sharedArea : this.sharedAreas.values()) {
+		for (GISPolygon sharedArea : this.sharedAreas.values()) {
 			sharedArea.setGeometryInGeography(geography);
 			context.add(sharedArea);
 		}
 
 		// Initialize eating places
 		this.eatingPlaces = readEatingPlaces();
-		for (GISEatingPlace eatingPlace : this.eatingPlaces.values()) {
+		for (GISPolygon eatingPlace : this.eatingPlaces.values()) {
 			eatingPlace.setGeometryInGeography(geography);
 			context.add(eatingPlace);
 		}
 
 		// Initialize other facilities
 		this.otherFacitilies = readOtherFacilities();
-		for (GISOtherFacility otherFacility : this.otherFacitilies.values()) {
+		for (GISPolygon otherFacility : this.otherFacitilies.values()) {
 			otherFacility.setGeometryInGeography(geography);
 			context.add(otherFacility);
 		}
 
 		// Initialize parking lots
 		this.parkingLots = readParkingLots();
-		for (GISParkingLot parkingLot : this.parkingLots.values()) {
+		for (GISPolygon parkingLot : this.parkingLots.values()) {
 			parkingLot.setGeometryInGeography(geography);
 			context.add(parkingLot);
 		}
 
 		// Initialize limbos
 		this.limbos = readLimbos();
-		for (GISLimbo limbo : this.limbos.values()) {
+		for (GISPolygon limbo : this.limbos.values()) {
 			limbo.setGeometryInGeography(geography);
 			context.add(limbo);
 		}
 
 		// Initialize in-outs spots
 		this.inOuts = readInOuts();
-		for (GISInOut inOut : inOuts.values()) {
+		for (GISPolygon inOut : inOuts.values()) {
 			inOut.setGeometryInGeography(geography);
 			context.add(inOut);
 		}
 
 		// Initialize vehicle in-out spots
 		this.vehicleInOuts = readVehicleInOuts();
-		for (GISVehicleInOut vehicleInOut : vehicleInOuts.values()) {
+		for (GISPolygon vehicleInOut : vehicleInOuts.values()) {
 			vehicleInOut.setGeometryInGeography(geography);
 			context.add(vehicleInOut);
 		}
 
 		// Initialize transit areas
 		this.transitAreas = readTransitAreas();
-		for (GISTransitArea transitArea : transitAreas.values()) {
+		for (GISPolygon transitArea : transitAreas.values()) {
 			transitArea.setGeometryInGeography(geography);
 			context.add(transitArea);
 		}
 
 		// Read routes
 		this.routes = Reader.readRoutes(Paths.ROUTES_DATABASE);
+
+		// Find shortest paths
+		this.shortestPaths = Heuristics.findShortestPaths(this.routes);
 
 		// Read groups
 		ArrayList<Group> groups = Reader.readGroupsDatabase(Paths.GROUPS_DATABASE);
@@ -181,39 +191,46 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 			context.add(student);
 		}
 
+		// Simulation end
+		RunEnvironment.getInstance().endAt(144 * 50);
+
 		return context;
 	}
 
-	public HashMap<String, GISLimbo> getLimbos() {
+	public HashMap<String, GISPolygon> getLimbos() {
 		return this.limbos;
 	}
 
-	public HashMap<String, GISInOut> getInOuts() {
+	public HashMap<String, GISPolygon> getInOuts() {
 		return this.inOuts;
 	}
 
-	public HashMap<String, GISVehicleInOut> getVehicleInOuts() {
+	public HashMap<String, GISPolygon> getVehicleInOuts() {
 		return this.vehicleInOuts;
 	}
 
-	public HashMap<String, GISTeachingFacility> getTeachingFacilities() {
+	public HashMap<String, GISPolygon> getTeachingFacilities() {
 		return this.teachingFacilities;
 	}
 
-	public HashMap<String, GISEatingPlace> getEatingPlaces() {
+	public HashMap<String, GISPolygon> getEatingPlaces() {
 		return this.eatingPlaces;
 	}
 
-	public HashMap<String, GISSharedArea> getSharedAreas() {
+	public HashMap<String, GISPolygon> getSharedAreas() {
 		return this.sharedAreas;
 	}
 
-	public HashMap<String, GISTransitArea> getTransitAreas() {
+	public HashMap<String, GISPolygon> getTransitAreas() {
 		return this.transitAreas;
 	}
 
 	public Graph<String, DefaultWeightedEdge> getRoutes() {
 		return this.routes;
+	}
+
+	public HashMap<String, GraphPath<String, DefaultWeightedEdge>> getShortestPaths() {
+		return this.shortestPaths;
 	}
 
 	private Geography<Object> getGeographyProjection(Context<Object> context) {
@@ -229,8 +246,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return new GISCampus(geometry);
 	}
 
-	private HashMap<String, GISLimbo> readLimbos() {
-		HashMap<String, GISLimbo> limbos = new HashMap<String, GISLimbo>();
+	private HashMap<String, GISPolygon> readLimbos() {
+		HashMap<String, GISPolygon> limbos = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.LIMBOS_GEOMETRY_SHAPEFILE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
@@ -241,8 +258,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return limbos;
 	}
 
-	private HashMap<String, GISInOut> readInOuts() {
-		HashMap<String, GISInOut> inOuts = new HashMap<String, GISInOut>();
+	private HashMap<String, GISPolygon> readInOuts() {
+		HashMap<String, GISPolygon> inOuts = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.INOUTS_GEOMETRY_SHAPEFILE);
 		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.INOUT_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
@@ -256,8 +273,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return inOuts;
 	}
 
-	private HashMap<String, GISVehicleInOut> readVehicleInOuts() {
-		HashMap<String, GISVehicleInOut> vehicleInOuts = new HashMap<String, GISVehicleInOut>();
+	private HashMap<String, GISPolygon> readVehicleInOuts() {
+		HashMap<String, GISPolygon> vehicleInOuts = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.VEHICLE_INOUTS_GEOMETRY_SHAPEFILE);
 		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.VEHICLE_INOUT_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
@@ -271,8 +288,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return vehicleInOuts;
 	}
 
-	private HashMap<String, GISTransitArea> readTransitAreas() {
-		HashMap<String, GISTransitArea> transitAreas = new HashMap<String, GISTransitArea>();
+	private HashMap<String, GISPolygon> readTransitAreas() {
+		HashMap<String, GISPolygon> transitAreas = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.TRANSIT_AREAS_GEOMETRY_SHAPEFILE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
@@ -283,8 +300,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return transitAreas;
 	}
 
-	private HashMap<String, GISTeachingFacility> readTeachingFacilities() {
-		HashMap<String, GISTeachingFacility> teachingFacilities = new HashMap<String, GISTeachingFacility>();
+	private HashMap<String, GISPolygon> readTeachingFacilities() {
+		HashMap<String, GISPolygon> teachingFacilities = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.TEACHING_FACILITIES_GEOMETRY_SHAPEFILE);
 		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.TEACHING_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
@@ -300,8 +317,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return teachingFacilities;
 	}
 
-	private HashMap<String, GISSharedArea> readSharedAreas() {
-		HashMap<String, GISSharedArea> sharedAreas = new HashMap<String, GISSharedArea>();
+	private HashMap<String, GISPolygon> readSharedAreas() {
+		HashMap<String, GISPolygon> sharedAreas = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.SHARED_AREAS_GEOMETRY_SHAPEFILE);
 		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.SHARED_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
@@ -315,8 +332,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return sharedAreas;
 	}
 
-	private HashMap<String, GISEatingPlace> readEatingPlaces() {
-		HashMap<String, GISEatingPlace> eatingPlaces = new HashMap<String, GISEatingPlace>();
+	private HashMap<String, GISPolygon> readEatingPlaces() {
+		HashMap<String, GISPolygon> eatingPlaces = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.EATING_PLACES_GEOMETRY_SHAPEFILE);
 		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.EATING_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
@@ -330,8 +347,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return eatingPlaces;
 	}
 
-	private HashMap<String, GISOtherFacility> readOtherFacilities() {
-		HashMap<String, GISOtherFacility> otherFacilities = new HashMap<String, GISOtherFacility>();
+	private HashMap<String, GISPolygon> readOtherFacilities() {
+		HashMap<String, GISPolygon> otherFacilities = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.OTHER_FACILITIES_GEOMETRY_SHAPEFILE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
@@ -342,8 +359,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return otherFacilities;
 	}
 
-	private HashMap<String, GISParkingLot> readParkingLots() {
-		HashMap<String, GISParkingLot> parkingLots = new HashMap<String, GISParkingLot>();
+	private HashMap<String, GISPolygon> readParkingLots() {
+		HashMap<String, GISPolygon> parkingLots = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.PARKING_LOTS_GEOMETRY_SHAPEFILE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
