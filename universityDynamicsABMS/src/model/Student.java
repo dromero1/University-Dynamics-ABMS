@@ -168,9 +168,7 @@ public class Student {
 	 * Vanish to limbo. A limbo emulates what's off campus.
 	 */
 	public void vanishToLimbo() {
-		Object[] limbos = this.contextBuilder.getLimbos().values().toArray();
-		int i = RandomHelper.nextIntFromTo(0, limbos.length - 1);
-		GISLimbo limbo = (GISLimbo) limbos[i];
+		GISLimbo limbo = (GISLimbo) Probabilities.getRandomPolygon(this.contextBuilder.getLimbos());
 		if (currentPolygon == null)
 			currentPolygon = limbo;
 		relocate(limbo);
@@ -180,21 +178,17 @@ public class Student {
 	 * Plan weekly events
 	 */
 	public void planWeeklyEvents() {
-		// Schedule simple events
 		scheduleDepartures();
 		scheduleLunch();
-		// Schedule activity timetable
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		for (Group group : this.schedule.getGroups()) {
 			for (AcademicActivity activity : group.getAcademicActivities()) {
-				// Schedule activity attendance
 				int day = activity.getDay();
 				double startTime = activity.getStartTime() - ARRIVAL_DELTA;
 				String teachingFacilityId = activity.getTeachingFacilityId();
 				double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
 				eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK,
 						"attendActivity", teachingFacilityId);
-				// Schedule leaving the activity
 				double endTime = activity.getEndTime();
 				ticksToEvent = TickConverter.dayTimeToTicks(day, endTime);
 				eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK,
@@ -322,7 +316,6 @@ public class Student {
 			Parameters simParams = RunEnvironment.getInstance().getParameters();
 			double socialDistancing = simParams.getDouble("socialDistancing");
 			double reference = 1.0 / socialDistancing;
-			// Incremental sample average
 			double R = 0.0;
 			if (density < reference) {
 				R = 1 - density;
@@ -371,18 +364,14 @@ public class Student {
 	 */
 	private void moveToPolygon(GISPolygon polygon, String method) {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		// Select source and sink
 		String source = currentPolygon.getId();
 		String sink = polygon.getId();
-		// Find shortest path
 		Graph<String, DefaultWeightedEdge> routes = this.contextBuilder.getRoutes();
 		HashMap<String, GraphPath<String, DefaultWeightedEdge>> shortestPaths = this.contextBuilder.getShortestPaths();
 		GraphPath<String, DefaultWeightedEdge> path = shortestPaths.get(source + "-" + sink);
 		List<String> vertexes = path.getVertexList();
 		List<DefaultWeightedEdge> edges = path.getEdgeList();
-		// Select random walking speed
 		double speed = Probabilities.getRandomWalkingSpeed();
-		// Traverse path
 		double totalTime = 0.0;
 		for (int i = 0; i < vertexes.size() - 1; i++) {
 			String id = vertexes.get(i + 1);
@@ -394,7 +383,6 @@ public class Student {
 			double ticks = TickConverter.minutesToTicks(totalTime);
 			eventScheduler.scheduleOneTimeEvent(ticks, this, "relocate", nextPolygon);
 		}
-		// Schedule method
 		if (!method.isEmpty()) {
 			totalTime += 1;
 			double ticks = TickConverter.minutesToTicks(totalTime);
