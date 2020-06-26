@@ -101,8 +101,6 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	@Override
 	public Context<Object> build(Context<Object> context) {
 		context.setId("universityDynamicsABMS");
-
-		// Create geography projection
 		Geography<Object> geography = getGeographyProjection(context);
 
 		// Initialize campus
