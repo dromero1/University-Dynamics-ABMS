@@ -37,11 +37,6 @@ public class Student {
 	private Schedule schedule;
 
 	/**
-	 * Learning flag. Determines whether the student is currently learning or not.
-	 */
-	private boolean learning;
-
-	/**
 	 * Vehicle user flag. Determines whether the student enters the campus by car or
 	 * by foot.
 	 */
@@ -81,7 +76,6 @@ public class Student {
 	public Student(Geography<Object> geography, SimulationBuilder contextBuilder, boolean isVehicleUser) {
 		this.geography = geography;
 		this.contextBuilder = contextBuilder;
-		this.learning = false;
 		this.isVehicleUser = isVehicleUser;
 		initValueEstimations();
 		vanishToLimbo();
@@ -104,7 +98,7 @@ public class Student {
 	public void attendActivity(String teachingFacilityId) {
 		HashMap<String, GISPolygon> teachingFacilities = this.contextBuilder.getTeachingFacilities();
 		GISPolygon teachingFacility = teachingFacilities.get(teachingFacilityId);
-		moveToPolygon(teachingFacility, "activateLearningMode");
+		moveToPolygon(teachingFacility, "");
 	}
 
 	/**
@@ -113,7 +107,6 @@ public class Student {
 	 * In the other case, the student goes to have fun.
 	 */
 	public void leaveActivity() {
-		deactivateLearningMode();
 		double tick = RepastEssentials.GetTickCount();
 		Pair<Double, Double> dayTime = TickConverter.tickToDayTime(tick);
 		double day = dayTime.getFirst();
@@ -215,31 +208,10 @@ public class Student {
 	}
 
 	/**
-	 * Whether or not the student is currently busy learning
-	 */
-	public boolean isLearning() {
-		return this.learning;
-	}
-
-	/**
 	 * Get last reward
 	 */
 	public double getLastReward() {
 		return this.lastReward;
-	}
-
-	/**
-	 * Activate learning mode
-	 */
-	public void activateLearningMode() {
-		this.learning = true;
-	}
-
-	/**
-	 * Deactivate learning mode
-	 */
-	public void deactivateLearningMode() {
-		this.learning = false;
 	}
 
 	/**
@@ -397,33 +369,33 @@ public class Student {
 	 */
 	private GISPolygon getPolygonById(String id) {
 		HashMap<String, GISPolygon> teachingFacilities = this.contextBuilder.getTeachingFacilities();
-		if (teachingFacilities.containsKey(id))
+		if (teachingFacilities.containsKey(id)) {
 			return teachingFacilities.get(id);
-
+		}
 		HashMap<String, GISPolygon> sharedAreas = this.contextBuilder.getSharedAreas();
-		if (sharedAreas.containsKey(id))
+		if (sharedAreas.containsKey(id)) {
 			return sharedAreas.get(id);
-
+		}
 		HashMap<String, GISPolygon> eatingPlaces = this.contextBuilder.getEatingPlaces();
-		if (eatingPlaces.containsKey(id))
+		if (eatingPlaces.containsKey(id)) {
 			return eatingPlaces.get(id);
-
+		}
 		HashMap<String, GISPolygon> inOuts = this.contextBuilder.getInOuts();
-		if (inOuts.containsKey(id))
+		if (inOuts.containsKey(id)) {
 			return inOuts.get(id);
-
+		}
 		HashMap<String, GISPolygon> vehicleInOuts = this.contextBuilder.getVehicleInOuts();
-		if (vehicleInOuts.containsKey(id))
+		if (vehicleInOuts.containsKey(id)) {
 			return vehicleInOuts.get(id);
-
+		}
 		HashMap<String, GISPolygon> transitAreas = this.contextBuilder.getTransitAreas();
-		if (transitAreas.containsKey(id))
+		if (transitAreas.containsKey(id)) {
 			return transitAreas.get(id);
-
+		}
 		HashMap<String, GISPolygon> limbos = this.contextBuilder.getLimbos();
-		if (limbos.containsKey(id))
+		if (limbos.containsKey(id)) {
 			return limbos.get(id);
-
+		}
 		return null;
 	}
 
