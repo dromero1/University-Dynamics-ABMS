@@ -71,7 +71,7 @@ public class Student {
 	 * Last reward
 	 */
 	private double lastReward;
-	
+
 	/**
 	 * Create a new student agent
 	 * 
@@ -233,7 +233,7 @@ public class Student {
 	public double getLastReward() {
 		return this.lastReward;
 	}
-	
+
 	/**
 	 * Activate learning mode
 	 */
@@ -247,7 +247,7 @@ public class Student {
 	public void deactivateLearningMode() {
 		this.learning = false;
 	}
-	
+
 	/**
 	 * Schedule departures
 	 */
@@ -309,7 +309,8 @@ public class Student {
 	}
 
 	/**
-	 * Update action's values estimations
+	 * Update action's values estimations based on the incremental sample average
+	 * method
 	 * 
 	 * @param polygonId Id of a polygon
 	 */
