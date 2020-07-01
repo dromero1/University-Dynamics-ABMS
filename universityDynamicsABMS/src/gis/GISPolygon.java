@@ -16,6 +16,16 @@ public abstract class GISPolygon {
 	protected String id;
 
 	/**
+	 * Weight
+	 */
+	protected double weight;
+
+	/**
+	 * Work weight
+	 */
+	protected double workWeight;
+
+	/**
 	 * Reference to geography projection
 	 */
 	protected Geography<Object> geography;
@@ -24,6 +34,19 @@ public abstract class GISPolygon {
 	 * Relocations counter
 	 */
 	protected int relocationCount;
+
+	/**
+	 * Create a new geo-spatial polygon
+	 * 
+	 * @param id       Polygon id
+	 * @param geometry Reference to geometry
+	 * @param weight   Weight
+	 */
+	public GISPolygon(String id, Geometry geometry, double weight) {
+		this.id = id;
+		this.geometry = geometry;
+		this.weight = weight;
+	}
 
 	/**
 	 * Create a new geo-spatial polygon
@@ -63,6 +86,15 @@ public abstract class GISPolygon {
 	}
 
 	/**
+	 * Set work weight
+	 * 
+	 * @param weight Work weight
+	 */
+	public void setWorkWeight(double weight) {
+		this.workWeight = weight;
+	}
+
+	/**
 	 * Get polygon id
 	 */
 	public String getId() {
@@ -74,6 +106,20 @@ public abstract class GISPolygon {
 	 */
 	public Geometry getGeometry() {
 		return this.geometry;
+	}
+
+	/**
+	 * Get weight
+	 */
+	public double getWeight() {
+		return this.weight;
+	}
+
+	/**
+	 * Get work weight
+	 */
+	public double getWorkWeight() {
+		return this.workWeight;
 	}
 
 }

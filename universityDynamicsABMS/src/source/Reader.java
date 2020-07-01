@@ -148,6 +148,44 @@ public class Reader {
 		return areas;
 	}
 
+	public static HashMap<String, Double> readWorkplaces(String filename) {
+		HashMap<String, Double> workplaces = new HashMap<String, Double>();
+		try {
+			File file = new File(filename);
+			Scanner scanner = new Scanner(file);
+			boolean first = true;
+			while (scanner.hasNextLine()) {
+				String data = scanner.nextLine();
+				if (first) {
+					first = false;
+					continue;
+				}
+				String[] elements = data.split(";");
+				// Attributes
+				String id = "";
+				double weight = 0;
+				// Extract elements
+				for (int i = 0; i < elements.length; i++) {
+					switch (i) {
+					case DBFeatures.WORKPLACE_ID:
+						id = elements[i];
+						break;
+					case DBFeatures.WORKPLACE_WEIGHT:
+						weight = Double.parseDouble(elements[i]);
+						break;
+					default:
+						break;
+					}
+				}
+				workplaces.put(id, weight);
+			}
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return workplaces;
+	}
+	
 	public static Graph<String, DefaultWeightedEdge> readRoutes(String filename) {
 		Graph<String, DefaultWeightedEdge> routes = new DefaultDirectedWeightedGraph<String, DefaultWeightedEdge>(
 				DefaultWeightedEdge.class);

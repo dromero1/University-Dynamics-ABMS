@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import cern.jet.random.Normal;
 import gis.GISDensityMeter;
@@ -83,6 +84,20 @@ public class Probabilities {
 	}
 
 	/**
+	 * Get random work start time. Reference: <pending>
+	 */
+	public static double getRandomWorkStartTime() {
+		return 7;
+	}
+
+	/**
+	 * Get random work end time. Reference: <pending>
+	 */
+	public static double getRandomWorkEndTime() {
+		return 17;
+	}
+
+	/**
 	 * Get random geo-spatial polygon
 	 * 
 	 * @param polygons Map of polygons
@@ -99,21 +114,64 @@ public class Probabilities {
 	 * @param polygons Map of polygons
 	 */
 	public static GISPolygon getRandomPolygonWeightBased(HashMap<String, GISPolygon> polygons) {
-		ArrayList<GISDensityMeter> densityPolygons = new ArrayList<GISDensityMeter>();
+		ArrayList<GISPolygon> polyList = new ArrayList<GISPolygon>();
 		for (GISPolygon polygon : polygons.values()) {
-			densityPolygons.add((GISDensityMeter) polygon);
+			polyList.add(polygon);
 		}
-		Collections.sort(densityPolygons);
+		Collections.sort(polyList, new Comparator<GISPolygon>() {
+			@Override
+			public int compare(GISPolygon poly1, GISPolygon poly2) {
+				if (poly1.getWeight() > poly2.getWeight()) {
+					return 1;
+				} else if (poly1.getWeight() < poly2.getWeight()) {
+					return -1;
+				} else {
+					return 0;
+				}
+			}
+		});
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
-		for (GISDensityMeter densityPolygon : densityPolygons) {
-			double weight = densityPolygon.getWeight();
+		for (GISPolygon polygon : polyList) {
+			double weight = polygon.getWeight();
 			if (r <= weight) {
-				return densityPolygon;
+				return polygon;
 			}
 		}
 		return null;
 	}
 
+	/**
+	 * Get random geo-spatial polygon based on work weights
+	 * 
+	 * @param polygons Map of polygons
+	 */
+	public static GISPolygon getRandomPolygonWorkWeightBased(HashMap<String, GISPolygon> polygons) {
+		ArrayList<GISPolygon> polyList = new ArrayList<GISPolygon>();
+		for (GISPolygon polygon : polygons.values()) {
+			polyList.add(polygon);
+		}
+		Collections.sort(polyList, new Comparator<GISPolygon>() {
+			@Override
+			public int compare(GISPolygon poly1, GISPolygon poly2) {
+				if (poly1.getWorkWeight() > poly2.getWorkWeight()) {
+					return 1;
+				} else if (poly1.getWorkWeight() < poly2.getWorkWeight()) {
+					return -1;
+				} else {
+					return 0;
+				}
+			}
+		});
+		double r = RandomHelper.nextDoubleFromTo(0, 1);
+		for (GISPolygon polygon : polyList) {
+			double weight = polygon.getWorkWeight();
+			if (r <= weight) {
+				return polygon;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * Get random geo-spatial polygon based on the k-armed bandit problem. Solution
 	 * is based on the epsilon-greedy action selection algorithm.

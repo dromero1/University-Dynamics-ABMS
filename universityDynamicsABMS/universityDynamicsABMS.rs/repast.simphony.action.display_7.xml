@@ -35,6 +35,10 @@
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
+      <string>model.SupportStaff</string>
+      <string>repast.simphony.visualization.gis3D.style.EditedMarkStyle</string>
+    </entry>
+    <entry>
       <string>model.Student</string>
       <string>repast.simphony.visualization.gis3D.style.EditedMarkStyle</string>
     </entry>
@@ -77,6 +81,10 @@
       <null/>
     </entry>
     <entry>
+      <string>model.SupportStaff</string>
+      <string>model.SupportStaff.style_0.xml</string>
+    </entry>
+    <entry>
       <string>model.Student</string>
       <string>model.Student.style_0.xml</string>
     </entry>
@@ -95,49 +103,53 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-356999430</hashCode>
+    <hashCode>-219599410</hashCode>
   </schedParams>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
       <string>gis.GISInOut</string>
-      <int>5</int>
+      <int>6</int>
     </entry>
     <entry>
       <string>gis.GISOtherFacility</string>
-      <int>3</int>
-    </entry>
-    <entry>
-      <string>gis.GISEatingPlace</string>
-      <int>7</int>
-    </entry>
-    <entry>
-      <string>gis.GISVehicleInOut</string>
       <int>4</int>
     </entry>
     <entry>
-      <string>gis.GISParkingLot</string>
-      <int>2</int>
-    </entry>
-    <entry>
-      <string>gis.GISLimbo</string>
-      <int>1</int>
-    </entry>
-    <entry>
-      <string>gis.GISCampus</string>
-      <int>0</int>
-    </entry>
-    <entry>
-      <string>gis.GISTeachingFacility</string>
+      <string>gis.GISEatingPlace</string>
       <int>8</int>
     </entry>
     <entry>
-      <string>model.Student</string>
+      <string>gis.GISVehicleInOut</string>
+      <int>5</int>
+    </entry>
+    <entry>
+      <string>gis.GISParkingLot</string>
+      <int>3</int>
+    </entry>
+    <entry>
+      <string>gis.GISLimbo</string>
+      <int>2</int>
+    </entry>
+    <entry>
+      <string>gis.GISCampus</string>
+      <int>1</int>
+    </entry>
+    <entry>
+      <string>gis.GISTeachingFacility</string>
       <int>9</int>
     </entry>
     <entry>
+      <string>model.SupportStaff</string>
+      <int>0</int>
+    </entry>
+    <entry>
+      <string>model.Student</string>
+      <int>10</int>
+    </entry>
+    <entry>
       <string>gis.GISSharedArea</string>
-      <int>6</int>
+      <int>7</int>
     </entry>
   </layerOrder>
   <projections>

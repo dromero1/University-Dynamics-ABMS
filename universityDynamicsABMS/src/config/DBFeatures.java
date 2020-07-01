@@ -72,4 +72,14 @@ public class DBFeatures {
 	 */
 	public static final int FACILITY_WEIGHT = 2;
 
+	/**
+	 * Workplaces database - workplace id column
+	 */
+	public static final int WORKPLACE_ID = 0;
+
+	/**
+	 * Workplaces database - workplace weight column
+	 */
+	public static final int WORKPLACE_WEIGHT = 1;
+
 }

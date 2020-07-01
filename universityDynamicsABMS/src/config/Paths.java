@@ -87,4 +87,9 @@ public final class Paths {
 	 */
 	public static final String SHARED_AREAS_DATABASE = "./data/databases/shared-areas.csv";
 
+	/**
+	 * Workplaces database
+	 */
+	public static final String WORKPLACES_DATABASE = "./data/databases/workplaces.csv";
+	
 }

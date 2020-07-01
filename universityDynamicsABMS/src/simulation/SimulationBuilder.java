@@ -23,8 +23,9 @@ import gis.GISTransitArea;
 import gis.GISVehicleInOut;
 import model.Group;
 import model.Heuristics;
-import model.Probabilities;
+import model.Schedule;
 import model.Student;
+import model.SupportStaff;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.gis.GeographyFactory;
 import repast.simphony.context.space.gis.GeographyFactoryFinder;
@@ -41,57 +42,62 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	/**
 	 * Teaching facilities
 	 */
-	private HashMap<String, GISPolygon> teachingFacilities;
+	public HashMap<String, GISPolygon> teachingFacilities;
 
 	/**
 	 * Shared areas
 	 */
-	private HashMap<String, GISPolygon> sharedAreas;
+	public HashMap<String, GISPolygon> sharedAreas;
 
 	/**
 	 * Eating places
 	 */
-	private HashMap<String, GISPolygon> eatingPlaces;
+	public HashMap<String, GISPolygon> eatingPlaces;
 
 	/**
 	 * Other facilities
 	 */
-	private HashMap<String, GISPolygon> otherFacitilies;
+	public HashMap<String, GISPolygon> otherFacitilies;
 
 	/**
 	 * In-Out spots
 	 */
-	private HashMap<String, GISPolygon> inOuts;
+	public HashMap<String, GISPolygon> inOuts;
 
 	/**
 	 * Vehicle in-out spots
 	 */
-	private HashMap<String, GISPolygon> vehicleInOuts;
+	public HashMap<String, GISPolygon> vehicleInOuts;
 
 	/**
 	 * Parking lots
 	 */
-	private HashMap<String, GISPolygon> parkingLots;
+	public HashMap<String, GISPolygon> parkingLots;
 
 	/**
 	 * Transit areas
 	 */
-	private HashMap<String, GISPolygon> transitAreas;
+	public HashMap<String, GISPolygon> transitAreas;
 
 	/**
 	 * Limbos
 	 */
-	private HashMap<String, GISPolygon> limbos;
+	public HashMap<String, GISPolygon> limbos;
+
+	/**
+	 * Workplaces
+	 */
+	public HashMap<String, GISPolygon> workplaces;
 
 	/**
 	 * Routes
 	 */
-	private Graph<String, DefaultWeightedEdge> routes;
+	public Graph<String, DefaultWeightedEdge> routes;
 
 	/**
 	 * Shortest paths between all vertexes
 	 */
-	private HashMap<String, GraphPath<String, DefaultWeightedEdge>> shortestPaths;
+	public HashMap<String, GraphPath<String, DefaultWeightedEdge>> shortestPaths;
 
 	/**
 	 * Build simulation
@@ -180,55 +186,37 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		// Read groups
 		ArrayList<Group> groups = Reader.readGroupsDatabase(Paths.GROUPS_DATABASE);
 
+		// Read workplaces weights
+		this.workplaces = new HashMap<String, GISPolygon>();
+		HashMap<String, Double> workplaces = Reader.readWorkplaces(Paths.WORKPLACES_DATABASE);
+		for (String workplaceId : workplaces.keySet()) {
+			GISPolygon polygon = getPolygonById(workplaceId);
+			double weight = workplaces.get(workplaceId);
+			polygon.setWorkWeight(weight);
+			this.workplaces.put(workplaceId, polygon);
+		}
+
 		// Add students to simulation
 		Parameters simParams = RunEnvironment.getInstance().getParameters();
 		ArrayList<Student> students = createStudents(simParams.getInteger("students"), geography);
 		for (Student student : students) {
-			student.setSchedule(Heuristics.getRandomSchedule(groups));
-			student.planWeeklyEvents();
+			Schedule schedule = Heuristics.getRandomSchedule(groups);
+			student.setSchedule(schedule);
+			student.scheduleWeeklyEvents();
 			context.add(student);
 		}
 
+		// Add support staff to simulation
+		ArrayList<SupportStaff> supportStaff = createSupportStaff(simParams.getInteger("supportStaff"), geography);
+		for (SupportStaff staff : supportStaff) {
+			staff.scheduleWeeklyEvents();
+			context.add(staff);
+		}
+
 		// Simulation end
-		RunEnvironment.getInstance().endAt(144 * 100);
+		RunEnvironment.getInstance().endAt(144 * 50);
 
 		return context;
-	}
-
-	public HashMap<String, GISPolygon> getLimbos() {
-		return this.limbos;
-	}
-
-	public HashMap<String, GISPolygon> getInOuts() {
-		return this.inOuts;
-	}
-
-	public HashMap<String, GISPolygon> getVehicleInOuts() {
-		return this.vehicleInOuts;
-	}
-
-	public HashMap<String, GISPolygon> getTeachingFacilities() {
-		return this.teachingFacilities;
-	}
-
-	public HashMap<String, GISPolygon> getEatingPlaces() {
-		return this.eatingPlaces;
-	}
-
-	public HashMap<String, GISPolygon> getSharedAreas() {
-		return this.sharedAreas;
-	}
-
-	public HashMap<String, GISPolygon> getTransitAreas() {
-		return this.transitAreas;
-	}
-
-	public Graph<String, DefaultWeightedEdge> getRoutes() {
-		return this.routes;
-	}
-
-	public HashMap<String, GraphPath<String, DefaultWeightedEdge>> getShortestPaths() {
-		return this.shortestPaths;
 	}
 
 	private Geography<Object> getGeographyProjection(Context<Object> context) {
@@ -370,11 +358,49 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private ArrayList<Student> createStudents(int studentCount, Geography<Object> geography) {
 		ArrayList<Student> students = new ArrayList<Student>();
 		for (int i = 0; i < studentCount; i++) {
-			boolean isVehicleUser = Probabilities.getRandomVehicleUsage();
-			Student student = new Student(geography, this, isVehicleUser);
+			Student student = new Student(geography, this);
 			students.add(student);
 		}
 		return students;
+	}
+	
+	private ArrayList<SupportStaff> createSupportStaff(int staffCount, Geography<Object> geography)	{
+		ArrayList<SupportStaff> staff = new ArrayList<SupportStaff>();
+		for (int i = 0; i < staffCount; i++) {
+			SupportStaff supportStaff = new SupportStaff(geography, this);
+			staff.add(supportStaff);
+		}
+		return staff;
+	}
+
+	/**
+	 * Get polygon by id
+	 * 
+	 * @param id Polygon Id
+	 */
+	public GISPolygon getPolygonById(String id) {
+		if (this.teachingFacilities.containsKey(id)) {
+			return this.teachingFacilities.get(id);
+		}
+		if (this.sharedAreas.containsKey(id)) {
+			return this.sharedAreas.get(id);
+		}
+		if (this.eatingPlaces.containsKey(id)) {
+			return this.eatingPlaces.get(id);
+		}
+		if (this.inOuts.containsKey(id)) {
+			return this.inOuts.get(id);
+		}
+		if (this.vehicleInOuts.containsKey(id)) {
+			return this.vehicleInOuts.get(id);
+		}
+		if (this.transitAreas.containsKey(id)) {
+			return this.transitAreas.get(id);
+		}
+		if (this.limbos.containsKey(id)) {
+			return this.limbos.get(id);
+		}
+		return null;
 	}
 
 }
