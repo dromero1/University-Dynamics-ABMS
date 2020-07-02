@@ -2,7 +2,7 @@
   <name>Rewards Chart</name>
   <dataSet>RewardsTimeSeries</dataSet>
   <xAxisLabel>hour</xAxisLabel>
-  <yAxisLabel>reward</yAxisLabel>
+  <yAxisLabel>mean reward</yAxisLabel>
   <chartTitle>Bandit-based Rewards</chartTitle>
   <type>TIME_SERIES</type>
   <background>
