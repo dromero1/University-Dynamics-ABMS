@@ -1,14 +1,14 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.7.0">
-  <name>Rewards Chart</name>
+  <name>Rewards Time Series Chart</name>
   <dataSet>RewardsTimeSeries</dataSet>
   <xAxisLabel>hour</xAxisLabel>
   <yAxisLabel>mean reward</yAxisLabel>
-  <chartTitle>Bandit-based Rewards</chartTitle>
+  <chartTitle>RL-based Rewards</chartTitle>
   <type>TIME_SERIES</type>
   <background>
-    <red>192</red>
-    <green>192</green>
-    <blue>192</blue>
+    <red>255</red>
+    <green>255</green>
+    <blue>255</blue>
     <alpha>255</alpha>
   </background>
   <gridLineColor>
@@ -26,7 +26,7 @@
         <label>reward</label>
         <color>
           <red>0</red>
-          <green>0</green>
+          <green>51</green>
           <blue>255</blue>
           <alpha>255</alpha>
         </color>
