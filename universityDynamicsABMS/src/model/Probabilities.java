@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import cern.jet.random.Normal;
-import gis.GISDensityMeter;
 import gis.GISPolygon;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
@@ -17,12 +16,12 @@ public class Probabilities {
 	/**
 	 * Minimum lunch time (unit: hours). Reference: <pending>
 	 */
-	public static final double MIN_LUNCH_TIME = 11;
+	public static final double MIN_LUNCH_TIME = 11.5;
 
 	/**
 	 * Maximum lunch time (unit: hours). Reference: <pending>
 	 */
-	public static final double MAX_LUNCH_TIME = 16;
+	public static final double MAX_LUNCH_TIME = 4;
 
 	/**
 	 * Mean lunch duration (unit: hours). Reference: <pending>
@@ -80,7 +79,7 @@ public class Probabilities {
 	 * Get random number of groups to enroll to. Reference: <pending>
 	 */
 	public static int getRandomGroupsToEnrollTo() {
-		return 3;
+		return 6;
 	}
 
 	/**

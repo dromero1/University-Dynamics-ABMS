@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.7.0">
-  <name>Rewards Time Series Chart</name>
+  <name>Rewards Chart</name>
   <dataSet>RewardsTimeSeries</dataSet>
-  <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Reward</yAxisLabel>
-  <chartTitle>Rewards</chartTitle>
+  <xAxisLabel>hour</xAxisLabel>
+  <yAxisLabel>reward</yAxisLabel>
+  <chartTitle>Bandit-based Rewards</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>192</red>

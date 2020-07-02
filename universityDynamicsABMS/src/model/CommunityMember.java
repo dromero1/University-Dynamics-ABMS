@@ -116,7 +116,8 @@ public abstract class CommunityMember {
 		this.geography.move(this, destination);
 		this.currentPolygon = polygon;
 		this.currentPolygon.onRelocation();
-		updateActionValueEstimates(polygon.getId());
+		if (this.actionValueEstimates.containsKey(polygon.getId()))
+			updateActionValueEstimates(polygon.getId());
 	}
 
 	/**
@@ -244,29 +245,27 @@ public abstract class CommunityMember {
 	 * @param polygonId Id of a polygon
 	 */
 	private void updateActionValueEstimates(String polygonId) {
-		if (this.actionValueEstimates.containsKey(polygonId)) {
-			Pair<Double, Integer> estimation = this.actionValueEstimates.get(polygonId);
-			GISDensityMeter densityPolygon = (GISDensityMeter) this.contextBuilder.getPolygonById(polygonId);
-			double density = densityPolygon.measureDensity();
-			Parameters simParams = RunEnvironment.getInstance().getParameters();
-			double socialDistancing = simParams.getDouble("socialDistancing");
-			double reference = 1.0 / socialDistancing;
-			double R = 0.0;
-			if (density < reference) {
-				R = 1 - density;
-			} else {
-				R = -density;
-			}
-			double Q = estimation.getFirst();
-			int N = estimation.getSecond();
-			N = N + 1;
-			double step = 0.1;
-			Q = Q + step * (R - Q);
-			estimation.setFirst(Q);
-			estimation.setSecond(N);
-			this.actionValueEstimates.put(polygonId, estimation);
-			this.lastReward = R;
+		Pair<Double, Integer> estimation = this.actionValueEstimates.get(polygonId);
+		GISDensityMeter densityPolygon = (GISDensityMeter) this.contextBuilder.getPolygonById(polygonId);
+		double density = densityPolygon.measureDensity();
+		Parameters simParams = RunEnvironment.getInstance().getParameters();
+		double socialDistancing = simParams.getDouble("socialDistancing");
+		double reference = 1.0 / socialDistancing;
+		double R = 0.0;
+		if (density < reference) {
+			R = 1 - density;
+		} else {
+			R = -density;
 		}
+		double Q = estimation.getFirst();
+		int N = estimation.getSecond();
+		N = N + 1;
+		double step = 1 / N;
+		Q = Q + step * (R - Q);
+		estimation.setFirst(Q);
+		estimation.setSecond(N);
+		this.actionValueEstimates.put(polygonId, estimation);
+		this.lastReward = R;
 	}
 
 }
