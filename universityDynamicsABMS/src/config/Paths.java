@@ -58,6 +58,11 @@ public final class Paths {
 	public static final String GROUPS_DATABASE = "./data/databases/groups.csv";
 
 	/**
+	 * Schedule selection database
+	 */
+	public static final String SCHEDULE_SELECTION_DATABASE = "./data/databases/schedule-selection.csv";	
+	
+	/**
 	 * Routes database
 	 */
 	public static final String ROUTES_DATABASE = "./data/databases/routes.csv";
@@ -91,5 +96,5 @@ public final class Paths {
 	 * Workplaces database
 	 */
 	public static final String WORKPLACES_DATABASE = "./data/databases/workplaces.csv";
-	
+
 }

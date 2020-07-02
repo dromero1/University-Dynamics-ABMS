@@ -5,81 +5,96 @@ public class DBFeatures {
 	/**
 	 * Groups database - subject column
 	 */
-	public static final int SUBJECT_COLUMN = 0;
+	public static final int GROUPS_SUBJECT_COLUMN = 0;
 
 	/**
 	 * Groups database - group column
 	 */
-	public static final int GROUP_COLUMN = 1;
+	public static final int GROUPS_GROUP_COLUMN = 1;
 
 	/**
 	 * Groups database - day column
 	 */
-	public static final int DAY_COLUMN = 2;
+	public static final int GROUPS_DAY_COLUMN = 2;
 
 	/**
 	 * Groups database - start time column
 	 */
-	public static final int START_TIME_COLUMN = 3;
+	public static final int GROUPS_START_TIME_COLUMN = 3;
 
 	/**
 	 * Groups database - end time column
 	 */
-	public static final int END_TIME_COLUMN = 4;
+	public static final int GROUPS_END_TIME_COLUMN = 4;
 
 	/**
 	 * Groups database - capacity column
 	 */
-	public static final int CAPACITY_COLUMN = 5;
+	public static final int GROUPS_CAPACITY_COLUMN = 5;
 
 	/**
 	 * Groups database - teaching facility column
 	 */
-	public static final int TEACHING_FACILITY_COLUMN = 6;
+	public static final int GROUPS_TEACHING_FACILITY_COLUMN = 6;
 
 	/**
 	 * Groups database - room column
 	 */
-	public static final int ROOM_COLUMN = 7;
+	public static final int GROUPS_ROOM_COLUMN = 7;
 
 	/**
 	 * Routes database - origin column
 	 */
-	public static final int ORIGIN_COLUMN = 0;
+	public static final int ROUTES_ORIGIN_COLUMN = 0;
 
 	/**
 	 * Routes database - destination column
 	 */
-	public static final int DESTINATION_COLUMN = 1;
+	public static final int ROUTES_DESTINATION_COLUMN = 1;
 
 	/**
 	 * Routes database - distance column
 	 */
-	public static final int DISTANCE_COLUMN = 2;
+	public static final int ROUTES_DISTANCE_COLUMN = 2;
 
 	/**
 	 * Facility areas database - facility id column
 	 */
-	public static final int FACILITY_ID = 0;
+	public static final int FACILITIES_FACILITY_ID_COLUMN = 0;
 
 	/**
 	 * Facility areas database - facility area column
 	 */
-	public static final int FACILITY_AREA = 1;
+	public static final int FACILITIES_FACILITY_AREA_COLUMN = 1;
 
 	/**
 	 * Facility areas database - facility weight column
 	 */
-	public static final int FACILITY_WEIGHT = 2;
+	public static final int FACILITIES_FACILITY_WEIGHT_COLUMN = 2;
 
 	/**
 	 * Workplaces database - workplace id column
 	 */
-	public static final int WORKPLACE_ID = 0;
+	public static final int WORKPLACES_WORKPLACE_ID_COLUMN = 0;
 
 	/**
 	 * Workplaces database - workplace weight column
 	 */
-	public static final int WORKPLACE_WEIGHT = 1;
+	public static final int WORKPLACES_WORKPLACE_WEIGHT_COLUMN = 1;
+
+	/**
+	 * Schedule selection database - student id column
+	 */
+	public static final int SELECTION_STUDENT_ID_COLUMN = 0;
+
+	/**
+	 * Schedule selection database - subject id column
+	 */
+	public static final int SELECTION_SUBJECT_ID_COLUMN = 1;
+	
+	/**
+	 * Schedule selection database - group id column
+	 */
+	public static final int SELECTION_GROUP_ID_COLUMN = 2;
 
 }

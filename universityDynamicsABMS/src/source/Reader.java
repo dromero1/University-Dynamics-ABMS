@@ -53,7 +53,6 @@ public class Reader {
 					continue;
 				}
 				String[] elements = data.split(";");
-				// Attributes
 				String id = "";
 				int capacity = 0;
 				int day = 0;
@@ -61,30 +60,29 @@ public class Reader {
 				double endTime = 0;
 				String teachingFacilityId = "";
 				String room = "";
-				// Extract elements
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
-					case DBFeatures.SUBJECT_COLUMN:
+					case DBFeatures.GROUPS_SUBJECT_COLUMN:
 						id += elements[i];
 						break;
-					case DBFeatures.GROUP_COLUMN:
+					case DBFeatures.GROUPS_GROUP_COLUMN:
 						id += elements[i];
 						break;
-					case DBFeatures.DAY_COLUMN:
+					case DBFeatures.GROUPS_DAY_COLUMN:
 						day = Integer.parseInt(elements[i]);
 						break;
-					case DBFeatures.START_TIME_COLUMN:
+					case DBFeatures.GROUPS_START_TIME_COLUMN:
 						startTime = Double.parseDouble(elements[i]);
 						break;
-					case DBFeatures.END_TIME_COLUMN:
+					case DBFeatures.GROUPS_END_TIME_COLUMN:
 						endTime = Double.parseDouble(elements[i]);
 						break;
-					case DBFeatures.CAPACITY_COLUMN:
+					case DBFeatures.GROUPS_CAPACITY_COLUMN:
 						capacity = Integer.parseInt(elements[i]);
 						break;
-					case DBFeatures.TEACHING_FACILITY_COLUMN:
+					case DBFeatures.GROUPS_TEACHING_FACILITY_COLUMN:
 						teachingFacilityId = elements[i];
-					case DBFeatures.ROOM_COLUMN:
+					case DBFeatures.GROUPS_ROOM_COLUMN:
 						room = elements[i];
 					default:
 						break;
@@ -105,6 +103,44 @@ public class Reader {
 		}
 		return new ArrayList<Group>(groups.values());
 	}
+	
+	public static HashMap<String, ArrayList<String>> readScheduleSelectionDatabase(String filename) {
+		HashMap<String, ArrayList<String>> scheduleSelection = new HashMap<String, ArrayList<String>>();
+		try {
+			File file = new File(filename);
+			Scanner scanner = new Scanner(file);
+			boolean first = true;
+			while (scanner.hasNextLine()) {
+				String data = scanner.nextLine();
+				if (first) {
+					first = false;
+					continue;
+				}
+				String[] elements = data.split(";");
+				String studentId = "";
+				String groupId = "";
+				for (int i = 0; i < elements.length; i++) {
+					switch (i) {
+					case DBFeatures.SELECTION_STUDENT_ID_COLUMN:
+						studentId = elements[i];
+						break;
+					case DBFeatures.SELECTION_SUBJECT_ID_COLUMN:
+						groupId += elements[i];
+						break;
+					case DBFeatures.SELECTION_GROUP_ID_COLUMN:
+						groupId += elements[i];
+						break;
+					default:
+						break;
+					}
+				}
+			}
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return scheduleSelection;
+	}
 
 	public static HashMap<String, Pair<Double, Double>> readFacilityAreas(String filename) {
 		HashMap<String, Pair<Double, Double>> areas = new HashMap<String, Pair<Double, Double>>();
@@ -119,20 +155,18 @@ public class Reader {
 					continue;
 				}
 				String[] elements = data.split(";");
-				// Attributes
 				String id = "";
 				double area = 0;
 				double weight = 0;
-				// Extract elements
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
-					case DBFeatures.FACILITY_ID:
+					case DBFeatures.FACILITIES_FACILITY_ID_COLUMN:
 						id = elements[i];
 						break;
-					case DBFeatures.FACILITY_AREA:
+					case DBFeatures.FACILITIES_FACILITY_AREA_COLUMN:
 						area = Double.parseDouble(elements[i]);
 						break;
-					case DBFeatures.FACILITY_WEIGHT:
+					case DBFeatures.FACILITIES_FACILITY_WEIGHT_COLUMN:
 						weight = Double.parseDouble(elements[i]);
 						break;
 					default:
@@ -161,16 +195,14 @@ public class Reader {
 					continue;
 				}
 				String[] elements = data.split(";");
-				// Attributes
 				String id = "";
 				double weight = 0;
-				// Extract elements
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
-					case DBFeatures.WORKPLACE_ID:
+					case DBFeatures.WORKPLACES_WORKPLACE_ID_COLUMN:
 						id = elements[i];
 						break;
-					case DBFeatures.WORKPLACE_WEIGHT:
+					case DBFeatures.WORKPLACES_WORKPLACE_WEIGHT_COLUMN:
 						weight = Double.parseDouble(elements[i]);
 						break;
 					default:
@@ -200,20 +232,18 @@ public class Reader {
 					continue;
 				}
 				String[] elements = data.split(";");
-				// Group attributes
 				String origin = "";
 				String destination = "";
 				double weight = 0.0;
-				// Extract elements
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
-					case DBFeatures.ORIGIN_COLUMN:
+					case DBFeatures.ROUTES_ORIGIN_COLUMN:
 						origin = elements[i];
 						break;
-					case DBFeatures.DESTINATION_COLUMN:
+					case DBFeatures.ROUTES_DESTINATION_COLUMN:
 						destination = elements[i];
 						break;
-					case DBFeatures.DISTANCE_COLUMN:
+					case DBFeatures.ROUTES_DISTANCE_COLUMN:
 						weight = Double.parseDouble(elements[i]);
 						break;
 					default:

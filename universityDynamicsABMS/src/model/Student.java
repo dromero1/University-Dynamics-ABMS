@@ -18,6 +18,11 @@ public class Student extends CommunityMember {
 	private static final double ARRIVAL_DELTA = 1.0 / 6;
 
 	/**
+	 * Student id
+	 */
+	private String id;
+
+	/**
 	 * Academic schedule
 	 */
 	private Schedule schedule;
@@ -27,9 +32,11 @@ public class Student extends CommunityMember {
 	 * 
 	 * @param geography      Reference to geography projection
 	 * @param contextBuilder Reference to the simulation builder
+	 * @param id             Student id
 	 */
-	public Student(Geography<Object> geography, SimulationBuilder contextBuilder) {
+	public Student(Geography<Object> geography, SimulationBuilder contextBuilder, String id) {
 		super(geography, contextBuilder);
+		this.id = id;
 	}
 
 	/**
@@ -79,6 +86,13 @@ public class Student extends CommunityMember {
 	 */
 	public void haveFun() {
 		moveToRandomPolygon(this.contextBuilder.sharedAreas, "", true);
+	}
+
+	/**
+	 * Get student id
+	 */
+	public String getId() {
+		return this.id;
 	}
 
 	/**

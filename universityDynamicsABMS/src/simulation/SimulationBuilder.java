@@ -186,6 +186,10 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		// Read groups
 		ArrayList<Group> groups = Reader.readGroupsDatabase(Paths.GROUPS_DATABASE);
 
+		// Read schedule selection
+		HashMap<String, ArrayList<String>> scheduleSelection = Reader
+				.readScheduleSelectionDatabase(Paths.SCHEDULE_SELECTION_DATABASE);
+
 		// Read workplaces weights
 		this.workplaces = new HashMap<String, GISPolygon>();
 		HashMap<String, Double> workplaces = Reader.readWorkplaces(Paths.WORKPLACES_DATABASE);
@@ -358,13 +362,13 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private ArrayList<Student> createStudents(int studentCount, Geography<Object> geography) {
 		ArrayList<Student> students = new ArrayList<Student>();
 		for (int i = 0; i < studentCount; i++) {
-			Student student = new Student(geography, this);
+			Student student = new Student(geography, this, Integer.toString(i));
 			students.add(student);
 		}
 		return students;
 	}
-	
-	private ArrayList<SupportStaff> createSupportStaff(int staffCount, Geography<Object> geography)	{
+
+	private ArrayList<SupportStaff> createSupportStaff(int staffCount, Geography<Object> geography) {
 		ArrayList<SupportStaff> staff = new ArrayList<SupportStaff>();
 		for (int i = 0; i < staffCount; i++) {
 			SupportStaff supportStaff = new SupportStaff(geography, this);
