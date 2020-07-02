@@ -12,7 +12,7 @@ public class SupportStaff extends CommunityMember {
 	 * Workplace
 	 */
 	protected GISPolygon workplace;
-	
+
 	/**
 	 * Create a new support staff agent
 	 * 
@@ -30,7 +30,7 @@ public class SupportStaff extends CommunityMember {
 	public void work() {
 		moveToPolygon(this.workplace, "");
 	}
-	
+
 	/**
 	 * Schedule activities
 	 */
