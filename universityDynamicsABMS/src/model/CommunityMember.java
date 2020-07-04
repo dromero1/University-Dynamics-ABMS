@@ -162,7 +162,6 @@ public abstract class CommunityMember {
 		Point destination = geometryFactory.createPoint(coordinate);
 		this.geography.move(this, destination);
 		this.currentPolygon = polygon;
-		this.currentPolygon.onRelocation();
 	}
 
 	/**
