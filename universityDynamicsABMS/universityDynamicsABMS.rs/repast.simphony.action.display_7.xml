@@ -3,6 +3,10 @@
   <type>GIS 3D</type>
   <styles>
     <entry>
+      <string>gis.GISInOut</string>
+      <string>styles.GISPolygonStyle</string>
+    </entry>
+    <entry>
       <string>gis.GISOtherFacility</string>
       <string>styles.GISPolygonStyle</string>
     </entry>
@@ -27,27 +31,19 @@
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
-      <string>model.SupportStaff</string>
-      <string>repast.simphony.visualization.gis3D.style.EditedMarkStyle</string>
-    </entry>
-    <entry>
-      <string>gis.GISSharedArea</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
-    <entry>
-      <string>gis.GISInOut</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
-    <entry>
       <string>gis.GISTeachingFacility</string>
       <string>styles.GISPolygonStyle</string>
+    </entry>
+    <entry>
+      <string>model.SupportStaff</string>
+      <string>repast.simphony.visualization.gis3D.style.EditedMarkStyle</string>
     </entry>
     <entry>
       <string>model.Student</string>
       <string>repast.simphony.visualization.gis3D.style.EditedMarkStyle</string>
     </entry>
     <entry>
-      <string>gis.GISDensityMeter</string>
+      <string>gis.GISSharedArea</string>
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
@@ -57,6 +53,10 @@
   </styles>
   <editedStyles>
     <entry>
+      <string>gis.GISInOut</string>
+      <null/>
+    </entry>
+    <entry>
       <string>gis.GISOtherFacility</string>
       <null/>
     </entry>
@@ -81,27 +81,19 @@
       <null/>
     </entry>
     <entry>
-      <string>model.SupportStaff</string>
-      <string>model.SupportStaff.style_1.xml</string>
-    </entry>
-    <entry>
-      <string>gis.GISSharedArea</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>gis.GISInOut</string>
-      <null/>
-    </entry>
-    <entry>
       <string>gis.GISTeachingFacility</string>
       <null/>
+    </entry>
+    <entry>
+      <string>model.SupportStaff</string>
+      <string>model.SupportStaff.style_1.xml</string>
     </entry>
     <entry>
       <string>model.Student</string>
       <string>model.Student.style_1.xml</string>
     </entry>
     <entry>
-      <string>gis.GISDensityMeter</string>
+      <string>gis.GISSharedArea</string>
       <null/>
     </entry>
     <entry>
@@ -119,10 +111,14 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1662004312</hashCode>
+    <hashCode>-1486768914</hashCode>
   </schedParams>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
+    <entry>
+      <string>gis.GISInOut</string>
+      <int>7</int>
+    </entry>
     <entry>
       <string>gis.GISOtherFacility</string>
       <int>5</int>
@@ -137,7 +133,7 @@
     </entry>
     <entry>
       <string>gis.GISCampus</string>
-      <int>10</int>
+      <int>9</int>
     </entry>
     <entry>
       <string>gis.GISLimbo</string>
@@ -148,28 +144,20 @@
       <int>4</int>
     </entry>
     <entry>
+      <string>gis.GISTeachingFacility</string>
+      <int>2</int>
+    </entry>
+    <entry>
       <string>model.SupportStaff</string>
+      <int>10</int>
+    </entry>
+    <entry>
+      <string>model.Student</string>
       <int>11</int>
     </entry>
     <entry>
       <string>gis.GISSharedArea</string>
       <int>3</int>
-    </entry>
-    <entry>
-      <string>gis.GISInOut</string>
-      <int>7</int>
-    </entry>
-    <entry>
-      <string>gis.GISTeachingFacility</string>
-      <int>2</int>
-    </entry>
-    <entry>
-      <string>model.Student</string>
-      <int>12</int>
-    </entry>
-    <entry>
-      <string>gis.GISDensityMeter</string>
-      <int>9</int>
     </entry>
     <entry>
       <string>gis.GISTransitArea</string>
