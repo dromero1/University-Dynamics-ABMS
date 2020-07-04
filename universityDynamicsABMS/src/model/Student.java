@@ -13,9 +13,9 @@ import util.TickConverter;
 public class Student extends CommunityMember {
 
 	/**
-	 * Arrival delta
+	 * Minimum time difference between activities to have fun (unit: hours)
 	 */
-	private static final double ARRIVAL_DELTA = 1.0 / 6;
+	private static final double MIN_TIME_TO_FUN = 0.5;
 
 	/**
 	 * Student id
@@ -61,8 +61,8 @@ public class Student extends CommunityMember {
 
 	/**
 	 * Leave an academic activity. The student determines what to do next. If he/she
-	 * has an activity in less than ARRIVAL_DELTA ticks he/she prefers to go there.
-	 * In the other case, the student goes to have fun.
+	 * has an activity in less than MIN_TIME_TO_FUN ticks he/she prefers to go
+	 * there. In the other case, the student goes to have fun.
 	 */
 	public void leaveActivity() {
 		double tick = RepastEssentials.GetTickCount();
@@ -72,7 +72,7 @@ public class Student extends CommunityMember {
 		AcademicActivity nextActivity = this.schedule.getNextAcademicActivity(day, hour);
 		if (nextActivity != null) {
 			double delta = nextActivity.getStartTime() - hour;
-			if (delta < ARRIVAL_DELTA) {
+			if (delta < MIN_TIME_TO_FUN) {
 				attendActivity(nextActivity.getTeachingFacilityId());
 			} else {
 				EventScheduler eventScheduler = EventScheduler.getInstance();
@@ -85,9 +85,19 @@ public class Student extends CommunityMember {
 	 * Go have fun at a shared area
 	 */
 	public void haveFun() {
-		moveToRandomPolygon(this.contextBuilder.sharedAreas, "", true);
+		moveToRandomPolygon(this.contextBuilder.sharedAreas, "", SelectionStrategy.weightBased);
 	}
 
+	/**
+	 * Plan arrival at day
+	 * 
+	 * @param day Day
+	 */
+	@Override
+	public void planArrival(int day) {
+
+	}
+	
 	/**
 	 * Get student id
 	 */
@@ -104,7 +114,7 @@ public class Student extends CommunityMember {
 		for (Group group : this.schedule.getGroups()) {
 			for (AcademicActivity activity : group.getAcademicActivities()) {
 				int day = activity.getDay();
-				double startTime = activity.getStartTime() - ARRIVAL_DELTA;
+				double startTime = activity.getStartTime();
 				String teachingFacilityId = activity.getTeachingFacilityId();
 				double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
 				eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK,
@@ -149,6 +159,21 @@ public class Student extends CommunityMember {
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "haveLunch");
 			ticksToEvent += lunchDuration;
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "haveFun");
+		}
+	}
+
+	/**
+	 * Schedule arrival planning
+	 */
+	@Override
+	protected void scheduleArrivalPlanning() {
+		EventScheduler eventScheduler = EventScheduler.getInstance();
+		ArrayList<Integer> days = this.schedule.getCampusDays();
+		for (Integer day : days) {
+			AcademicActivity firstActivity = this.schedule.getFirstAcademicActivityInDay(day);
+			double startTime = firstActivity.getStartTime() - PLANNING_DELTA;
+			double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
+			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "planArrival", day);
 		}
 	}
 

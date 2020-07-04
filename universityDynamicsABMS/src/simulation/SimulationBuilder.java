@@ -206,14 +206,14 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		for (Student student : students) {
 			Schedule schedule = Heuristics.getRandomSchedule(groups);
 			student.setSchedule(schedule);
-			student.scheduleWeeklyEvents();
+			student.scheduleRecurringEvents();
 			context.add(student);
 		}
 
 		// Add support staff to simulation
 		ArrayList<SupportStaff> supportStaff = createSupportStaff(simParams.getInteger("supportStaff"), geography);
 		for (SupportStaff staff : supportStaff) {
-			staff.scheduleWeeklyEvents();
+			staff.scheduleRecurringEvents();
 			context.add(staff);
 		}
 

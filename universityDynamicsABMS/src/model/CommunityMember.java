@@ -25,6 +25,11 @@ import util.TickConverter;
 public abstract class CommunityMember {
 
 	/**
+	 * Planning delta (unit: hours)
+	 */
+	protected static final double PLANNING_DELTA = 2;
+
+	/**
 	 * Vehicle user flag. Determines whether the student enters the campus by car or
 	 * by foot.
 	 */
@@ -46,9 +51,14 @@ public abstract class CommunityMember {
 	protected GISPolygon currentPolygon;
 
 	/**
-	 * Action's values estimates
+	 * Last exit polygon
 	 */
-	protected HashMap<String, Pair<Double, Integer>> actionValueEstimates;
+	protected GISPolygon lastExit;	
+	
+	/**
+	 * Action's values
+	 */
+	protected HashMap<Integer, Pair<Double, Integer>> actionValues;
 
 	/**
 	 * Last reward
@@ -65,31 +75,32 @@ public abstract class CommunityMember {
 		this.geography = geography;
 		this.contextBuilder = contextBuilder;
 		this.isVehicleUser = Probabilities.getRandomVehicleUsage();
-		initValueEstimations();
+		initActionValues();
 		vanishToLimbo();
 	}
 
 	/**
-	 * Schedule weekly events
+	 * Schedule recurring events
 	 */
-	public void scheduleWeeklyEvents() {
+	public void scheduleRecurringEvents() {
 		scheduleActivities();
 		scheduleDepartures();
 		scheduleLunch();
+		scheduleArrivalPlanning();
 	}
 
 	/**
 	 * Move to random in-out spot and vanish to limbo
 	 */
 	public void returnHome() {
-		moveToRandomInOutSpot("vanishToLimbo");
+		this.lastExit = moveToRandomInOutSpot("vanishToLimbo");
 	}
 
 	/**
 	 * Go have lunch at a designated eating place
 	 */
 	public void haveLunch() {
-		moveToRandomPolygon(this.contextBuilder.eatingPlaces, "", true);
+		moveToRandomPolygon(this.contextBuilder.eatingPlaces, "", SelectionStrategy.weightBased);
 	}
 
 	/**
@@ -116,10 +127,15 @@ public abstract class CommunityMember {
 		this.geography.move(this, destination);
 		this.currentPolygon = polygon;
 		this.currentPolygon.onRelocation();
-		if (this.actionValueEstimates.containsKey(polygon.getId()))
-			updateActionValueEstimates(polygon.getId());
 	}
 
+	/**
+	 * Plan arrival at day
+	 * 
+	 * @param day Day
+	 */
+	public abstract void planArrival(int day);
+	
 	/**
 	 * Get last reward
 	 */
@@ -143,24 +159,30 @@ public abstract class CommunityMember {
 	protected abstract void scheduleLunch();
 
 	/**
+	 * Schedule arrival planning
+	 */
+	protected abstract void scheduleArrivalPlanning();
+
+	/**
 	 * Move to random polygon
 	 * 
-	 * @param polygons    Map of polygons to choose from
-	 * @param method      Method to call after arriving to polygon
-	 * @param weightBased Random weight-based selection
+	 * @param polygons          Map of polygons to choose from
+	 * @param method            Method to call after arriving to polygon
+	 * @param selectionStrategy Selection strategy
 	 */
-	protected void moveToRandomPolygon(HashMap<String, GISPolygon> polygons, String method, boolean weightBased) {
+	protected GISPolygon moveToRandomPolygon(HashMap<String, GISPolygon> polygons, String method,
+			SelectionStrategy strategy) {
 		GISPolygon selectedPolygon = null;
-		Parameters simParams = RunEnvironment.getInstance().getParameters();
-		boolean banditApproach = simParams.getBoolean("banditApproach");
-		if (banditApproach) {
-			selectedPolygon = Probabilities.getRandomPolygonBanditBased(polygons, this.actionValueEstimates);
-		} else if (weightBased) {
+		switch (strategy) {
+		case weightBased:
 			selectedPolygon = Probabilities.getRandomPolygonWeightBased(polygons);
-		} else {
+			break;
+		default:
 			selectedPolygon = Probabilities.getRandomPolygon(polygons);
+			break;
 		}
 		moveToPolygon(selectedPolygon, method);
+		return selectedPolygon;
 	}
 
 	/**
@@ -201,51 +223,35 @@ public abstract class CommunityMember {
 	/**
 	 * Move to random in-out spot
 	 */
-	private void moveToRandomInOutSpot(String method) {
+	private GISPolygon moveToRandomInOutSpot(String method) {
 		HashMap<String, GISPolygon> inOuts = null;
 		if (this.isVehicleUser) {
 			inOuts = this.contextBuilder.vehicleInOuts;
 		} else {
 			inOuts = this.contextBuilder.inOuts;
 		}
-		moveToRandomPolygon(inOuts, method, true);
+		return moveToRandomPolygon(inOuts, method, SelectionStrategy.random);
 	}
 
 	/**
-	 * Initialize action's values estimations
+	 * Initialize action's values
 	 */
-	private void initValueEstimations() {
-		this.actionValueEstimates = new HashMap<String, Pair<Double, Integer>>();
-		HashMap<String, GISPolygon> sharedAreas = this.contextBuilder.sharedAreas;
-		for (String key : sharedAreas.keySet()) {
-			double r = RandomHelper.nextDoubleFromTo(0, 1);
-			this.actionValueEstimates.put(key, new Pair<Double, Integer>(r, 0));
-		}
-		HashMap<String, GISPolygon> eatingPlaces = this.contextBuilder.eatingPlaces;
-		for (String key : eatingPlaces.keySet()) {
-			double r = RandomHelper.nextDoubleFromTo(0, 1);
-			this.actionValueEstimates.put(key, new Pair<Double, Integer>(r, 0));
-		}
-		HashMap<String, GISPolygon> inOuts = this.contextBuilder.inOuts;
-		for (String key : inOuts.keySet()) {
-			double r = RandomHelper.nextDoubleFromTo(0, 1);
-			this.actionValueEstimates.put(key, new Pair<Double, Integer>(r, 0));
-		}
-		HashMap<String, GISPolygon> vehicleInOuts = this.contextBuilder.vehicleInOuts;
-		for (String key : vehicleInOuts.keySet()) {
-			double r = RandomHelper.nextDoubleFromTo(0, 1);
-			this.actionValueEstimates.put(key, new Pair<Double, Integer>(r, 0));
+	private void initActionValues() {
+		this.actionValues = new HashMap<Integer, Pair<Double, Integer>>();
+		for (int i = 0; i < 7; i++) {
+			int shift = i * 10;
+			double r = RandomHelper.nextDoubleFromTo(-1, 1);
+			this.actionValues.put(shift, new Pair<Double, Integer>(r, 0));
 		}
 	}
 
 	/**
-	 * Update action's values estimations based on the incremental sample average
-	 * method
+	 * Update action's values based on the incremental sample average method
 	 * 
 	 * @param polygonId Id of a polygon
 	 */
-	private void updateActionValueEstimates(String polygonId) {
-		Pair<Double, Integer> estimation = this.actionValueEstimates.get(polygonId);
+	private void updateActionValues(String polygonId) {
+		Pair<Double, Integer> estimation = this.actionValues.get(polygonId);
 		GISDensityMeter densityPolygon = (GISDensityMeter) this.contextBuilder.getPolygonById(polygonId);
 		double density = densityPolygon.measureDensity();
 		Parameters simParams = RunEnvironment.getInstance().getParameters();
@@ -260,11 +266,11 @@ public abstract class CommunityMember {
 		double Q = estimation.getFirst();
 		int N = estimation.getSecond();
 		N = N + 1;
-		double step = 1 / N;
+		double step = 0.1;
 		Q = Q + step * (R - Q);
 		estimation.setFirst(Q);
 		estimation.setSecond(N);
-		this.actionValueEstimates.put(polygonId, estimation);
+		// this.actionValues.put(polygonId, estimation);
 		this.lastReward = R;
 	}
 

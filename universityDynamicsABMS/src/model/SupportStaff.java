@@ -11,7 +11,12 @@ public class SupportStaff extends CommunityMember {
 	/**
 	 * Workplace
 	 */
-	protected GISPolygon workplace;
+	private GISPolygon workplace;
+
+	/**
+	 * Work start time
+	 */
+	private double workStartTime;
 
 	/**
 	 * Create a new support staff agent
@@ -22,6 +27,7 @@ public class SupportStaff extends CommunityMember {
 	public SupportStaff(Geography<Object> geography, SimulationBuilder contextBuilder) {
 		super(geography, contextBuilder);
 		this.workplace = Probabilities.getRandomPolygonWorkWeightBased(this.contextBuilder.workplaces);
+		this.workStartTime = Probabilities.getRandomWorkStartTime();
 	}
 
 	/**
@@ -32,14 +38,23 @@ public class SupportStaff extends CommunityMember {
 	}
 
 	/**
+	 * Plan arrival at day
+	 * 
+	 * @param day Day
+	 */
+	@Override
+	public void planArrival(int day) {
+
+	}
+	
+	/**
 	 * Schedule activities
 	 */
 	@Override
 	protected void scheduleActivities() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		for (int i = 1; i <= 6; i++) {
-			double startTime = Probabilities.getRandomWorkStartTime();
-			double ticksToEvent = TickConverter.dayTimeToTicks(i, startTime);
+			double ticksToEvent = TickConverter.dayTimeToTicks(i, this.workStartTime);
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "work");
 		}
 	}
@@ -70,6 +85,19 @@ public class SupportStaff extends CommunityMember {
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "haveLunch");
 			ticksToEvent += lunchDuration;
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "work");
+		}
+	}
+
+	/**
+	 * Schedule arrival planning
+	 */
+	@Override
+	protected void scheduleArrivalPlanning() {
+		EventScheduler eventScheduler = EventScheduler.getInstance();
+		for (int i = 1; i <= 6; i++) {
+			double startTime = this.workStartTime - PLANNING_DELTA;
+			double ticksToEvent = TickConverter.dayTimeToTicks(i, startTime);
+			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "planArrival", i);
 		}
 	}
 
