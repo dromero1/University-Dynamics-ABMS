@@ -9,7 +9,6 @@ import gis.GISPolygon;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
-import repast.simphony.util.collections.Pair;
 
 public class Probabilities {
 
@@ -169,44 +168,6 @@ public class Probabilities {
 			}
 		}
 		return null;
-	}
-	
-	/**
-	 * Get random geo-spatial polygon based on the k-armed bandit problem. Solution
-	 * is based on the epsilon-greedy action selection algorithm.
-	 * 
-	 * @param polygons             Map of polygons
-	 * @param actionValueEstimates Estimates of action values (Q_t)
-	 */
-	public static GISPolygon getRandomPolygonBanditBased(HashMap<String, GISPolygon> polygons,
-			HashMap<String, Pair<Double, Integer>> actionValueEstimates) {
-		ArrayList<GISPolygon> actionablePolygons = new ArrayList<GISPolygon>();
-		for (GISPolygon polygon : polygons.values()) {
-			actionablePolygons.add(polygon);
-		}
-		double r = RandomHelper.nextDoubleFromTo(0, 1);
-		double epsilon = 0.1;
-		if (r < 1 - epsilon) {
-			double top = Double.NEGATIVE_INFINITY;
-			ArrayList<String> ties = new ArrayList<String>();
-			for (GISPolygon actionablePolygon : actionablePolygons) {
-				String id = actionablePolygon.getId();
-				Pair<Double, Integer> estimation = actionValueEstimates.get(id);
-				double Q = estimation.getFirst();
-				if (Q > top) {
-					top = Q;
-					ties.clear();
-					ties.add(id);
-				} else if (Q == top) {
-					ties.add(id);
-				}
-			}
-			Collections.shuffle(ties);
-			String selectedId = ties.get(0);
-			return polygons.get(selectedId);
-		} else {
-			return getRandomPolygon(polygons);
-		}
 	}
 
 }
