@@ -8,11 +8,18 @@ import repast.simphony.visualization.gis3D.style.SurfaceShapeStyle;
 
 public class GISPolygonStyle implements SurfaceShapeStyle<GISPolygon> {
 
+	/**
+	 * Get surface shape
+	 * 
+	 * @param obj   GIS polygon
+	 * @param shape Surface shape
+	 */
 	@Override
 	public SurfaceShape getSurfaceShape(GISPolygon obj, SurfaceShape shape) {
 		return new SurfacePolyline();
 	}
 
+	
 	@Override
 	public Color getLineColor(GISPolygon obj) {
 		return Color.BLACK;
