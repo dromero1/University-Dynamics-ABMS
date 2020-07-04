@@ -36,16 +36,6 @@ public class SupportStaff extends CommunityMember {
 	public void work() {
 		moveToPolygon(this.workplace, "");
 	}
-
-	/**
-	 * Plan arrival at day
-	 * 
-	 * @param day Day
-	 */
-	@Override
-	public void planArrival(int day) {
-
-	}
 	
 	/**
 	 * Schedule activities

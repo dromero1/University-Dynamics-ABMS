@@ -75,8 +75,7 @@ public class Student extends CommunityMember {
 			if (delta < MIN_TIME_TO_FUN) {
 				attendActivity(nextActivity.getTeachingFacilityId());
 			} else {
-				EventScheduler eventScheduler = EventScheduler.getInstance();
-				eventScheduler.scheduleOneTimeEvent(1, this, "haveFun");
+				haveFun();
 			}
 		}
 	}
@@ -86,16 +85,6 @@ public class Student extends CommunityMember {
 	 */
 	public void haveFun() {
 		moveToRandomPolygon(this.contextBuilder.sharedAreas, "", SelectionStrategy.weightBased);
-	}
-
-	/**
-	 * Plan arrival at day
-	 * 
-	 * @param day Day
-	 */
-	@Override
-	public void planArrival(int day) {
-
 	}
 	
 	/**

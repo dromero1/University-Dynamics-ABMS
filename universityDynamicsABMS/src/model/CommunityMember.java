@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import org.jgrapht.Graph;
@@ -9,12 +11,9 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
-import gis.GISDensityMeter;
 import gis.GISLimbo;
 import gis.GISPolygon;
-import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.gis.util.GeometryUtil;
-import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.gis.Geography;
 import repast.simphony.util.collections.Pair;
@@ -27,7 +26,7 @@ public abstract class CommunityMember {
 	/**
 	 * Planning delta (unit: hours)
 	 */
-	protected static final double PLANNING_DELTA = 2;
+	protected static final double PLANNING_DELTA = 1;
 
 	/**
 	 * Vehicle user flag. Determines whether the student enters the campus by car or
@@ -53,8 +52,8 @@ public abstract class CommunityMember {
 	/**
 	 * Last exit polygon
 	 */
-	protected GISPolygon lastExit;	
-	
+	protected GISPolygon lastExit;
+
 	/**
 	 * Action's values
 	 */
@@ -114,6 +113,43 @@ public abstract class CommunityMember {
 	}
 
 	/**
+	 * Plan arrival at day
+	 * 
+	 * @param day Day
+	 */
+	public void planArrival(int day) {
+		if (this.lastExit != null) {
+			double r = RandomHelper.nextDoubleFromTo(0, 1);
+			double epsilon = 0.1;
+			int selectedShift = 0;
+			if (r < 1 - epsilon) {
+				double top = Double.NEGATIVE_INFINITY;
+				ArrayList<Integer> ties = new ArrayList<Integer>();
+				for (Integer shift : this.actionValues.keySet()) {
+					Pair<Double, Integer> estimation = this.actionValues.get(shift);
+					double Q = estimation.getFirst();
+					if (Q > top) {
+						top = Q;
+						ties.clear();
+						ties.add(shift);
+					} else if (Q == top) {
+						ties.add(shift);
+					}
+				}
+				Collections.shuffle(ties);
+				selectedShift = ties.get(0);
+			} else {
+				Object[] shifts = this.actionValues.keySet().toArray();
+				int i = RandomHelper.nextIntFromTo(0, shifts.length - 1);
+				selectedShift = (Integer) shifts[i];
+			}
+			EventScheduler eventScheduler = EventScheduler.getInstance();
+			double ticks = TickConverter.minutesToTicks(selectedShift);
+			eventScheduler.scheduleOneTimeEvent(ticks, this, "relocate", this.lastExit);
+		}
+	}
+
+	/**
 	 * Relocate to an specific polygon
 	 * 
 	 * @param polygon Polygon to go to
@@ -129,13 +165,6 @@ public abstract class CommunityMember {
 		this.currentPolygon.onRelocation();
 	}
 
-	/**
-	 * Plan arrival at day
-	 * 
-	 * @param day Day
-	 */
-	public abstract void planArrival(int day);
-	
 	/**
 	 * Get last reward
 	 */
@@ -243,35 +272,6 @@ public abstract class CommunityMember {
 			double r = RandomHelper.nextDoubleFromTo(-1, 1);
 			this.actionValues.put(shift, new Pair<Double, Integer>(r, 0));
 		}
-	}
-
-	/**
-	 * Update action's values based on the incremental sample average method
-	 * 
-	 * @param polygonId Id of a polygon
-	 */
-	private void updateActionValues(String polygonId) {
-		Pair<Double, Integer> estimation = this.actionValues.get(polygonId);
-		GISDensityMeter densityPolygon = (GISDensityMeter) this.contextBuilder.getPolygonById(polygonId);
-		double density = densityPolygon.measureDensity();
-		Parameters simParams = RunEnvironment.getInstance().getParameters();
-		double socialDistancing = simParams.getDouble("socialDistancing");
-		double reference = 1.0 / socialDistancing;
-		double R = 0.0;
-		if (density < reference) {
-			R = 1 - density;
-		} else {
-			R = -density;
-		}
-		double Q = estimation.getFirst();
-		int N = estimation.getSecond();
-		N = N + 1;
-		double step = 0.1;
-		Q = Q + step * (R - Q);
-		estimation.setFirst(Q);
-		estimation.setSecond(N);
-		// this.actionValues.put(polygonId, estimation);
-		this.lastReward = R;
 	}
 
 }
