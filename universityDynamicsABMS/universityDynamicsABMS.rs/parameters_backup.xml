@@ -1,25 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <parameters>
-	<parameter name="randomSeed"
-		displayName="Default Random Seed" type="int" defaultValue="__NULL__"
-		isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-	<parameter name="banditApproach"
-		displayName="Bandit Approach" type="boolean" defaultValue="false"
-		isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
-	<parameter name="supportStaff" displayName="Support Staff"
-		type="int" defaultValue="250" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-	<parameter name="socialDistancing"
-		displayName="Social Distancing" type="double" defaultValue="2.0"
-		isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
-	<parameter name="students" displayName="Students" type="int"
-		defaultValue="5170" isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-	<parameter name="vehicleUsageRatio"
-		displayName="Vehicle Usage Ratio" type="double" defaultValue="0.3"
-		isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
-</parameters>
+					<parameter name="randomSeed" displayName="Default Random Seed" type="int" 
+						defaultValue="__NULL__"
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+				<parameter name="banditApproach" displayName="Bandit Approach" type="boolean" 
+						defaultValue="false" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter"
+									
+		/>
+				<parameter name="supportStaff" displayName="Support Staff" type="int" 
+						defaultValue="250" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+				<parameter name="socialDistancing" displayName="Social Distancing" type="double" 
+						defaultValue="2.0" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
+				<parameter name="students" displayName="Students" type="int" 
+						defaultValue="2000" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+				<parameter name="vehicleUsageRatio" displayName="Vehicle Usage Ratio" type="double" 
+						defaultValue="0.3" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
+		</parameters>
+
+

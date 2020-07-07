@@ -86,7 +86,7 @@ public class Student extends CommunityMember {
 	public void haveFun() {
 		moveToRandomPolygon(this.contextBuilder.sharedAreas, "", SelectionStrategy.weightBased);
 	}
-	
+
 	/**
 	 * Get student id
 	 */

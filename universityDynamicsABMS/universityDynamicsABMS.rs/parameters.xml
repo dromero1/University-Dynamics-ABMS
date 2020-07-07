@@ -25,7 +25,7 @@
 									
 		/>
 				<parameter name="students" displayName="Students" type="int" 
-						defaultValue="2000" 
+						defaultValue="5000" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
