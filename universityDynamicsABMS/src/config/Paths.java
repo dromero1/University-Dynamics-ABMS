@@ -60,8 +60,8 @@ public final class Paths {
 	/**
 	 * Schedule selection database
 	 */
-	public static final String SCHEDULE_SELECTION_DATABASE = "./data/databases/schedule-selection.csv";	
-	
+	public static final String SCHEDULE_SELECTION_DATABASE = "./data/databases/schedule-selection.csv";
+
 	/**
 	 * Routes database
 	 */

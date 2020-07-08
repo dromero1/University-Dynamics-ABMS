@@ -38,11 +38,6 @@ public class DBFeatures {
 	public static final int GROUPS_TEACHING_FACILITY_COLUMN = 6;
 
 	/**
-	 * Groups database - room column
-	 */
-	public static final int GROUPS_ROOM_COLUMN = 7;
-
-	/**
 	 * Routes database - origin column
 	 */
 	public static final int ROUTES_ORIGIN_COLUMN = 0;
@@ -91,10 +86,15 @@ public class DBFeatures {
 	 * Schedule selection database - subject id column
 	 */
 	public static final int SELECTION_SUBJECT_ID_COLUMN = 1;
-	
+
 	/**
 	 * Schedule selection database - group id column
 	 */
 	public static final int SELECTION_GROUP_ID_COLUMN = 2;
+
+	/**
+	 * Schedule selection database - in-campus column
+	 */
+	public static final int SELECTION_IN_CAMPUS_COLUMN = 3;
 
 }

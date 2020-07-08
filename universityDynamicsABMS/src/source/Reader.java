@@ -59,7 +59,6 @@ public class Reader {
 				double startTime = 0;
 				double endTime = 0;
 				String teachingFacilityId = "";
-				String room = "";
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
 					case DBFeatures.GROUPS_SUBJECT_COLUMN:
@@ -82,18 +81,16 @@ public class Reader {
 						break;
 					case DBFeatures.GROUPS_TEACHING_FACILITY_COLUMN:
 						teachingFacilityId = elements[i];
-					case DBFeatures.GROUPS_ROOM_COLUMN:
-						room = elements[i];
 					default:
 						break;
 					}
 				}
 				if (groups.containsKey(id)) {
 					Group group = groups.get(id);
-					group.addAcademicActivity(day, startTime, endTime, teachingFacilityId, room);
+					group.addAcademicActivity(day, startTime, endTime, teachingFacilityId);
 				} else {
 					Group group = new Group(id, capacity);
-					group.addAcademicActivity(day, startTime, endTime, teachingFacilityId, room);
+					group.addAcademicActivity(day, startTime, endTime, teachingFacilityId);
 					groups.put(id, group);
 				}
 			}
@@ -103,7 +100,7 @@ public class Reader {
 		}
 		return new ArrayList<Group>(groups.values());
 	}
-	
+
 	public static HashMap<String, ArrayList<String>> readScheduleSelectionDatabase(String filename) {
 		HashMap<String, ArrayList<String>> scheduleSelection = new HashMap<String, ArrayList<String>>();
 		try {
@@ -119,6 +116,7 @@ public class Reader {
 				String[] elements = data.split(";");
 				String studentId = "";
 				String groupId = "";
+				boolean inCampus = false;
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
 					case DBFeatures.SELECTION_STUDENT_ID_COLUMN:
@@ -130,6 +128,8 @@ public class Reader {
 					case DBFeatures.SELECTION_GROUP_ID_COLUMN:
 						groupId += elements[i];
 						break;
+					case DBFeatures.SELECTION_IN_CAMPUS_COLUMN:
+						// inCampus = elements[i];
 					default:
 						break;
 					}
@@ -217,7 +217,7 @@ public class Reader {
 		}
 		return workplaces;
 	}
-	
+
 	public static Graph<String, DefaultWeightedEdge> readRoutes(String filename) {
 		Graph<String, DefaultWeightedEdge> routes = new DefaultDirectedWeightedGraph<String, DefaultWeightedEdge>(
 				DefaultWeightedEdge.class);

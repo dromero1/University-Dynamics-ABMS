@@ -23,25 +23,18 @@ public class AcademicActivity {
 	private String teachingFacilityId;
 
 	/**
-	 * Room
-	 */
-	private String room;
-
-	/**
 	 * Create a new academic activity
 	 * 
 	 * @param day                Day
 	 * @param startTime          Start time
 	 * @param endTime            End time
 	 * @param teachingFacilityId Id of teaching facility
-	 * @param room               Room
 	 */
-	public AcademicActivity(int day, double startTime, double endTime, String teachingFacilityId, String room) {
+	public AcademicActivity(int day, double startTime, double endTime, String teachingFacilityId) {
 		this.day = day;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.teachingFacilityId = teachingFacilityId;
-		this.room = room;
 	}
 
 	/**
@@ -70,13 +63,6 @@ public class AcademicActivity {
 	 */
 	public String getTeachingFacilityId() {
 		return this.teachingFacilityId;
-	}
-
-	/**
-	 * Get room
-	 */
-	public String getRoom() {
-		return this.room;
 	}
 
 }
