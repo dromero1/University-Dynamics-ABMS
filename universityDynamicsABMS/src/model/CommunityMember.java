@@ -26,7 +26,7 @@ public abstract class CommunityMember {
 	/**
 	 * Planning delta (unit: hours)
 	 */
-	protected static final double PLANNING_DELTA = 1;
+	protected static final double PLANNING_DELTA = 0.5;
 
 	/**
 	 * Vehicle user flag. Determines whether the student enters the campus by car or
@@ -266,7 +266,7 @@ public abstract class CommunityMember {
 	 */
 	private void initActionValues() {
 		this.actionValues = new HashMap<Integer, Pair<Double, Integer>>();
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 4; i++) {
 			int shift = i * 10;
 			double r = RandomHelper.nextDoubleFromTo(-1, 1);
 			this.actionValues.put(shift, new Pair<Double, Integer>(r, 0));

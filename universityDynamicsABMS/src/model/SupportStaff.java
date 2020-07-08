@@ -36,7 +36,7 @@ public class SupportStaff extends CommunityMember {
 	public void work() {
 		moveToPolygon(this.workplace, "");
 	}
-	
+
 	/**
 	 * Schedule activities
 	 */
