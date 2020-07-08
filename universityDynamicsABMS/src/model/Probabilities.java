@@ -20,7 +20,7 @@ public class Probabilities {
 	/**
 	 * Maximum lunch time (unit: hours). Reference: <pending>
 	 */
-	public static final double MAX_LUNCH_TIME = 4;
+	public static final double MAX_LUNCH_TIME = 14;
 
 	/**
 	 * Mean lunch duration (unit: hours). Reference: <pending>
