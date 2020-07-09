@@ -46,10 +46,6 @@
       <string>gis.GISSharedArea</string>
       <string>styles.GISPolygonStyle</string>
     </entry>
-    <entry>
-      <string>gis.GISTransitArea</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
   </styles>
   <editedStyles>
     <entry>
@@ -96,10 +92,6 @@
       <string>gis.GISSharedArea</string>
       <null/>
     </entry>
-    <entry>
-      <string>gis.GISTransitArea</string>
-      <null/>
-    </entry>
   </editedStyles>
   <netStyles/>
   <editedNetStyles/>
@@ -111,21 +103,21 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1486768914</hashCode>
+    <hashCode>624416313</hashCode>
   </schedParams>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
       <string>gis.GISInOut</string>
-      <int>7</int>
+      <int>6</int>
     </entry>
     <entry>
       <string>gis.GISOtherFacility</string>
-      <int>5</int>
+      <int>4</int>
     </entry>
     <entry>
       <string>gis.GISEatingPlace</string>
-      <int>8</int>
+      <int>7</int>
     </entry>
     <entry>
       <string>gis.GISVehicleInOut</string>
@@ -133,35 +125,31 @@
     </entry>
     <entry>
       <string>gis.GISCampus</string>
-      <int>9</int>
+      <int>8</int>
     </entry>
     <entry>
       <string>gis.GISLimbo</string>
-      <int>6</int>
+      <int>5</int>
     </entry>
     <entry>
       <string>gis.GISParkingLot</string>
-      <int>4</int>
-    </entry>
-    <entry>
-      <string>gis.GISTeachingFacility</string>
-      <int>2</int>
-    </entry>
-    <entry>
-      <string>model.SupportStaff</string>
-      <int>10</int>
-    </entry>
-    <entry>
-      <string>model.Student</string>
-      <int>11</int>
-    </entry>
-    <entry>
-      <string>gis.GISSharedArea</string>
       <int>3</int>
     </entry>
     <entry>
-      <string>gis.GISTransitArea</string>
+      <string>gis.GISTeachingFacility</string>
       <int>1</int>
+    </entry>
+    <entry>
+      <string>model.SupportStaff</string>
+      <int>9</int>
+    </entry>
+    <entry>
+      <string>model.Student</string>
+      <int>10</int>
+    </entry>
+    <entry>
+      <string>gis.GISSharedArea</string>
+      <int>2</int>
     </entry>
   </layerOrder>
   <projections>
