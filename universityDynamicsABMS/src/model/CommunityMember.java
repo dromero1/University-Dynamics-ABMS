@@ -82,18 +82,9 @@ public abstract class CommunityMember {
 	 */
 	@ScheduledMethod(start = 0)
 	public void init() {
-		initActionValues();
 		vanishToLimbo();
-	}
-
-	/**
-	 * Schedule recurring events
-	 */
-	public void scheduleRecurringEvents() {
-		scheduleActivities();
-		scheduleDepartures();
-		scheduleLunch();
-		scheduleArrivalPlanning();
+		initActionValues();
+		scheduleRecurringEvents();
 	}
 
 	/**
@@ -255,6 +246,16 @@ public abstract class CommunityMember {
 			double ticks = TickConverter.minutesToTicks(totalTime);
 			eventScheduler.scheduleOneTimeEvent(ticks, this, method);
 		}
+	}
+
+	/**
+	 * Schedule recurring events
+	 */
+	private void scheduleRecurringEvents() {
+		scheduleActivities();
+		scheduleDepartures();
+		scheduleLunch();
+		scheduleArrivalPlanning();
 	}
 
 	/**
