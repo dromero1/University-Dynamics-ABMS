@@ -13,7 +13,7 @@ import util.TickConverter;
 public class Student extends CommunityMember {
 
 	/**
-	 * Minimum time difference between activities to have fun (unit: hours)
+	 * Minimum time difference between activities in order to have fun (unit: hours)
 	 */
 	private static final double MIN_TIME_TO_FUN = 0.5;
 
