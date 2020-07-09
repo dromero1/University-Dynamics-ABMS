@@ -74,8 +74,7 @@ public abstract class CommunityMember {
 		this.geography = geography;
 		this.contextBuilder = contextBuilder;
 		this.isVehicleUser = Probabilities.getRandomVehicleUsage();
-		initActionValues();
-		vanishToLimbo();
+		init();
 	}
 
 	/**
@@ -248,6 +247,14 @@ public abstract class CommunityMember {
 		}
 	}
 
+	/**
+	 * Initialize
+	 */
+	private void init() {
+		initActionValues();
+		vanishToLimbo();
+	}
+	
 	/**
 	 * Move to random in-out spot
 	 */
