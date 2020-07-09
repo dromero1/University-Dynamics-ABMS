@@ -12,12 +12,12 @@ public class TickConverter {
 	/**
 	 * Ticks per week (unit: ticks)
 	 */
-	public static final double TICKS_PER_WEEK = 168;
+	public static final int TICKS_PER_WEEK = 168;
 
 	/**
 	 * Ticks per day (unit: ticks)
 	 */
-	public static final double TICKS_PER_DAY = 24;
+	public static final int TICKS_PER_DAY = 24;
 
 	/**
 	 * Day and time to ticks
