@@ -43,7 +43,7 @@ public class Probabilities {
 	public static final double MAX_WALKING_SPEED = 100;
 
 	/**
-	 * Get random lunch time
+	 * Get random lunch time. Reference: <pending>
 	 */
 	public static double getRandomLunchTime() {
 		return RandomHelper.nextDoubleFromTo(MIN_LUNCH_TIME, MAX_LUNCH_TIME);
