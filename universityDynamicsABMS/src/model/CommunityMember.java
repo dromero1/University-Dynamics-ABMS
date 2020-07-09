@@ -81,7 +81,7 @@ public abstract class CommunityMember {
 	 * Initialize
 	 */
 	@ScheduledMethod(start = 0)
-	private void init() {
+	public void init() {
 		initActionValues();
 		vanishToLimbo();
 	}
