@@ -15,7 +15,7 @@ public class Student extends CommunityMember {
 	/**
 	 * Minimum time difference between activities in order to have fun (unit: hours)
 	 */
-	private static final double MIN_TIME_TO_FUN = 0.5;
+	public static final double MIN_TIME_TO_FUN = 0.5;
 
 	/**
 	 * Student id
