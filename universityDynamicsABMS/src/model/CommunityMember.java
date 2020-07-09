@@ -143,8 +143,8 @@ public abstract class CommunityMember {
 				int i = RandomHelper.nextIntFromTo(0, shifts.length - 1);
 				selectedShift = (Integer) shifts[i];
 			}
-			EventScheduler eventScheduler = EventScheduler.getInstance();
 			double ticks = TickConverter.minutesToTicks(selectedShift);
+			EventScheduler eventScheduler = EventScheduler.getInstance();
 			eventScheduler.scheduleOneTimeEvent(ticks, this, "relocate", this.lastExit);
 		}
 	}
@@ -221,7 +221,6 @@ public abstract class CommunityMember {
 	 * @param method  Method to call after arriving to polygon
 	 */
 	protected void moveToPolygon(GISPolygon polygon, String method) {
-		EventScheduler eventScheduler = EventScheduler.getInstance();
 		String source = this.currentPolygon.getId();
 		String sink = polygon.getId();
 		Graph<String, DefaultWeightedEdge> routes = this.contextBuilder.routes;
@@ -229,6 +228,7 @@ public abstract class CommunityMember {
 		GraphPath<String, DefaultWeightedEdge> path = shortestPaths.get(source + "-" + sink);
 		List<String> vertexes = path.getVertexList();
 		List<DefaultWeightedEdge> edges = path.getEdgeList();
+		EventScheduler eventScheduler = EventScheduler.getInstance();
 		double speed = Probabilities.getRandomWalkingSpeed();
 		double totalTime = 0.0;
 		for (int i = 0; i < vertexes.size() - 1; i++) {
