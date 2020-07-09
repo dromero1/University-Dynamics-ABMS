@@ -66,7 +66,7 @@ public abstract class GISPolygon {
 	 */
 	public void setGeometryInGeography(Geography<Object> geography) {
 		this.geography = geography;
-		this.geography.move(this, geometry);
+		this.geography.move(this, this.geometry);
 	}
 
 	/**
