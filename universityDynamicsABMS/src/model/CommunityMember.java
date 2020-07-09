@@ -98,7 +98,7 @@ public abstract class CommunityMember {
 	 * Go have lunch at a designated eating place
 	 */
 	public void haveLunch() {
-		moveToRandomPolygon(this.contextBuilder.eatingPlaces, "", SelectionStrategy.weightBased);
+		moveToRandomPolygon(this.contextBuilder.eatingPlaces, "", SelectionStrategy.WEIGHT_BASED);
 	}
 
 	/**
@@ -201,7 +201,7 @@ public abstract class CommunityMember {
 			SelectionStrategy strategy) {
 		GISPolygon selectedPolygon = null;
 		switch (strategy) {
-		case weightBased:
+		case WEIGHT_BASED:
 			selectedPolygon = Probabilities.getRandomPolygonWeightBased(polygons);
 			break;
 		default:
@@ -265,7 +265,7 @@ public abstract class CommunityMember {
 		} else {
 			inOuts = this.contextBuilder.inOuts;
 		}
-		return moveToRandomPolygon(inOuts, method, SelectionStrategy.random);
+		return moveToRandomPolygon(inOuts, method, SelectionStrategy.RANDOM);
 	}
 
 	/**

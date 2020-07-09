@@ -1,5 +1,5 @@
 package model;
 
 public enum SelectionStrategy {
-	weightBased, random, banditApproach
+	WEIGHT_BASED, RANDOM, BANDIT_APPROACH
 }
