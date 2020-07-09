@@ -13,6 +13,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import gis.GISLimbo;
 import gis.GISPolygon;
+import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.gis.util.GeometryUtil;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.gis.Geography;
@@ -74,7 +75,15 @@ public abstract class CommunityMember {
 		this.geography = geography;
 		this.contextBuilder = contextBuilder;
 		this.isVehicleUser = Probabilities.getRandomVehicleUsage();
-		init();
+	}
+
+	/**
+	 * Initialize
+	 */
+	@ScheduledMethod(start = 0)
+	private void init() {
+		initActionValues();
+		vanishToLimbo();
 	}
 
 	/**
@@ -106,8 +115,9 @@ public abstract class CommunityMember {
 	 */
 	public void vanishToLimbo() {
 		GISLimbo limbo = (GISLimbo) Probabilities.getRandomPolygon(this.contextBuilder.limbos);
-		if (this.currentPolygon == null)
+		if (this.currentPolygon == null) {
 			this.currentPolygon = limbo;
+		}
 		relocate(limbo);
 	}
 
@@ -247,14 +257,6 @@ public abstract class CommunityMember {
 		}
 	}
 
-	/**
-	 * Initialize
-	 */
-	private void init() {
-		initActionValues();
-		vanishToLimbo();
-	}
-	
 	/**
 	 * Move to random in-out spot
 	 */
