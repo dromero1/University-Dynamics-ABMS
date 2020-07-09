@@ -1,6 +1,0 @@
-#
-#Wed Jun 17 09:20:46 COT 2020
-incoming=tcp\://127.0.0.1\:5555
-outgoing=tcp\://127.0.0.1\:5556
-scenario=..\\universityDynamicsABMS.rs
-working.directory=../
