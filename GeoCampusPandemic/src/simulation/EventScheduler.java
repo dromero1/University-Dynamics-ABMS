@@ -14,7 +14,7 @@ public class EventScheduler {
 	private static EventScheduler instance;
 
 	/**
-	 * Private constructor
+	 * Create a new event scheduler
 	 */
 	private EventScheduler() {
 	}
