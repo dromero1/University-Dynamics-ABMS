@@ -42,7 +42,10 @@ Add additional notes about how to deploy this on a live system
 
 ## Authors
 
-* **David Romero** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+1. Paula Escudero, PhD.
+2. David Romero
+3. Mariana Gómez
+4. Jhon Miranda
 
 See also the list of [contributors](https://github.com/dromero1/GeoCampusPandemic/contributors) who participated in this project.
 
@@ -52,6 +55,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Universidad EAFIT
