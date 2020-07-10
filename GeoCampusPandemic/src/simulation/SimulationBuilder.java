@@ -108,7 +108,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	public Context<Object> build(Context<Object> context) {
 		context.setId("GeoCampusPandemic");
 
-		Geography<Object> geography = getGeographyProjection(context);
+		// Create geography projection
+		Geography<Object> geography = createGeographyProjection(context);
 
 		// Initialize campus
 		GISCampus campus = readCampus();
@@ -222,7 +223,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return context;
 	}
 
-	private Geography<Object> getGeographyProjection(Context<Object> context) {
+	private Geography<Object> createGeographyProjection(Context<Object> context) {
 		GeographyParameters<Object> params = new GeographyParameters<Object>();
 		GeographyFactory geographyFactory = GeographyFactoryFinder.createGeographyFactory(null);
 		Geography<Object> geography = geographyFactory.createGeography("campus", context, params);
