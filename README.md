@@ -1,5 +1,5 @@
-# Product Name
-> Short blurb about what your product does.
+# Geo-Campus-Pandemic
+> An agent-based model of community dynamics on a university campus during a pandemic scenario.
 
 One to two paragraph statement about your product and what it does.
 
