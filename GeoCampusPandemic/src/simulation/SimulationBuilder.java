@@ -192,8 +192,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		HashMap<String, ArrayList<String>> scheduleSelection = Reader
 				.readScheduleSelectionDatabase(Paths.SCHEDULE_SELECTION_DATABASE);
 
-		// Read workplaces weights
-		// TODO Refactor
+		// TODO Refactor Read workplaces weights
 		this.workplaces = new HashMap<String, GISPolygon>();
 		HashMap<String, Double> workplaces = Reader.readWorkplaces(Paths.WORKPLACES_DATABASE);
 		for (String workplaceId : workplaces.keySet()) {
@@ -209,7 +208,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		for (Student student : students) {
 			String studentId = student.getId();
 			Schedule schedule = Heuristics.buildHeuristicSchedule(studentId, scheduleSelection, groups);
-			if (schedule != null) {
+			if (schedule != null && schedule.getGroupCount() > 0) {
 				student.setSchedule(schedule);
 				context.add(student);
 			}
@@ -222,7 +221,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		}
 
 		// Simulation end
-		RunEnvironment.getInstance().endAt(168 * 50);
+		RunEnvironment.getInstance().endAt(168 * 1);
 
 		return context;
 	}
@@ -285,10 +284,13 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISPolygon> readTransitAreas() {
 		HashMap<String, GISPolygon> transitAreas = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.TRANSIT_AREAS_GEOMETRY_SHAPEFILE);
+		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.TRANSIT_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
-			GISTransitArea transitArea = new GISTransitArea(id, geometry);
+			double area = areas.get(id).getFirst();
+			double weight = areas.get(id).getSecond();
+			GISTransitArea transitArea = new GISTransitArea(id, geometry, area, weight);
 			transitAreas.put(id, transitArea);
 		}
 		return transitAreas;

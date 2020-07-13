@@ -10,9 +10,10 @@ public class GISTransitArea extends GISDensityMeter {
 	 * @param id       Polygon id
 	 * @param geometry Reference to geometry
 	 * @param area     Area
+	 * @param weight   Weight
 	 */
-	public GISTransitArea(String id, Geometry geometry, double area) {
-		super(id, geometry, area);
+	public GISTransitArea(String id, Geometry geometry, double area, double weight) {
+		super(id, geometry, area, weight);
 	}
 
 }

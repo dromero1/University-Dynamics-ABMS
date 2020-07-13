@@ -33,7 +33,7 @@ public class Schedule {
 	 * @param group Group
 	 */
 	public void addGroup(Group group) {
-		groups.add(group);
+		this.groups.add(group);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class Schedule {
 	public ArrayList<Integer> getCampusDays() {
 		ArrayList<Integer> campusDays = new ArrayList<Integer>();
 		Set<Integer> days = new HashSet<Integer>();
-		for (Group group : groups) {
+		for (Group group : this.groups) {
 			Set<Integer> activityDays = group.getActivityDays();
 			for (Integer day : activityDays) {
 				days.add(day);
@@ -60,7 +60,7 @@ public class Schedule {
 	 */
 	public AcademicActivity getFirstAcademicActivityInDay(int day) {
 		AcademicActivity firstActivity = null;
-		for (Group group : groups) {
+		for (Group group : this.groups) {
 			for (AcademicActivity activity : group.getAcademicActivities()) {
 				if (activity.getDay() == day) {
 					if (firstActivity == null) {
@@ -83,7 +83,7 @@ public class Schedule {
 	 */
 	public AcademicActivity getLastAcademicActivityInDay(int day) {
 		AcademicActivity lastActivity = null;
-		for (Group group : groups) {
+		for (Group group : this.groups) {
 			for (AcademicActivity activity : group.getAcademicActivities()) {
 				if (activity.getDay() == day) {
 					if (lastActivity == null) {
@@ -107,7 +107,7 @@ public class Schedule {
 	 */
 	public AcademicActivity getNextAcademicActivity(double day, double hour) {
 		AcademicActivity nextActivity = null;
-		for (Group group : groups) {
+		for (Group group : this.groups) {
 			for (AcademicActivity activity : group.getAcademicActivities()) {
 				if (activity.getDay() == day && activity.getStartTime() > hour) {
 					if (nextActivity == null) {
@@ -131,7 +131,7 @@ public class Schedule {
 	 * @param duration   Event's duration
 	 */
 	public boolean collides(int day, double eventStart, double duration) {
-		for (Group group : groups) {
+		for (Group group : this.groups) {
 			for (AcademicActivity activity : group.getAcademicActivities()) {
 				if (activity.getDay() == day) {
 					double activityStart = activity.getStartTime();
@@ -153,7 +153,14 @@ public class Schedule {
 	 * Get list of groups
 	 */
 	public ArrayList<Group> getGroups() {
-		return groups;
+		return this.groups;
+	}
+
+	/**
+	 * Get group count
+	 */
+	public int getGroupCount() {
+		return this.groups.size();
 	}
 
 }

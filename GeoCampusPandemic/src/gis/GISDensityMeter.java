@@ -25,18 +25,6 @@ public class GISDensityMeter extends GISPolygon {
 	}
 
 	/**
-	 * Create a new geo-spatial density meter
-	 * 
-	 * @param id       Polygon id
-	 * @param geometry Reference to geometry
-	 * @param area     Area
-	 */
-	public GISDensityMeter(String id, Geometry geometry, double area) {
-		super(id, geometry);
-		this.area = area;
-	}
-
-	/**
 	 * Count the number of agents that are currently in the polygon
 	 */
 	public int countAgents() {
