@@ -2,7 +2,7 @@ package gis;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-public class GISTransitArea extends GISPolygon {
+public class GISTransitArea extends GISDensityMeter {
 
 	/**
 	 * Create a new geo-spatial transit area

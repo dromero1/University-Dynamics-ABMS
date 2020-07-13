@@ -85,14 +85,14 @@ public class Probabilities {
 	 * Get random work start time. Reference: <pending>
 	 */
 	public static double getRandomWorkStartTime() {
-		return 7;
+		return 8;
 	}
 
 	/**
 	 * Get random work end time. Reference: <pending>
 	 */
 	public static double getRandomWorkEndTime() {
-		return 17;
+		return 18;
 	}
 
 	/**

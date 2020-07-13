@@ -186,13 +186,14 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		this.shortestPaths = Heuristics.findShortestPaths(this.routes);
 
 		// Read groups
-		ArrayList<Group> groups = Reader.readGroupsDatabase(Paths.GROUPS_DATABASE);
+		HashMap<String, Group> groups = Reader.readGroupsDatabase(Paths.GROUPS_DATABASE);
 
 		// Read schedule selection
 		HashMap<String, ArrayList<String>> scheduleSelection = Reader
 				.readScheduleSelectionDatabase(Paths.SCHEDULE_SELECTION_DATABASE);
 
 		// Read workplaces weights
+		// TODO Refactor
 		this.workplaces = new HashMap<String, GISPolygon>();
 		HashMap<String, Double> workplaces = Reader.readWorkplaces(Paths.WORKPLACES_DATABASE);
 		for (String workplaceId : workplaces.keySet()) {
@@ -206,9 +207,12 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		Parameters simParams = RunEnvironment.getInstance().getParameters();
 		ArrayList<Student> students = createStudents(simParams.getInteger("students"), geography);
 		for (Student student : students) {
-			Schedule schedule = Heuristics.getRandomSchedule(groups);
-			student.setSchedule(schedule);
-			context.add(student);
+			String studentId = student.getId();
+			Schedule schedule = Heuristics.buildHeuristicSchedule(studentId, scheduleSelection, groups);
+			if (schedule != null) {
+				student.setSchedule(schedule);
+				context.add(student);
+			}
 		}
 
 		// Add support staff to simulation

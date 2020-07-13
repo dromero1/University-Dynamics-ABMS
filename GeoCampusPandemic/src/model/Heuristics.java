@@ -8,7 +8,6 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.SingleSourcePaths;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
-
 import repast.simphony.util.collections.Pair;
 
 public class Heuristics {
@@ -18,7 +17,7 @@ public class Heuristics {
 	 * 
 	 * @param groups List of available groups
 	 */
-	public static Schedule getRandomSchedule(ArrayList<Group> groups) {
+	public static Schedule buildRandomSchedule(ArrayList<Group> groups) {
 		int toEnroll = Probabilities.getRandomGroupsToEnrollTo();
 		int enrolled = 0;
 		Collections.shuffle(groups);
@@ -31,6 +30,29 @@ public class Heuristics {
 				enrolled++;
 			}
 			i++;
+		}
+		return schedule;
+	}
+
+	/**
+	 * Create a heuristic schedule for a student
+	 * 
+	 * @param studentId         Student id
+	 * @param scheduleSelection Heuristic-based schedule selection
+	 * @param groups            List of available groups
+	 */
+	public static Schedule buildHeuristicSchedule(String studentId,
+			HashMap<String, ArrayList<String>> scheduleSelection, HashMap<String, Group> groups) {
+		Schedule schedule = null;
+		if (scheduleSelection.containsKey(studentId)) {
+			schedule = new Schedule();
+			ArrayList<String> selection = scheduleSelection.get(studentId);
+			for (String course : selection) {
+				if (groups.containsKey(course)) {
+					Group group = groups.get(course);
+					schedule.addGroup(group);
+				}
+			}
 		}
 		return schedule;
 	}

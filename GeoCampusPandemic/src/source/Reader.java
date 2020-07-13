@@ -40,7 +40,7 @@ public class Reader {
 		return null;
 	}
 
-	public static ArrayList<Group> readGroupsDatabase(String filename) {
+	public static HashMap<String, Group> readGroupsDatabase(String filename) {
 		HashMap<String, Group> groups = new HashMap<String, Group>();
 		try {
 			File file = new File(filename);
@@ -65,7 +65,7 @@ public class Reader {
 						groupId += elements[i];
 						break;
 					case DBFeatures.GROUPS_GROUP_COLUMN:
-						groupId += elements[i];
+						groupId += "-" + elements[i];
 						break;
 					case DBFeatures.GROUPS_DAY_COLUMN:
 						day = Integer.parseInt(elements[i]);
@@ -98,7 +98,7 @@ public class Reader {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		return new ArrayList<Group>(groups.values());
+		return groups;
 	}
 
 	public static HashMap<String, ArrayList<String>> readScheduleSelectionDatabase(String filename) {
@@ -125,7 +125,7 @@ public class Reader {
 						groupId += elements[i];
 						break;
 					case DBFeatures.SELECTION_GROUP_ID_COLUMN:
-						groupId += elements[i];
+						groupId += "-" + elements[i];
 						break;
 					default:
 						break;
