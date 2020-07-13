@@ -58,14 +58,24 @@ public class DBFeatures {
 	public static final int FACILITIES_FACILITY_ID_COLUMN = 0;
 
 	/**
-	 * Facility areas database - facility area column
+	 * Facility areas database - area column
 	 */
-	public static final int FACILITIES_FACILITY_AREA_COLUMN = 1;
+	public static final int FACILITIES_AREA_COLUMN = 1;
 
 	/**
-	 * Facility areas database - facility weight column
+	 * Facility areas database - weight column
 	 */
-	public static final int FACILITIES_FACILITY_WEIGHT_COLUMN = 2;
+	public static final int FACILITIES_WEIGHT_COLUMN = 2;
+
+	/**
+	 * Facility areas database - active column
+	 */
+	public static final int FACILITIES_ACTIVE_COLUMN = 3;
+
+	/**
+	 * Facility areas database - link column
+	 */
+	public static final int FACILITIES_LINK_COLUMN = 4;
 
 	/**
 	 * Workplaces database - workplace id column
@@ -73,9 +83,9 @@ public class DBFeatures {
 	public static final int WORKPLACES_WORKPLACE_ID_COLUMN = 0;
 
 	/**
-	 * Workplaces database - workplace weight column
+	 * Workplaces database - weight column
 	 */
-	public static final int WORKPLACES_WORKPLACE_WEIGHT_COLUMN = 1;
+	public static final int WORKPLACES_WEIGHT_COLUMN = 1;
 
 	/**
 	 * Schedule selection database - student id column
@@ -91,10 +101,5 @@ public class DBFeatures {
 	 * Schedule selection database - group id column
 	 */
 	public static final int SELECTION_GROUP_ID_COLUMN = 2;
-
-	/**
-	 * Schedule selection database - on-campus column
-	 */
-	public static final int SELECTION_ON_CAMPUS_COLUMN = 3;
 
 }

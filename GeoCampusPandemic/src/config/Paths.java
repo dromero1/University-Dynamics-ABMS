@@ -50,7 +50,7 @@ public final class Paths {
 	/**
 	 * Transit areas geometry
 	 */
-	public static final String TRANSIT_AREAS_GEOMETRY_SHAPEFILE = "./data/maps/Transito-polygon.shp";
+	public static final String TRANSIT_AREAS_GEOMETRY_SHAPEFILE = "./data/maps/Rutas-polygon.shp";
 
 	/**
 	 * Groups database

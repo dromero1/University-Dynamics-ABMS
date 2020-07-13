@@ -1,8 +1,8 @@
-﻿Place;Area;Weight;Active
-GPP;50;1;1
-GAG;50;1;1
-GPA;50;1;1
-G4S;50;1;0
-GCID;50;1;0
-GCI2;50;1;0
-GP19;50;1;0
+﻿Place;Area;Weight;Active;Link
+GPP;50;0.1429;1;
+GAG;50;0.1429;1;
+GPA;50;0.1429;1;
+G4S;50;0.1429;0;
+GCID;50;0.1429;0;
+GCI2;50;0.1429;0;
+GP19;50;0.1429;0;

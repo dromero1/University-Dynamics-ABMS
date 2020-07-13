@@ -129,9 +129,11 @@ public class Probabilities {
 			}
 		});
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
+		double cummulativeProbability = 0;
 		for (GISPolygon polygon : polyList) {
 			double weight = polygon.getWeight();
-			if (r <= weight) {
+			cummulativeProbability += weight;
+			if (r <= cummulativeProbability) {
 				return polygon;
 			}
 		}
@@ -161,9 +163,11 @@ public class Probabilities {
 			}
 		});
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
+		double cummulativeProbability = 0;
 		for (GISPolygon polygon : polyList) {
 			double weight = polygon.getWorkWeight();
-			if (r <= weight) {
+			cummulativeProbability += weight;
+			if (r <= cummulativeProbability) {
 				return polygon;
 			}
 		}

@@ -116,7 +116,6 @@ public class Reader {
 				String[] elements = data.split(";");
 				String studentId = "";
 				String groupId = "";
-				boolean onCampus = false;
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
 					case DBFeatures.SELECTION_STUDENT_ID_COLUMN:
@@ -128,21 +127,21 @@ public class Reader {
 					case DBFeatures.SELECTION_GROUP_ID_COLUMN:
 						groupId += elements[i];
 						break;
-					case DBFeatures.SELECTION_ON_CAMPUS_COLUMN:
-						int oc = Integer.parseInt(elements[i]);
-						onCampus = (oc == 1);
 					default:
 						break;
 					}
 				}
 				ArrayList<String> selectedGroups = null;
 				if (scheduleSelection.containsKey(studentId)) {
-					
+					selectedGroups = scheduleSelection.get(studentId);
+					if (!selectedGroups.contains(groupId)) {
+						selectedGroups.add(groupId);
+					}
 				} else {
 					selectedGroups = new ArrayList<>();
 					selectedGroups.add(groupId);
-					scheduleSelection.put(studentId, selectedGroups);
 				}
+				scheduleSelection.put(studentId, selectedGroups);
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
@@ -172,10 +171,10 @@ public class Reader {
 					case DBFeatures.FACILITIES_FACILITY_ID_COLUMN:
 						id = elements[i];
 						break;
-					case DBFeatures.FACILITIES_FACILITY_AREA_COLUMN:
+					case DBFeatures.FACILITIES_AREA_COLUMN:
 						area = Double.parseDouble(elements[i]);
 						break;
-					case DBFeatures.FACILITIES_FACILITY_WEIGHT_COLUMN:
+					case DBFeatures.FACILITIES_WEIGHT_COLUMN:
 						weight = Double.parseDouble(elements[i]);
 						break;
 					default:
@@ -211,7 +210,7 @@ public class Reader {
 					case DBFeatures.WORKPLACES_WORKPLACE_ID_COLUMN:
 						id = elements[i];
 						break;
-					case DBFeatures.WORKPLACES_WORKPLACE_WEIGHT_COLUMN:
+					case DBFeatures.WORKPLACES_WEIGHT_COLUMN:
 						weight = Double.parseDouble(elements[i]);
 						break;
 					default:
