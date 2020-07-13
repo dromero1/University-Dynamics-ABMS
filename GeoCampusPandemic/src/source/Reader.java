@@ -53,7 +53,7 @@ public class Reader {
 					continue;
 				}
 				String[] elements = data.split(";");
-				String id = "";
+				String groupId = "";
 				int capacity = 0;
 				int day = 0;
 				double startTime = 0;
@@ -62,10 +62,10 @@ public class Reader {
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
 					case DBFeatures.GROUPS_SUBJECT_COLUMN:
-						id += elements[i];
+						groupId += elements[i];
 						break;
 					case DBFeatures.GROUPS_GROUP_COLUMN:
-						id += elements[i];
+						groupId += elements[i];
 						break;
 					case DBFeatures.GROUPS_DAY_COLUMN:
 						day = Integer.parseInt(elements[i]);
@@ -85,13 +85,13 @@ public class Reader {
 						break;
 					}
 				}
-				if (groups.containsKey(id)) {
-					Group group = groups.get(id);
+				if (groups.containsKey(groupId)) {
+					Group group = groups.get(groupId);
 					group.addAcademicActivity(day, startTime, endTime, teachingFacilityId);
 				} else {
-					Group group = new Group(id, capacity);
+					Group group = new Group(groupId, capacity);
 					group.addAcademicActivity(day, startTime, endTime, teachingFacilityId);
-					groups.put(id, group);
+					groups.put(groupId, group);
 				}
 			}
 			scanner.close();
@@ -116,7 +116,7 @@ public class Reader {
 				String[] elements = data.split(";");
 				String studentId = "";
 				String groupId = "";
-				boolean inCampus = false;
+				boolean onCampus = false;
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
 					case DBFeatures.SELECTION_STUDENT_ID_COLUMN:
@@ -128,11 +128,20 @@ public class Reader {
 					case DBFeatures.SELECTION_GROUP_ID_COLUMN:
 						groupId += elements[i];
 						break;
-					case DBFeatures.SELECTION_IN_CAMPUS_COLUMN:
-						// inCampus = elements[i];
+					case DBFeatures.SELECTION_ON_CAMPUS_COLUMN:
+						int oc = Integer.parseInt(elements[i]);
+						onCampus = (oc == 1);
 					default:
 						break;
 					}
+				}
+				ArrayList<String> selectedGroups = null;
+				if (scheduleSelection.containsKey(studentId)) {
+					
+				} else {
+					selectedGroups = new ArrayList<>();
+					selectedGroups.add(groupId);
+					scheduleSelection.put(studentId, selectedGroups);
 				}
 			}
 			scanner.close();

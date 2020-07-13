@@ -1,8 +1,8 @@
-﻿Place;Area;Weight
-GV48;3;0.59
-GVAG;3;0.74
-GVCI;3;0.84
-GVAR;3;0.89
-GVAV;3;0.94
-GVV4;3;0.99
-GVPR;3;1
+﻿Place;Area;Weight;Active
+GV48;50;1;0
+GVAG;50;1;0
+GVCI;50;1;0
+GVAR;50;1;1
+GVAV;50;1;1
+GVV4;50;1;0
+GVPR;50;1;0

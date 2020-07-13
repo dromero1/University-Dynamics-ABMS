@@ -93,8 +93,8 @@ public class DBFeatures {
 	public static final int SELECTION_GROUP_ID_COLUMN = 2;
 
 	/**
-	 * Schedule selection database - in-campus column
+	 * Schedule selection database - on-campus column
 	 */
-	public static final int SELECTION_IN_CAMPUS_COLUMN = 3;
+	public static final int SELECTION_ON_CAMPUS_COLUMN = 3;
 
 }
