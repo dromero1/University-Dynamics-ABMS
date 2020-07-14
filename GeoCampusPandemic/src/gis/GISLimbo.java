@@ -11,7 +11,7 @@ public class GISLimbo extends GISPolygon {
 	 * @param geometry Reference to geometry
 	 */
 	public GISLimbo(String id, Geometry geometry) {
-		super(id, geometry);
+		super(id, geometry, 0.0);
 	}
 
 }

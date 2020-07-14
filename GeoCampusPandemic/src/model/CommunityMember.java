@@ -161,7 +161,9 @@ public abstract class CommunityMember {
 		Coordinate coordinate = coordinates.get(0);
 		Point destination = geometryFactory.createPoint(coordinate);
 		this.geography.move(this, destination);
+		this.currentPolygon.onDeparture();
 		this.currentPolygon = polygon;
+		this.currentPolygon.onArrival();
 	}
 
 	/**

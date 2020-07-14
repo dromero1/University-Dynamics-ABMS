@@ -19,15 +19,15 @@
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
+      <string>gis.GISCampus</string>
+      <string>styles.GISPolygonStyle</string>
+    </entry>
+    <entry>
       <string>gis.GISLimbo</string>
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
       <string>gis.GISParkingLot</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
-    <entry>
-      <string>gis.GISCampus</string>
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
@@ -69,15 +69,15 @@
       <null/>
     </entry>
     <entry>
+      <string>gis.GISCampus</string>
+      <null/>
+    </entry>
+    <entry>
       <string>gis.GISLimbo</string>
       <null/>
     </entry>
     <entry>
       <string>gis.GISParkingLot</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>gis.GISCampus</string>
       <null/>
     </entry>
     <entry>
@@ -111,57 +111,69 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1953315102</hashCode>
+    <hashCode>-2016743547</hashCode>
   </schedParams>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
       <string>gis.GISOtherFacility</string>
-      <int>1</int>
-    </entry>
-    <entry>
-      <string>gis.GISEatingPlace</string>
       <int>8</int>
     </entry>
     <entry>
-      <string>gis.GISVehicleInOut</string>
-      <int>2</int>
-    </entry>
-    <entry>
-      <string>gis.GISLimbo</string>
-      <int>6</int>
-    </entry>
-    <entry>
-      <string>gis.GISParkingLot</string>
-      <int>5</int>
-    </entry>
-    <entry>
-      <string>gis.GISCampus</string>
-      <int>0</int>
-    </entry>
-    <entry>
-      <string>model.SupportStaff</string>
-      <int>10</int>
-    </entry>
-    <entry>
-      <string>gis.GISSharedArea</string>
-      <int>4</int>
-    </entry>
-    <entry>
-      <string>gis.GISInOut</string>
-      <int>7</int>
-    </entry>
-    <entry>
-      <string>gis.GISTeachingFacility</string>
-      <int>9</int>
-    </entry>
-    <entry>
-      <string>model.Student</string>
+      <string>gis.GISEatingPlace</string>
       <int>11</int>
     </entry>
     <entry>
-      <string>gis.GISTransitArea</string>
+      <string>gis.GISVehicleInOut</string>
       <int>3</int>
+    </entry>
+    <entry>
+      <string>gis.GISCampus</string>
+      <int>12</int>
+    </entry>
+    <entry>
+      <string>gis.GISLimbo</string>
+      <int>9</int>
+    </entry>
+    <entry>
+      <string>gis.GISParkingLot</string>
+      <int>7</int>
+    </entry>
+    <entry>
+      <string>World Map</string>
+      <int>1</int>
+    </entry>
+    <entry>
+      <string>model.SupportStaff</string>
+      <int>13</int>
+    </entry>
+    <entry>
+      <string>gis.GISSharedArea</string>
+      <int>6</int>
+    </entry>
+    <entry>
+      <string>Compass</string>
+      <int>0</int>
+    </entry>
+    <entry>
+      <string>gis.GISInOut</string>
+      <int>10</int>
+    </entry>
+    <entry>
+      <string>gis.GISTeachingFacility</string>
+      <int>5</int>
+    </entry>
+    <entry>
+      <string>Scale bar</string>
+      <int>2</int>
+    </entry>
+    <entry>
+      <string>model.Student</string>
+      <int>14</int>
+    </entry>
+    <entry>
+      <string>gis.GISTransitArea</string>
+      <int>4</int>
     </entry>
   </layerOrder>
   <projections>

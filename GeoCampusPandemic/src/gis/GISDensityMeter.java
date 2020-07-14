@@ -1,8 +1,6 @@
 package gis;
 
 import com.vividsolutions.jts.geom.Geometry;
-import model.CommunityMember;
-import repast.simphony.query.space.gis.ContainsQuery;
 
 public class GISDensityMeter extends GISPolygon {
 
@@ -25,24 +23,10 @@ public class GISDensityMeter extends GISPolygon {
 	}
 
 	/**
-	 * Count the number of agents that are currently in the polygon
-	 */
-	public int countAgents() {
-		int count = 0;
-		ContainsQuery<Object> containsQuery = new ContainsQuery<Object>(this.geography, this.geometry);
-		for (Object object : containsQuery.query()) {
-			if (object instanceof CommunityMember)
-				count++;
-		}
-		return count;
-	}
-
-	/**
 	 * Measure the current population density
 	 */
 	public double measureDensity() {
-		int count = countAgents();
-		return count / area;
+		return this.agentCount / area;
 	}
 
 	/**

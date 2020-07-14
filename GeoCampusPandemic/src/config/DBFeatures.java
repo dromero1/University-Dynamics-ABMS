@@ -3,14 +3,14 @@ package config;
 public class DBFeatures {
 
 	/**
-	 * Groups database - subject column
+	 * Groups database - subject id column
 	 */
-	public static final int GROUPS_SUBJECT_COLUMN = 0;
+	public static final int GROUPS_SUBJECT_ID_COLUMN = 0;
 
 	/**
-	 * Groups database - group column
+	 * Groups database - group id column
 	 */
-	public static final int GROUPS_GROUP_COLUMN = 1;
+	public static final int GROUPS_GROUP_ID_COLUMN = 1;
 
 	/**
 	 * Groups database - day column
@@ -53,34 +53,34 @@ public class DBFeatures {
 	public static final int ROUTES_DISTANCE_COLUMN = 2;
 
 	/**
-	 * Facility areas database - facility id column
+	 * Facilities database - id column
 	 */
-	public static final int FACILITIES_FACILITY_ID_COLUMN = 0;
+	public static final int FACILITIES_ID_COLUMN = 0;
 
 	/**
-	 * Facility areas database - area column
+	 * Facilities database - area column
 	 */
 	public static final int FACILITIES_AREA_COLUMN = 1;
 
 	/**
-	 * Facility areas database - weight column
+	 * Facilities database - weight column
 	 */
 	public static final int FACILITIES_WEIGHT_COLUMN = 2;
 
 	/**
-	 * Facility areas database - active column
+	 * Facilities database - active column
 	 */
 	public static final int FACILITIES_ACTIVE_COLUMN = 3;
 
 	/**
-	 * Facility areas database - link column
+	 * Facilities database - link column
 	 */
 	public static final int FACILITIES_LINK_COLUMN = 4;
 
 	/**
-	 * Workplaces database - workplace id column
+	 * Workplaces database - id column
 	 */
-	public static final int WORKPLACES_WORKPLACE_ID_COLUMN = 0;
+	public static final int WORKPLACES_ID_COLUMN = 0;
 
 	/**
 	 * Workplaces database - weight column

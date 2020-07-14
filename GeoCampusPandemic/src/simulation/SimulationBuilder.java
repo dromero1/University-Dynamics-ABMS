@@ -55,11 +55,6 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	public HashMap<String, GISPolygon> eatingPlaces;
 
 	/**
-	 * Other facilities
-	 */
-	public HashMap<String, GISPolygon> otherFacitilies;
-
-	/**
 	 * In-Out spots
 	 */
 	public HashMap<String, GISPolygon> inOuts;
@@ -68,11 +63,6 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * Vehicle in-out spots
 	 */
 	public HashMap<String, GISPolygon> vehicleInOuts;
-
-	/**
-	 * Parking lots
-	 */
-	public HashMap<String, GISPolygon> parkingLots;
 
 	/**
 	 * Transit areas
@@ -138,15 +128,15 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		}
 
 		// Initialize other facilities
-		this.otherFacitilies = readOtherFacilities();
-		for (GISPolygon otherFacility : this.otherFacitilies.values()) {
+		HashMap<String, GISPolygon> otherFacitilies = readOtherFacilities();
+		for (GISPolygon otherFacility : otherFacitilies.values()) {
 			otherFacility.setGeometryInGeography(geography);
 			context.add(otherFacility);
 		}
 
 		// Initialize parking lots
-		this.parkingLots = readParkingLots();
-		for (GISPolygon parkingLot : this.parkingLots.values()) {
+		HashMap<String, GISPolygon> parkingLots = readParkingLots();
+		for (GISPolygon parkingLot : parkingLots.values()) {
 			parkingLot.setGeometryInGeography(geography);
 			context.add(parkingLot);
 		}
@@ -206,8 +196,12 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		Parameters simParams = RunEnvironment.getInstance().getParameters();
 		ArrayList<Student> students = createStudents(simParams.getInteger("students"), geography);
 		for (Student student : students) {
-			String studentId = student.getId();
-			Schedule schedule = Heuristics.buildHeuristicSchedule(studentId, scheduleSelection, groups);
+			/*
+			 * Replace to work with heuristic scheduling String studentId = student.getId();
+			 * Schedule schedule = Heuristics.buildHeuristicSchedule(studentId,
+			 * scheduleSelection, groups);
+			 */
+			Schedule schedule = Heuristics.buildRandomSchedule(groups);
 			if (schedule != null && schedule.getGroupCount() > 0) {
 				student.setSchedule(schedule);
 				context.add(student);
@@ -221,7 +215,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		}
 
 		// Simulation end
-		RunEnvironment.getInstance().endAt(168 * 1);
+		RunEnvironment.getInstance().endAt(168);
 
 		return context;
 	}
@@ -254,7 +248,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISPolygon> readInOuts() {
 		HashMap<String, GISPolygon> inOuts = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.INOUTS_GEOMETRY_SHAPEFILE);
-		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.INOUT_AREAS_DATABASE);
+		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAttributes(Paths.INOUT_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
@@ -269,7 +263,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISPolygon> readVehicleInOuts() {
 		HashMap<String, GISPolygon> vehicleInOuts = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.VEHICLE_INOUTS_GEOMETRY_SHAPEFILE);
-		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.VEHICLE_INOUT_AREAS_DATABASE);
+		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAttributes(Paths.VEHICLE_INOUT_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
@@ -284,7 +278,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISPolygon> readTransitAreas() {
 		HashMap<String, GISPolygon> transitAreas = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.TRANSIT_AREAS_GEOMETRY_SHAPEFILE);
-		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.TRANSIT_AREAS_DATABASE);
+		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAttributes(Paths.TRANSIT_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
@@ -299,7 +293,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISPolygon> readTeachingFacilities() {
 		HashMap<String, GISPolygon> teachingFacilities = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.TEACHING_FACILITIES_GEOMETRY_SHAPEFILE);
-		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.TEACHING_AREAS_DATABASE);
+		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAttributes(Paths.TEACHING_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
@@ -314,7 +308,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISPolygon> readSharedAreas() {
 		HashMap<String, GISPolygon> sharedAreas = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.SHARED_AREAS_GEOMETRY_SHAPEFILE);
-		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.SHARED_AREAS_DATABASE);
+		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAttributes(Paths.SHARED_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
@@ -329,7 +323,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISPolygon> readEatingPlaces() {
 		HashMap<String, GISPolygon> eatingPlaces = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.EATING_PLACES_GEOMETRY_SHAPEFILE);
-		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAreas(Paths.EATING_AREAS_DATABASE);
+		HashMap<String, Pair<Double, Double>> areas = Reader.readFacilityAttributes(Paths.EATING_AREAS_DATABASE);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);

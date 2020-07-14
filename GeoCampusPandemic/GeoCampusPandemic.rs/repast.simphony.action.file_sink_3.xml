@@ -1,13 +1,14 @@
 <repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.7.0">
-  <name>ArrivalsFileSink</name>
-  <dataSet>ArrivalsTimeSeries</dataSet>
+  <name>DensitiesFileSink</name>
+  <dataSet>DensitiesTimeSeries</dataSet>
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
     <string>id</string>
     <string>tick</string>
-    <string>relocations</string>
+    <string>density</string>
+    <string>agents</string>
   </sourceIds>
-  <fileName>output/ModelOutputArrivals.csv</fileName>
-  <addTimeStamp>true</addTimeStamp>
+  <fileName>output/Output_Densities.csv</fileName>
+  <addTimeStamp>false</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

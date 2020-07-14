@@ -11,7 +11,7 @@ public class GISOtherFacility extends GISPolygon {
 	 * @param geometry Reference to geometry
 	 */
 	public GISOtherFacility(String id, Geometry geometry) {
-		super(id, geometry);
+		super(id, geometry, 0.0);
 	}
 
 }

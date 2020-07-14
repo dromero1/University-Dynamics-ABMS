@@ -31,9 +31,9 @@ public abstract class GISPolygon {
 	protected Geography<Object> geography;
 
 	/**
-	 * Relocations counter
+	 * Agent count
 	 */
-	protected int relocationCount;
+	protected int agentCount;
 
 	/**
 	 * Create a new geo-spatial polygon
@@ -49,17 +49,6 @@ public abstract class GISPolygon {
 	}
 
 	/**
-	 * Create a new geo-spatial polygon
-	 * 
-	 * @param id       Polygon id
-	 * @param geometry Reference to geometry
-	 */
-	public GISPolygon(String id, Geometry geometry) {
-		this.id = id;
-		this.geometry = geometry;
-	}
-
-	/**
 	 * Set geometry in the geography projection
 	 * 
 	 * @param geography Reference to geography projection
@@ -70,19 +59,24 @@ public abstract class GISPolygon {
 	}
 
 	/**
-	 * Handle the 'onRelocation' event
+	 * Handle the 'onArrival' event
 	 */
-	public void onRelocation() {
-		this.relocationCount++;
+	public void onArrival() {
+		this.agentCount++;
 	}
 
 	/**
-	 * Count relocations
+	 * Handle the 'onDeparture' event
 	 */
-	public int countRelocations() {
-		int count = this.relocationCount;
-		this.relocationCount = 0;
-		return count;
+	public void onDeparture() {
+		this.agentCount--;
+	}
+
+	/**
+	 * Get agent count
+	 */
+	public int getAgentCount() {
+		return this.agentCount;
 	}
 
 	/**

@@ -11,7 +11,7 @@ public class GISParkingLot extends GISPolygon {
 	 * @param geometry Reference to geometry
 	 */
 	public GISParkingLot(String id, Geometry geometry) {
-		super(id, geometry);
+		super(id, geometry, 0.0);
 	}
 
 }

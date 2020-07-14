@@ -15,16 +15,20 @@ public class Heuristics {
 	/**
 	 * Create a new random schedule for a student
 	 * 
-	 * @param groups List of available groups
+	 * @param groups Available groups
 	 */
-	public static Schedule buildRandomSchedule(ArrayList<Group> groups) {
+	public static Schedule buildRandomSchedule(HashMap<String, Group> groups) {
 		int toEnroll = Probabilities.getRandomGroupsToEnrollTo();
 		int enrolled = 0;
-		Collections.shuffle(groups);
+		ArrayList<Group> groupList = new ArrayList<Group>();
+		for (String groupId : groups.keySet()) {
+			groupList.add(groups.get(groupId));
+		}
+		Collections.shuffle(groupList);
 		Schedule schedule = new Schedule();
 		int i = 0;
 		while (enrolled < toEnroll && i < groups.size()) {
-			Group group = groups.get(i);
+			Group group = groupList.get(i);
 			if (group.enroll()) {
 				schedule.addGroup(group);
 				enrolled++;
@@ -39,7 +43,7 @@ public class Heuristics {
 	 * 
 	 * @param studentId         Student id
 	 * @param scheduleSelection Heuristic-based schedule selection
-	 * @param groups            List of available groups
+	 * @param groups            Available groups
 	 */
 	public static Schedule buildHeuristicSchedule(String studentId,
 			HashMap<String, ArrayList<String>> scheduleSelection, HashMap<String, Group> groups) {

@@ -33,11 +33,11 @@
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>students</string>
+      <string>agents</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>students</id>
+        <id>agents</id>
         <className>gis.GISDensityMeter</className>
-        <methodName>countAgents</methodName>
+        <methodName>getAgentCount</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

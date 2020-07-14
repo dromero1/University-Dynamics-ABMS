@@ -61,10 +61,10 @@ public class Reader {
 				String teachingFacilityId = "";
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
-					case DBFeatures.GROUPS_SUBJECT_COLUMN:
+					case DBFeatures.GROUPS_SUBJECT_ID_COLUMN:
 						groupId += elements[i];
 						break;
-					case DBFeatures.GROUPS_GROUP_COLUMN:
+					case DBFeatures.GROUPS_GROUP_ID_COLUMN:
 						groupId += "-" + elements[i];
 						break;
 					case DBFeatures.GROUPS_DAY_COLUMN:
@@ -150,7 +150,7 @@ public class Reader {
 		return scheduleSelection;
 	}
 
-	public static HashMap<String, Pair<Double, Double>> readFacilityAreas(String filename) {
+	public static HashMap<String, Pair<Double, Double>> readFacilityAttributes(String filename) {
 		HashMap<String, Pair<Double, Double>> areas = new HashMap<String, Pair<Double, Double>>();
 		try {
 			File file = new File(filename);
@@ -166,9 +166,11 @@ public class Reader {
 				String id = "";
 				double area = 0;
 				double weight = 0;
+				boolean active = false;
+				String link = "";
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
-					case DBFeatures.FACILITIES_FACILITY_ID_COLUMN:
+					case DBFeatures.FACILITIES_ID_COLUMN:
 						id = elements[i];
 						break;
 					case DBFeatures.FACILITIES_AREA_COLUMN:
@@ -177,6 +179,10 @@ public class Reader {
 					case DBFeatures.FACILITIES_WEIGHT_COLUMN:
 						weight = Double.parseDouble(elements[i]);
 						break;
+					case DBFeatures.FACILITIES_ACTIVE_COLUMN:
+						active = elements[i].equals("1");
+					case DBFeatures.FACILITIES_LINK_COLUMN:
+						link = elements[i];
 					default:
 						break;
 					}
@@ -207,7 +213,7 @@ public class Reader {
 				double weight = 0;
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
-					case DBFeatures.WORKPLACES_WORKPLACE_ID_COLUMN:
+					case DBFeatures.WORKPLACES_ID_COLUMN:
 						id = elements[i];
 						break;
 					case DBFeatures.WORKPLACES_WEIGHT_COLUMN:
