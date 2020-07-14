@@ -13,7 +13,6 @@ import gis.GISLimbo;
 import gis.GISPolygon;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.gis.util.GeometryUtil;
-import repast.simphony.random.RandomHelper;
 import repast.simphony.space.gis.Geography;
 import repast.simphony.util.collections.Pair;
 import simulation.EventScheduler;
