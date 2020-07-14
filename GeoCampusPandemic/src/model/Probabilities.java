@@ -35,12 +35,12 @@ public class Probabilities {
 	/**
 	 * Mean arrival shift (unit: hours). Reference: <pending>
 	 */
-	public static final double MEAN_ARRIVAL_SHIFT = 1.0 / 6;
+	public static final double MEAN_ARRIVAL_SHIFT = 10.0 / 60;
 	
 	/**
 	 * Standard deviation of arrival shift (unit: hours). Reference: <pending>
 	 */
-	public static final double STD_ARRIVAL_SHIFT = 0.028;
+	public static final double STD_ARRIVAL_SHIFT = 5.0 / 60;
 
 	/**
 	 * Minimum walking speed (unit: meters/minute). Reference: <pending>
