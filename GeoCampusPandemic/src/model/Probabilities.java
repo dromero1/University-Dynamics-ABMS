@@ -26,11 +26,21 @@ public class Probabilities {
 	 * Mean lunch duration (unit: hours). Reference: <pending>
 	 */
 	public static final double MEAN_LUNCH_DURATION = 0.66;
-
+	
 	/**
 	 * Standard deviation of lunch duration (unit: hours). Reference: <pending>
 	 */
 	public static final double STD_LUNCH_DURATION = 0.16;
+
+	/**
+	 * Mean arrival shift (unit: hours). Reference: <pending>
+	 */
+	public static final double MEAN_ARRIVAL_SHIFT = 1.0 / 6;
+	
+	/**
+	 * Standard deviation of arrival shift (unit: hours). Reference: <pending>
+	 */
+	public static final double STD_ARRIVAL_SHIFT = 0.028;
 
 	/**
 	 * Minimum walking speed (unit: meters/minute). Reference: <pending>
@@ -57,6 +67,14 @@ public class Probabilities {
 		return normal.nextDouble();
 	}
 
+	/**
+	 * Get random arrival shift. Reference: <pending>
+	 */
+	public static double getRandomArrivalShift() {
+		Normal normal = RandomHelper.createNormal(MEAN_ARRIVAL_SHIFT, STD_ARRIVAL_SHIFT);
+		return normal.nextDouble();
+	}
+	
 	/**
 	 * Get random vehicle usage. Reference: <pending>
 	 */

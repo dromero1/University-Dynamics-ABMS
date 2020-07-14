@@ -1,7 +1,5 @@
 package gis;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 public class GISDensityMeter extends GISPolygon {
 
 	/**
@@ -10,16 +8,28 @@ public class GISDensityMeter extends GISPolygon {
 	protected double area;
 
 	/**
+	 * Active
+	 */
+	protected boolean active;
+
+	/**
+	 * Active
+	 */
+	protected String link;
+
+	/**
 	 * Create a new geo-spatial density meter
 	 * 
-	 * @param id       Polygon id
-	 * @param geometry Reference to geometry
-	 * @param area     Area
-	 * @param weight   Weight
+	 * @param area   Area
+	 * @param weight Weight
+	 * @param active Active
+	 * @param link   Link
 	 */
-	public GISDensityMeter(String id, Geometry geometry, double area, double weight) {
-		super(id, geometry, weight);
+	public GISDensityMeter(double area, double weight, boolean active, String link) {
+		super(weight);
 		this.area = area;
+		this.active = active;
+		this.link = link;
 	}
 
 	/**

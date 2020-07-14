@@ -49,6 +49,15 @@ public abstract class GISPolygon {
 	}
 
 	/**
+	 * Create a new geo-spatial polygon
+	 * 
+	 * @param weight Weight
+	 */
+	public GISPolygon(double weight) {
+		this.weight = weight;
+	}
+
+	/**
 	 * Set geometry in the geography projection
 	 * 
 	 * @param geography Reference to geography projection
@@ -96,10 +105,24 @@ public abstract class GISPolygon {
 	}
 
 	/**
+	 * Set polygon id
+	 */
+	public void setPolygonId(String id) {
+		this.id = id;
+	}
+
+	/**
 	 * Get reference to geometry
 	 */
 	public Geometry getGeometry() {
 		return this.geometry;
+	}
+
+	/**
+	 * Set reference to geometry
+	 */
+	public void setGeometry(Geometry geometry) {
+		this.geometry = geometry;
 	}
 
 	/**

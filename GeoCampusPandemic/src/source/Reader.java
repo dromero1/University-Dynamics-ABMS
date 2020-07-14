@@ -16,6 +16,7 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.opengis.feature.simple.SimpleFeature;
 import config.DBFeatures;
+import gis.GISDensityMeter;
 import model.Group;
 import repast.simphony.util.collections.Pair;
 
@@ -150,8 +151,8 @@ public class Reader {
 		return scheduleSelection;
 	}
 
-	public static HashMap<String, Pair<Double, Double>> readFacilityAttributes(String filename) {
-		HashMap<String, Pair<Double, Double>> areas = new HashMap<String, Pair<Double, Double>>();
+	public static HashMap<String, GISDensityMeter> readFacilityAttributes(String filename) {
+		HashMap<String, GISDensityMeter> areas = new HashMap<String, GISDensityMeter>();
 		try {
 			File file = new File(filename);
 			Scanner scanner = new Scanner(file);
@@ -187,7 +188,8 @@ public class Reader {
 						break;
 					}
 				}
-				areas.put(id, new Pair<Double, Double>(area, weight));
+				GISDensityMeter densityMeter = new GISDensityMeter(area, weight, active, link);
+				areas.put(id, densityMeter);
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {

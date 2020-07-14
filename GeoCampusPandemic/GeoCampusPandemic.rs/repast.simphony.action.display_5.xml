@@ -3,19 +3,7 @@
   <type>GIS 3D</type>
   <styles>
     <entry>
-      <string>gis.GISInOut</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
-    <entry>
       <string>gis.GISOtherFacility</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
-    <entry>
-      <string>gis.GISEatingPlace</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
-    <entry>
-      <string>gis.GISVehicleInOut</string>
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
@@ -31,10 +19,6 @@
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
-      <string>gis.GISTeachingFacility</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
-    <entry>
       <string>model.SupportStaff</string>
       <string>repast.simphony.visualization.gis3D.style.EditedMarkStyle</string>
     </entry>
@@ -43,29 +27,13 @@
       <string>repast.simphony.visualization.gis3D.style.EditedMarkStyle</string>
     </entry>
     <entry>
-      <string>gis.GISSharedArea</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
-    <entry>
-      <string>gis.GISTransitArea</string>
+      <string>gis.GISDensityMeter</string>
       <string>styles.GISPolygonStyle</string>
     </entry>
   </styles>
   <editedStyles>
     <entry>
-      <string>gis.GISInOut</string>
-      <null/>
-    </entry>
-    <entry>
       <string>gis.GISOtherFacility</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>gis.GISEatingPlace</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>gis.GISVehicleInOut</string>
       <null/>
     </entry>
     <entry>
@@ -81,23 +49,15 @@
       <null/>
     </entry>
     <entry>
-      <string>gis.GISTeachingFacility</string>
-      <null/>
-    </entry>
-    <entry>
       <string>model.SupportStaff</string>
-      <string>model.SupportStaff.style_0.xml</string>
+      <string>model.SupportStaff.style_2.xml</string>
     </entry>
     <entry>
       <string>model.Student</string>
-      <string>model.Student.style_0.xml</string>
+      <string>model.Student.style_2.xml</string>
     </entry>
     <entry>
-      <string>gis.GISSharedArea</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>gis.GISTransitArea</string>
+      <string>gis.GISDensityMeter</string>
       <null/>
     </entry>
   </editedStyles>
@@ -111,33 +71,29 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-2016743547</hashCode>
+    <hashCode>510934910</hashCode>
   </schedParams>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
       <string>gis.GISOtherFacility</string>
-      <int>8</int>
-    </entry>
-    <entry>
-      <string>gis.GISEatingPlace</string>
-      <int>11</int>
-    </entry>
-    <entry>
-      <string>gis.GISVehicleInOut</string>
-      <int>3</int>
-    </entry>
-    <entry>
-      <string>gis.GISCampus</string>
-      <int>12</int>
+      <int>5</int>
     </entry>
     <entry>
       <string>gis.GISLimbo</string>
-      <int>9</int>
+      <int>6</int>
     </entry>
     <entry>
       <string>gis.GISParkingLot</string>
-      <int>7</int>
+      <int>4</int>
+    </entry>
+    <entry>
+      <string>gis.GISCampus</string>
+      <int>3</int>
+    </entry>
+    <entry>
+      <string>Scale bar</string>
+      <int>2</int>
     </entry>
     <entry>
       <string>World Map</string>
@@ -145,35 +101,19 @@
     </entry>
     <entry>
       <string>model.SupportStaff</string>
-      <int>13</int>
+      <int>8</int>
     </entry>
     <entry>
-      <string>gis.GISSharedArea</string>
-      <int>6</int>
+      <string>model.Student</string>
+      <int>9</int>
+    </entry>
+    <entry>
+      <string>gis.GISDensityMeter</string>
+      <int>7</int>
     </entry>
     <entry>
       <string>Compass</string>
       <int>0</int>
-    </entry>
-    <entry>
-      <string>gis.GISInOut</string>
-      <int>10</int>
-    </entry>
-    <entry>
-      <string>gis.GISTeachingFacility</string>
-      <int>5</int>
-    </entry>
-    <entry>
-      <string>Scale bar</string>
-      <int>2</int>
-    </entry>
-    <entry>
-      <string>model.Student</string>
-      <int>14</int>
-    </entry>
-    <entry>
-      <string>gis.GISTransitArea</string>
-      <int>4</int>
     </entry>
   </layerOrder>
   <projections>
@@ -199,7 +139,7 @@
     <blue>255</blue>
     <alpha>255</alpha>
   </backgroundColor>
-  <renderQuality>HIGH</renderQuality>
+  <renderQuality>MEDIUM</renderQuality>
   <viewType>FLAT</viewType>
   <trackAgents>false</trackAgents>
   <globeLayers>

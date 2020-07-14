@@ -1,19 +1,17 @@
 package gis;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 public class GISSharedArea extends GISDensityMeter {
 
 	/**
 	 * Create a new geo-spatial shared area
 	 * 
-	 * @param id       Polygon id
-	 * @param geometry Reference to geometry
-	 * @param area     Area
-	 * @param weight   Weight
+	 * @param area   Area
+	 * @param weight Weight
+	 * @param active Active
+	 * @param link   Link
 	 */
-	public GISSharedArea(String id, Geometry geometry, double area, double weight) {
-		super(id, geometry, area, weight);
+	public GISSharedArea(double area, double weight, boolean active, String link) {
+		super(area, weight, active, link);
 	}
 
 }

@@ -27,7 +27,7 @@ public abstract class CommunityMember {
 	/**
 	 * Planning delta (unit: hours)
 	 */
-	public static final double PLANNING_DELTA = 0.5;
+	public static final double PLANNING_DELTA = 1.0 / 6;
 
 	/**
 	 * Vehicle user flag. Determines whether the student enters the campus by car or
