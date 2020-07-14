@@ -1,7 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import org.jgrapht.Graph;
@@ -118,35 +116,21 @@ public abstract class CommunityMember {
 	 * @param day Day
 	 */
 	public void planArrival(int day) {
-		if (this.lastExit != null) {
-			double r = RandomHelper.nextDoubleFromTo(0, 1);
-			double epsilon = 0.1;
-			int selectedShift = 0;
-			if (r < 1 - epsilon) {
-				double top = Double.NEGATIVE_INFINITY;
-				ArrayList<Integer> ties = new ArrayList<Integer>();
-				for (Integer shift : this.actionValues.keySet()) {
-					Pair<Double, Integer> estimation = this.actionValues.get(shift);
-					double Q = estimation.getFirst();
-					if (Q > top) {
-						top = Q;
-						ties.clear();
-						ties.add(shift);
-					} else if (Q == top) {
-						ties.add(shift);
-					}
-				}
-				Collections.shuffle(ties);
-				selectedShift = ties.get(0);
-			} else {
-				Object[] shifts = this.actionValues.keySet().toArray();
-				int i = RandomHelper.nextIntFromTo(0, shifts.length - 1);
-				selectedShift = (Integer) shifts[i];
-			}
-			double ticks = TickConverter.minutesToTicks(selectedShift);
-			EventScheduler eventScheduler = EventScheduler.getInstance();
-			eventScheduler.scheduleOneTimeEvent(ticks, this, "relocate", this.lastExit);
-		}
+		/*
+		 * if (this.lastExit != null) { double r = RandomHelper.nextDoubleFromTo(0, 1);
+		 * double epsilon = 0.1; int selectedShift = 0; if (r < 1 - epsilon) { double
+		 * top = Double.NEGATIVE_INFINITY; ArrayList<Integer> ties = new
+		 * ArrayList<Integer>(); for (Integer shift : this.actionValues.keySet()) {
+		 * Pair<Double, Integer> estimation = this.actionValues.get(shift); double Q =
+		 * estimation.getFirst(); if (Q > top) { top = Q; ties.clear(); ties.add(shift);
+		 * } else if (Q == top) { ties.add(shift); } } Collections.shuffle(ties);
+		 * selectedShift = ties.get(0); } else { Object[] shifts =
+		 * this.actionValues.keySet().toArray(); int i = RandomHelper.nextIntFromTo(0,
+		 * shifts.length - 1); selectedShift = (Integer) shifts[i]; } double ticks =
+		 * TickConverter.minutesToTicks(selectedShift); EventScheduler eventScheduler =
+		 * EventScheduler.getInstance(); eventScheduler.scheduleOneTimeEvent(ticks,
+		 * this, "relocate", this.lastExit); }
+		 */
 	}
 
 	/**

@@ -212,7 +212,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		}
 
 		// Simulation end
-		RunEnvironment.getInstance().endAt(168 * 100);
+		RunEnvironment.getInstance().endAt(168 * 1);
 
 		return context;
 	}

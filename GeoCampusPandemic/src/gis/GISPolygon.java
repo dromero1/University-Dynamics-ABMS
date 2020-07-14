@@ -36,6 +36,11 @@ public abstract class GISPolygon {
 	protected int agentCount;
 
 	/**
+	 * Departures
+	 */
+	protected int departures;
+	
+	/**
 	 * Create a new geo-spatial polygon
 	 * 
 	 * @param id       Polygon id
@@ -78,14 +83,17 @@ public abstract class GISPolygon {
 	 * Handle the 'onDeparture' event
 	 */
 	public void onDeparture() {
-		this.agentCount--;
+		this.departures++;
 	}
-
+	
 	/**
 	 * Get agent count
 	 */
 	public int getAgentCount() {
-		return this.agentCount;
+		int count = this.agentCount;
+		this.agentCount -= this.departures;
+		this.departures = 0;
+		return count;
 	}
 
 	/**
