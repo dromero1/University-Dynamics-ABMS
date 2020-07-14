@@ -76,7 +76,6 @@ public abstract class CommunityMember {
 	@ScheduledMethod(start = 0)
 	public void init() {
 		vanishToLimbo();
-		initActionValues();
 		scheduleRecurringEvents();
 	}
 
@@ -244,18 +243,6 @@ public abstract class CommunityMember {
 			inOuts = this.contextBuilder.inOuts;
 		}
 		return moveToRandomPolygon(inOuts, method, SelectionStrategy.RANDOM);
-	}
-
-	/**
-	 * Initialize action's values
-	 */
-	private void initActionValues() {
-		this.actionValues = new HashMap<Integer, Pair<Double, Integer>>();
-		for (int i = 0; i < 4; i++) {
-			int shift = i * 10;
-			double r = RandomHelper.nextDoubleFromTo(-1, 1);
-			this.actionValues.put(shift, new Pair<Double, Integer>(r, 0));
-		}
 	}
 
 }
