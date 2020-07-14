@@ -78,17 +78,4 @@ public class SupportStaff extends CommunityMember {
 		}
 	}
 
-	/**
-	 * Schedule arrival planning
-	 */
-	@Override
-	protected void scheduleArrivalPlanning() {
-		EventScheduler eventScheduler = EventScheduler.getInstance();
-		for (int i = 1; i <= 6; i++) {
-			double startTime = this.workStartTime - PLANNING_DELTA;
-			double ticksToEvent = TickConverter.dayTimeToTicks(i, startTime);
-			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "planArrival", i);
-		}
-	}
-
 }

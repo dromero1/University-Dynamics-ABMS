@@ -23,11 +23,6 @@ import util.TickConverter;
 public abstract class CommunityMember {
 
 	/**
-	 * Planning delta (unit: hours)
-	 */
-	public static final double PLANNING_DELTA = 10.0 / 60;
-
-	/**
 	 * Vehicle user flag. Determines whether the student enters the campus by car or
 	 * by foot.
 	 */
@@ -173,11 +168,6 @@ public abstract class CommunityMember {
 	protected abstract void scheduleLunch();
 
 	/**
-	 * Schedule arrival planning
-	 */
-	protected abstract void scheduleArrivalPlanning();
-
-	/**
 	 * Move to random polygon
 	 * 
 	 * @param polygons          Map of polygons to choose from
@@ -241,7 +231,6 @@ public abstract class CommunityMember {
 		scheduleActivities();
 		scheduleDepartures();
 		scheduleLunch();
-		scheduleArrivalPlanning();
 	}
 
 	/**

@@ -152,19 +152,4 @@ public class Student extends CommunityMember {
 		}
 	}
 
-	/**
-	 * Schedule arrival planning
-	 */
-	@Override
-	protected void scheduleArrivalPlanning() {
-		EventScheduler eventScheduler = EventScheduler.getInstance();
-		ArrayList<Integer> days = this.schedule.getCampusDays();
-		for (Integer day : days) {
-			AcademicActivity firstActivity = this.schedule.getFirstAcademicActivityInDay(day);
-			double startTime = firstActivity.getStartTime() - PLANNING_DELTA;
-			double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
-			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "planArrival", day);
-		}
-	}
-
 }

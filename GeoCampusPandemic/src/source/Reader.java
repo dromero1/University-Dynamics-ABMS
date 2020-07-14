@@ -18,7 +18,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import config.DBFeatures;
 import gis.GISDensityMeter;
 import model.Group;
-import repast.simphony.util.collections.Pair;
 
 public class Reader {
 
@@ -266,10 +265,12 @@ public class Reader {
 						break;
 					}
 				}
-				if (!routes.containsVertex(origin))
+				if (!routes.containsVertex(origin)) {
 					routes.addVertex(origin);
-				if (!routes.containsVertex(destination))
+				}
+				if (!routes.containsVertex(destination)) {
 					routes.addVertex(destination);
+				}
 				DefaultWeightedEdge edge = routes.addEdge(origin, destination);
 				routes.setEdgeWeight(edge, weight);
 			}
