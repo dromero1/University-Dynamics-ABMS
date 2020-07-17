@@ -1,63 +1,47 @@
 <repast.simphony.gis.visualization.engine.GISDisplayDescriptor simphonyVersion="2.7.0">
-  <name>eafit</name>
+  <name>Campus</name>
   <type>GIS 3D</type>
   <styles>
-    <entry>
-      <string>gis.GISOtherFacility</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
     <entry>
       <string>gis.GISCampus</string>
       <string>styles.GISPolygonStyle</string>
     </entry>
     <entry>
-      <string>gis.GISLimbo</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
-    <entry>
-      <string>gis.GISParkingLot</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
-    <entry>
       <string>model.SupportStaff</string>
-      <string>repast.simphony.visualization.gis3D.style.EditedMarkStyle</string>
+      <string>repast.simphony.visualization.gis3D.style.DefaultMarkStyle</string>
     </entry>
     <entry>
       <string>model.Student</string>
-      <string>repast.simphony.visualization.gis3D.style.EditedMarkStyle</string>
+      <string>repast.simphony.visualization.gis3D.style.DefaultMarkStyle</string>
     </entry>
     <entry>
       <string>gis.GISDensityMeter</string>
+      <string>styles.GISPolygonStyle</string>
+    </entry>
+    <entry>
+      <string>gis.GISPolygon</string>
       <string>styles.GISPolygonStyle</string>
     </entry>
   </styles>
   <editedStyles>
     <entry>
-      <string>gis.GISOtherFacility</string>
-      <null/>
-    </entry>
-    <entry>
       <string>gis.GISCampus</string>
       <null/>
     </entry>
     <entry>
-      <string>gis.GISLimbo</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>gis.GISParkingLot</string>
-      <null/>
-    </entry>
-    <entry>
       <string>model.SupportStaff</string>
-      <string>model.SupportStaff.style_2.xml</string>
+      <null/>
     </entry>
     <entry>
       <string>model.Student</string>
-      <string>model.Student.style_2.xml</string>
+      <null/>
     </entry>
     <entry>
       <string>gis.GISDensityMeter</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>gis.GISPolygon</string>
       <null/>
     </entry>
   </editedStyles>
@@ -71,22 +55,10 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>510934910</hashCode>
+    <hashCode>-1732486521</hashCode>
   </schedParams>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
-    <entry>
-      <string>gis.GISOtherFacility</string>
-      <int>5</int>
-    </entry>
-    <entry>
-      <string>gis.GISLimbo</string>
-      <int>6</int>
-    </entry>
-    <entry>
-      <string>gis.GISParkingLot</string>
-      <int>4</int>
-    </entry>
     <entry>
       <string>gis.GISCampus</string>
       <int>3</int>
@@ -101,19 +73,23 @@
     </entry>
     <entry>
       <string>model.SupportStaff</string>
-      <int>8</int>
+      <int>6</int>
     </entry>
     <entry>
       <string>model.Student</string>
-      <int>9</int>
+      <int>7</int>
     </entry>
     <entry>
       <string>gis.GISDensityMeter</string>
-      <int>7</int>
+      <int>4</int>
     </entry>
     <entry>
       <string>Compass</string>
       <int>0</int>
+    </entry>
+    <entry>
+      <string>gis.GISPolygon</string>
+      <int>5</int>
     </entry>
   </layerOrder>
   <projections>

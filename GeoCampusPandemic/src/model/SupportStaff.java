@@ -1,7 +1,6 @@
 package model;
 
 import gis.GISPolygon;
-import repast.simphony.space.gis.Geography;
 import simulation.EventScheduler;
 import simulation.SimulationBuilder;
 import util.TickConverter;
@@ -21,11 +20,10 @@ public class SupportStaff extends CommunityMember {
 	/**
 	 * Create a new support staff agent
 	 * 
-	 * @param geography      Reference to geography projection
 	 * @param contextBuilder Reference to the simulation builder
 	 */
-	public SupportStaff(Geography<Object> geography, SimulationBuilder contextBuilder) {
-		super(geography, contextBuilder);
+	public SupportStaff(SimulationBuilder contextBuilder) {
+		super(contextBuilder);
 		this.workplace = Probabilities.getRandomPolygonWorkWeightBased(this.contextBuilder.workplaces);
 		this.workStartTime = Probabilities.getRandomWorkStartTime();
 	}

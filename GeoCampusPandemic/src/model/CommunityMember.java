@@ -12,7 +12,6 @@ import com.vividsolutions.jts.geom.Point;
 import gis.GISPolygon;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.gis.util.GeometryUtil;
-import repast.simphony.space.gis.Geography;
 import repast.simphony.util.collections.Pair;
 import simulation.EventScheduler;
 import simulation.SimulationBuilder;
@@ -25,11 +24,6 @@ public abstract class CommunityMember {
 	 * by foot.
 	 */
 	protected boolean isVehicleUser;
-
-	/**
-	 * Reference to geography projection
-	 */
-	protected Geography<Object> geography;
 
 	/**
 	 * Reference to simulation builder
@@ -59,11 +53,9 @@ public abstract class CommunityMember {
 	/**
 	 * Create a new community member agent
 	 * 
-	 * @param geography      Reference to geography projection
 	 * @param contextBuilder Reference to the simulation builder
 	 */
-	public CommunityMember(Geography<Object> geography, SimulationBuilder contextBuilder) {
-		this.geography = geography;
+	public CommunityMember(SimulationBuilder contextBuilder) {
 		this.contextBuilder = contextBuilder;
 		this.isVehicleUser = Probabilities.getRandomVehicleUsage();
 	}
@@ -136,7 +128,7 @@ public abstract class CommunityMember {
 		GeometryFactory geometryFactory = new GeometryFactory();
 		Coordinate coordinate = coordinates.get(0);
 		Point destination = geometryFactory.createPoint(coordinate);
-		this.geography.move(this, destination);
+		this.contextBuilder.geography.move(this, destination);
 		this.currentPolygon.onDeparture();
 		this.currentPolygon = polygon;
 		this.currentPolygon.onArrival();

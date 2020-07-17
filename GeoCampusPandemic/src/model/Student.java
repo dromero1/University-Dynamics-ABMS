@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import gis.GISPolygon;
 import repast.simphony.essentials.RepastEssentials;
-import repast.simphony.space.gis.Geography;
 import repast.simphony.util.collections.Pair;
 import simulation.EventScheduler;
 import simulation.SimulationBuilder;
@@ -30,12 +29,11 @@ public class Student extends CommunityMember {
 	/**
 	 * Create a new student agent
 	 * 
-	 * @param geography      Reference to geography projection
 	 * @param contextBuilder Reference to the simulation builder
 	 * @param id             Student id
 	 */
-	public Student(Geography<Object> geography, SimulationBuilder contextBuilder, String id) {
-		super(geography, contextBuilder);
+	public Student(SimulationBuilder contextBuilder, String id) {
+		super(contextBuilder);
 		this.id = id;
 	}
 
@@ -141,8 +139,9 @@ public class Student extends CommunityMember {
 		ArrayList<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
 			Pair<Double, Double> lunch = Heuristics.getRandomLunchTime(this.schedule, day);
-			if (lunch == null)
+			if (lunch == null) {
 				continue;
+			}
 			double lunchTime = lunch.getFirst();
 			double lunchDuration = lunch.getSecond();
 			double ticksToEvent = TickConverter.dayTimeToTicks(day, lunchTime);

@@ -31,6 +31,11 @@ import source.Reader;
 public class SimulationBuilder implements ContextBuilder<Object> {
 
 	/**
+	 * Reference to geography projection
+	 */
+	public Geography<Object> geography;
+
+	/**
 	 * Teaching facilities
 	 */
 	public HashMap<String, GISPolygon> teachingFacilities;
@@ -90,39 +95,39 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		context.setId("GeoCampusPandemic");
 
 		// Create geography projection
-		Geography<Object> geography = createGeographyProjection(context);
+		this.geography = createGeographyProjection(context);
 
 		// Initialize campus
 		GISCampus campus = readCampus();
-		campus.setGeometryInGeography(geography);
+		campus.setGeometryInGeography(this.geography);
 		context.add(campus);
 
 		// Initialize teaching facilities
 		this.teachingFacilities = readDensityPolygons(Paths.TEACHING_FACILITIES_GEOMETRY_SHAPEFILE,
 				Paths.TEACHING_AREAS_DATABASE);
 		for (GISPolygon teachingFacility : this.teachingFacilities.values()) {
-			teachingFacility.setGeometryInGeography(geography);
+			teachingFacility.setGeometryInGeography(this.geography);
 			context.add(teachingFacility);
 		}
 
 		// Initialize shared areas
 		this.sharedAreas = readDensityPolygons(Paths.SHARED_AREAS_GEOMETRY_SHAPEFILE, Paths.SHARED_AREAS_DATABASE);
 		for (GISPolygon sharedArea : this.sharedAreas.values()) {
-			sharedArea.setGeometryInGeography(geography);
+			sharedArea.setGeometryInGeography(this.geography);
 			context.add(sharedArea);
 		}
 
 		// Initialize eating places
 		this.eatingPlaces = readDensityPolygons(Paths.EATING_PLACES_GEOMETRY_SHAPEFILE, Paths.EATING_AREAS_DATABASE);
 		for (GISPolygon eatingPlace : this.eatingPlaces.values()) {
-			eatingPlace.setGeometryInGeography(geography);
+			eatingPlace.setGeometryInGeography(this.geography);
 			context.add(eatingPlace);
 		}
 
 		// Initialize in-outs spots
 		this.inOuts = readDensityPolygons(Paths.INOUTS_GEOMETRY_SHAPEFILE, Paths.INOUT_AREAS_DATABASE);
 		for (GISPolygon inOut : inOuts.values()) {
-			inOut.setGeometryInGeography(geography);
+			inOut.setGeometryInGeography(this.geography);
 			context.add(inOut);
 		}
 
@@ -130,14 +135,14 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		this.vehicleInOuts = readDensityPolygons(Paths.VEHICLE_INOUTS_GEOMETRY_SHAPEFILE,
 				Paths.VEHICLE_INOUT_AREAS_DATABASE);
 		for (GISPolygon vehicleInOut : vehicleInOuts.values()) {
-			vehicleInOut.setGeometryInGeography(geography);
+			vehicleInOut.setGeometryInGeography(this.geography);
 			context.add(vehicleInOut);
 		}
 
 		// Initialize transit areas
 		this.transitAreas = readDensityPolygons(Paths.TRANSIT_AREAS_GEOMETRY_SHAPEFILE, Paths.TRANSIT_AREAS_DATABASE);
 		for (GISPolygon transitArea : transitAreas.values()) {
-			transitArea.setGeometryInGeography(geography);
+			transitArea.setGeometryInGeography(this.geography);
 			context.add(transitArea);
 		}
 
@@ -145,23 +150,26 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		HashMap<String, GISPolygon> otherFacitilies = readDensityLessPolygons(
 				Paths.OTHER_FACILITIES_GEOMETRY_SHAPEFILE);
 		for (GISPolygon otherFacility : otherFacitilies.values()) {
-			otherFacility.setGeometryInGeography(geography);
+			otherFacility.setGeometryInGeography(this.geography);
 			context.add(otherFacility);
 		}
 
 		// Initialize parking lots
 		HashMap<String, GISPolygon> parkingLots = readDensityLessPolygons(Paths.PARKING_LOTS_GEOMETRY_SHAPEFILE);
 		for (GISPolygon parkingLot : parkingLots.values()) {
-			parkingLot.setGeometryInGeography(geography);
+			parkingLot.setGeometryInGeography(this.geography);
 			context.add(parkingLot);
 		}
 
 		// Initialize limbos
 		this.limbos = readDensityLessPolygons(Paths.LIMBOS_GEOMETRY_SHAPEFILE);
 		for (GISPolygon limbo : this.limbos.values()) {
-			limbo.setGeometryInGeography(geography);
+			limbo.setGeometryInGeography(this.geography);
 			context.add(limbo);
 		}
+
+		// Initialize workplaces
+		this.workplaces = readWorkplaces();
 
 		// Read routes
 		this.routes = Reader.readRoutes(Paths.ROUTES_DATABASE);
@@ -172,19 +180,9 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		// Read groups
 		HashMap<String, Group> groups = Reader.readGroupsDatabase(Paths.GROUPS_DATABASE);
 
-		// TODO Refactor Read workplaces weights
-		this.workplaces = new HashMap<String, GISPolygon>();
-		HashMap<String, Double> workplaces = Reader.readWorkplaces(Paths.WORKPLACES_DATABASE);
-		for (String workplaceId : workplaces.keySet()) {
-			GISPolygon polygon = getPolygonById(workplaceId);
-			double weight = workplaces.get(workplaceId);
-			polygon.setWorkWeight(weight);
-			this.workplaces.put(workplaceId, polygon);
-		}
-
 		// Add students to simulation
 		Parameters simParams = RunEnvironment.getInstance().getParameters();
-		ArrayList<Student> students = createStudents(simParams.getInteger("students"), geography);
+		ArrayList<Student> students = createStudents(simParams.getInteger("students"));
 		for (Student student : students) {
 			Schedule schedule = Heuristics.buildRandomSchedule(groups);
 			if (schedule != null && schedule.getGroupCount() > 0) {
@@ -194,7 +192,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		}
 
 		// Add support staff to simulation
-		ArrayList<SupportStaff> supportStaff = createSupportStaff(simParams.getInteger("supportStaff"), geography);
+		ArrayList<SupportStaff> supportStaff = createSupportStaff(simParams.getInteger("supportStaff"));
 		for (SupportStaff staff : supportStaff) {
 			context.add(staff);
 		}
@@ -261,19 +259,44 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		return polygons;
 	}
 
-	private ArrayList<Student> createStudents(int studentCount, Geography<Object> geography) {
+	/**
+	 * Read workplaces
+	 */
+	private HashMap<String, GISPolygon> readWorkplaces() {
+		HashMap<String, GISPolygon> workplaces = new HashMap<String, GISPolygon>();
+		HashMap<String, Double> places = Reader.readWorkplaces(Paths.WORKPLACES_DATABASE);
+		for (String workplaceId : places.keySet()) {
+			GISPolygon polygon = getPolygonById(workplaceId);
+			double weight = places.get(workplaceId);
+			polygon.setWorkWeight(weight);
+			workplaces.put(workplaceId, polygon);
+		}
+		return workplaces;
+	}
+
+	/**
+	 * Create students
+	 * 
+	 * @param studentCount Number of students to create
+	 */
+	private ArrayList<Student> createStudents(int studentCount) {
 		ArrayList<Student> students = new ArrayList<Student>();
 		for (int i = 0; i < studentCount; i++) {
-			Student student = new Student(geography, this, Integer.toString(i));
+			Student student = new Student(this, Integer.toString(i));
 			students.add(student);
 		}
 		return students;
 	}
 
-	private ArrayList<SupportStaff> createSupportStaff(int staffCount, Geography<Object> geography) {
+	/**
+	 * Create support staff
+	 * 
+	 * @param staffCount Number of staffers to create
+	 */
+	private ArrayList<SupportStaff> createSupportStaff(int staffCount) {
 		ArrayList<SupportStaff> staff = new ArrayList<SupportStaff>();
 		for (int i = 0; i < staffCount; i++) {
-			SupportStaff supportStaff = new SupportStaff(geography, this);
+			SupportStaff supportStaff = new SupportStaff(this);
 			staff.add(supportStaff);
 		}
 		return staff;
