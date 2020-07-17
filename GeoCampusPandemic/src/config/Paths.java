@@ -15,42 +15,42 @@ public final class Paths {
 	/**
 	 * Teaching facilities geometry
 	 */
-	public static final String TEACHING_FACILITIES_GEOMETRY_SHAPEFILE = "./data/maps/Bloques-polygon.shp";
+	public static final String TEACHING_FACILITIES_GEOMETRY_SHAPEFILE = "./data/maps/Teaching_facilities-polygon.shp";
 
 	/**
 	 * Shared areas geometry
 	 */
-	public static final String SHARED_AREAS_GEOMETRY_SHAPEFILE = "./data/maps/Zonas_comunes-polygon.shp";
+	public static final String SHARED_AREAS_GEOMETRY_SHAPEFILE = "./data/maps/Shared_areas-polygon.shp";
 
 	/**
 	 * Eating places geometry
 	 */
-	public static final String EATING_PLACES_GEOMETRY_SHAPEFILE = "./data/maps/Lugares_de_comida-polygon.shp";
+	public static final String EATING_PLACES_GEOMETRY_SHAPEFILE = "./data/maps/Eating_places-polygon.shp";
 
 	/**
 	 * Other facilities geometry
 	 */
-	public static final String OTHER_FACILITIES_GEOMETRY_SHAPEFILE = "./data/maps/Otros-polygon.shp";
+	public static final String OTHER_FACILITIES_GEOMETRY_SHAPEFILE = "./data/maps/Other_facilities-polygon.shp";
 
 	/**
 	 * In-outs geometry
 	 */
-	public static final String INOUTS_GEOMETRY_SHAPEFILE = "./data/maps/Porterias-polygon.shp";
+	public static final String INOUTS_GEOMETRY_SHAPEFILE = "./data/maps/In_out_spots-polygon.shp";
 
 	/**
 	 * Vehicle in-outs geometry
 	 */
-	public static final String VEHICLE_INOUTS_GEOMETRY_SHAPEFILE = "./data/maps/Porterias_vehiculares-polygon.shp";
+	public static final String VEHICLE_INOUTS_GEOMETRY_SHAPEFILE = "./data/maps/Vehicle_in_out_spots-polygon.shp";
 
 	/**
 	 * Parking lots geometry
 	 */
-	public static final String PARKING_LOTS_GEOMETRY_SHAPEFILE = "./data/maps/Parqueaderos-polygon.shp";
+	public static final String PARKING_LOTS_GEOMETRY_SHAPEFILE = "./data/maps/Parking_lots-polygon.shp";
 
 	/**
 	 * Transit areas geometry
 	 */
-	public static final String TRANSIT_AREAS_GEOMETRY_SHAPEFILE = "./data/maps/Rutas-polygon.shp";
+	public static final String TRANSIT_AREAS_GEOMETRY_SHAPEFILE = "./data/maps/Transit_areas-polygon.shp";
 
 	/**
 	 * Groups database
