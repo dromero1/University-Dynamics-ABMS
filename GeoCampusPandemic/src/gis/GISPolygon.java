@@ -1,6 +1,8 @@
 package gis;
 
 import com.vividsolutions.jts.geom.Geometry;
+
+import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.space.gis.Geography;
 
 public class GISPolygon {
@@ -31,9 +33,14 @@ public class GISPolygon {
 	protected Geography<Object> geography;
 
 	/**
-	 * Agent count
+	 * Instant agent count
 	 */
-	protected int agentCount;
+	protected int instantAgentCount;
+
+	/**
+	 * Arrivals
+	 */
+	protected int arrivals;
 
 	/**
 	 * Departures
@@ -76,24 +83,39 @@ public class GISPolygon {
 	 * Handle the 'onArrival' event
 	 */
 	public void onArrival() {
-		this.agentCount++;
+		this.instantAgentCount++;
+		this.arrivals++;
 	}
 
 	/**
 	 * Handle the 'onDeparture' event
 	 */
 	public void onDeparture() {
+		this.instantAgentCount--;
 		this.departures++;
 	}
 
 	/**
-	 * Get agent count
+	 * Count agents (instant)
 	 */
-	public int getAgentCount() {
-		int count = this.agentCount;
-		this.agentCount -= this.departures;
+	public int countAgents() {
+		return this.instantAgentCount;
+	}
+
+	/**
+	 * Count agents (without last departures)
+	 */
+	public int countAgentsCorrected() {
+		return this.arrivals;
+	}
+
+	/**
+	 * Reset departures
+	 */
+	@ScheduledMethod(start = 0, interval = 0.375)
+	public void resetDepartures() {
+		this.arrivals -= this.departures;
 		this.departures = 0;
-		return count;
 	}
 
 	/**

@@ -33,10 +33,17 @@ public class GISDensityMeter extends GISPolygon {
 	}
 
 	/**
-	 * Measure the current population density
+	 * Measure density (instant)
 	 */
 	public double measureDensity() {
-		return this.agentCount / area;
+		return this.instantAgentCount / area;
+	}
+
+	/**
+	 * Measure density (without last departures)
+	 */
+	public double measureDensityCorrected() {
+		return this.arrivals / area;
 	}
 
 	/**

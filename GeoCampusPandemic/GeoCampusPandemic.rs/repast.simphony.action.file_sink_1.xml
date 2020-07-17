@@ -8,6 +8,8 @@
     <string>tick</string>
     <string>density</string>
     <string>agents</string>
+    <string>agentsCorrected</string>
+    <string>densityCorrected</string>
   </sourceIds>
   <fileName>output/Output_Densities.csv</fileName>
   <addTimeStamp>false</addTimeStamp>

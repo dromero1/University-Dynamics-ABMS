@@ -37,7 +37,23 @@
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>agents</id>
         <className>gis.GISDensityMeter</className>
-        <methodName>getAgentCount</methodName>
+        <methodName>countAgents</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>agentsCorrected</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>agentsCorrected</id>
+        <className>gis.GISDensityMeter</className>
+        <methodName>countAgentsCorrected</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>densityCorrected</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>densityCorrected</id>
+        <className>gis.GISDensityMeter</className>
+        <methodName>measureDensityCorrected</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>
