@@ -57,7 +57,7 @@ public abstract class CommunityMember {
 	 */
 	public CommunityMember(SimulationBuilder contextBuilder) {
 		this.contextBuilder = contextBuilder;
-		this.isVehicleUser = Probabilities.getRandomVehicleUsage();
+		this.isVehicleUser = Random.getRandomVehicleUsage();
 	}
 
 	/**
@@ -87,34 +87,11 @@ public abstract class CommunityMember {
 	 * Vanish to limbo. A limbo emulates what's off campus.
 	 */
 	public void vanishToLimbo() {
-		GISPolygon limbo = Probabilities.getRandomPolygon(this.contextBuilder.limbos);
+		GISPolygon limbo = Random.getRandomPolygon(this.contextBuilder.limbos);
 		if (this.currentPolygon == null) {
 			this.currentPolygon = limbo;
 		}
 		relocate(limbo);
-	}
-
-	/**
-	 * Plan arrival at day
-	 * 
-	 * @param day Day
-	 */
-	public void planArrival(int day) {
-		/*
-		 * if (this.lastExit != null) { double r = RandomHelper.nextDoubleFromTo(0, 1);
-		 * double epsilon = 0.1; int selectedShift = 0; if (r < 1 - epsilon) { double
-		 * top = Double.NEGATIVE_INFINITY; ArrayList<Integer> ties = new
-		 * ArrayList<Integer>(); for (Integer shift : this.actionValues.keySet()) {
-		 * Pair<Double, Integer> estimation = this.actionValues.get(shift); double Q =
-		 * estimation.getFirst(); if (Q > top) { top = Q; ties.clear(); ties.add(shift);
-		 * } else if (Q == top) { ties.add(shift); } } Collections.shuffle(ties);
-		 * selectedShift = ties.get(0); } else { Object[] shifts =
-		 * this.actionValues.keySet().toArray(); int i = RandomHelper.nextIntFromTo(0,
-		 * shifts.length - 1); selectedShift = (Integer) shifts[i]; } double ticks =
-		 * TickConverter.minutesToTicks(selectedShift); EventScheduler eventScheduler =
-		 * EventScheduler.getInstance(); eventScheduler.scheduleOneTimeEvent(ticks,
-		 * this, "relocate", this.lastExit); }
-		 */
 	}
 
 	/**
@@ -168,10 +145,10 @@ public abstract class CommunityMember {
 		GISPolygon selectedPolygon = null;
 		switch (strategy) {
 		case WEIGHT_BASED:
-			selectedPolygon = Probabilities.getRandomPolygonWeightBased(polygons);
+			selectedPolygon = Random.getRandomPolygonWeightBased(polygons);
 			break;
 		default:
-			selectedPolygon = Probabilities.getRandomPolygon(polygons);
+			selectedPolygon = Random.getRandomPolygon(polygons);
 			break;
 		}
 		moveToPolygon(selectedPolygon, method);
@@ -194,7 +171,7 @@ public abstract class CommunityMember {
 		List<String> vertexes = path.getVertexList();
 		List<DefaultWeightedEdge> edges = path.getEdgeList();
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		double speed = Probabilities.getRandomWalkingSpeed();
+		double speed = Random.getRandomWalkingSpeed();
 		double totalTime = 0.0;
 		for (int i = 0; i < vertexes.size() - 1; i++) {
 			String id = vertexes.get(i + 1);

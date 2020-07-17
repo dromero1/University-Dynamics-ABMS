@@ -10,7 +10,7 @@ import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
 
-public class Probabilities {
+public class Random {
 
 	/**
 	 * Minimum lunch time (unit: hours). Reference: <pending>
@@ -26,7 +26,7 @@ public class Probabilities {
 	 * Mean lunch duration (unit: hours). Reference: <pending>
 	 */
 	public static final double MEAN_LUNCH_DURATION = 0.66;
-
+	
 	/**
 	 * Standard deviation of lunch duration (unit: hours). Reference: <pending>
 	 */
@@ -36,7 +36,7 @@ public class Probabilities {
 	 * Mean arrival shift (unit: hours). Reference: <pending>
 	 */
 	public static final double MEAN_ARRIVAL_SHIFT = 10.0 / 60;
-
+	
 	/**
 	 * Standard deviation of arrival shift (unit: hours). Reference: <pending>
 	 */
@@ -74,7 +74,7 @@ public class Probabilities {
 		Normal normal = RandomHelper.createNormal(MEAN_ARRIVAL_SHIFT, STD_ARRIVAL_SHIFT);
 		return normal.nextDouble();
 	}
-
+	
 	/**
 	 * Get random vehicle usage. Reference: <pending>
 	 */
