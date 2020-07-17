@@ -96,7 +96,7 @@ public class Random {
 	 * Get random number of groups to enroll to. Reference: <pending>
 	 */
 	public static int getRandomGroupsToEnrollTo() {
-		return 6;
+		return 2;
 	}
 
 	/**
