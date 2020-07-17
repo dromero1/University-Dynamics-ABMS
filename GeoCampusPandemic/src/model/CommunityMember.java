@@ -9,7 +9,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
-import gis.GISLimbo;
 import gis.GISPolygon;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.gis.util.GeometryUtil;
@@ -96,7 +95,7 @@ public abstract class CommunityMember {
 	 * Vanish to limbo. A limbo emulates what's off campus.
 	 */
 	public void vanishToLimbo() {
-		GISLimbo limbo = (GISLimbo) Probabilities.getRandomPolygon(this.contextBuilder.limbos);
+		GISPolygon limbo = Probabilities.getRandomPolygon(this.contextBuilder.limbos);
 		if (this.currentPolygon == null) {
 			this.currentPolygon = limbo;
 		}

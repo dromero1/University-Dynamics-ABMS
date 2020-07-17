@@ -3,7 +3,7 @@ package gis;
 import com.vividsolutions.jts.geom.Geometry;
 import repast.simphony.space.gis.Geography;
 
-public abstract class GISPolygon {
+public class GISPolygon {
 
 	/**
 	 * Reference to geometry
@@ -39,7 +39,7 @@ public abstract class GISPolygon {
 	 * Departures
 	 */
 	protected int departures;
-	
+
 	/**
 	 * Create a new geo-spatial polygon
 	 * 
@@ -85,7 +85,7 @@ public abstract class GISPolygon {
 	public void onDeparture() {
 		this.departures++;
 	}
-	
+
 	/**
 	 * Get agent count
 	 */
