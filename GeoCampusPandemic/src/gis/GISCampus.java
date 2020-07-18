@@ -15,7 +15,7 @@ public class GISCampus extends GISPolygon {
 	 * @param geometry Reference to geometry
 	 */
 	public GISCampus(Geometry geometry) {
-		super(CAMPUS_ID, geometry, 0.0);
+		super(CAMPUS_ID, geometry, 0.0, true);
 	}
 
 }

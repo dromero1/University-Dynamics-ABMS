@@ -53,29 +53,24 @@ public class DBFeatures {
 	public static final int ROUTES_DISTANCE_COLUMN = 2;
 
 	/**
-	 * Facilities database - id column
+	 * Facilities attributes database - id column
 	 */
-	public static final int FACILITIES_ID_COLUMN = 0;
+	public static final int FACILITIES_ATTRIBUTES_ID_COLUMN = 0;
 
 	/**
-	 * Facilities database - area column
+	 * Facilities attributes database - area column
 	 */
-	public static final int FACILITIES_AREA_COLUMN = 1;
+	public static final int FACILITIES_ATTRIBUTES_AREA_COLUMN = 1;
 
 	/**
-	 * Facilities database - weight column
+	 * Facilities attributes database - weight column
 	 */
-	public static final int FACILITIES_WEIGHT_COLUMN = 2;
+	public static final int FACILITIES_ATTRIBUTES_WEIGHT_COLUMN = 2;
 
 	/**
-	 * Facilities database - active column
+	 * Facilities attributes database - active column
 	 */
-	public static final int FACILITIES_ACTIVE_COLUMN = 3;
-
-	/**
-	 * Facilities database - link column
-	 */
-	public static final int FACILITIES_LINK_COLUMN = 4;
+	public static final int FACILITIES_ATTRIBUTES_ACTIVE_COLUMN = 3;
 
 	/**
 	 * Workplaces database - id column

@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import cern.jet.random.Normal;
-import gis.GISDensityMeter;
 import gis.GISPolygon;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
@@ -120,11 +119,8 @@ public class Random {
 	public static GISPolygon getRandomPolygon(HashMap<String, GISPolygon> polygons) {
 		ArrayList<GISPolygon> polyList = new ArrayList<GISPolygon>();
 		for (GISPolygon polygon : polygons.values()) {
-			if (polygon instanceof GISDensityMeter) {
-				GISDensityMeter densityMeter = (GISDensityMeter) polygon;
-				if (!densityMeter.isActive()) {
-					continue;
-				}
+			if (!polygon.isActive()) {
+				continue;
 			}
 			polyList.add(polygon);
 		}
@@ -141,11 +137,8 @@ public class Random {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		double cummulativeProbability = 0;
 		for (GISPolygon polygon : polygons.values()) {
-			if (polygon instanceof GISDensityMeter) {
-				GISDensityMeter densityMeter = (GISDensityMeter) polygon;
-				if (!densityMeter.isActive()) {
-					continue;
-				}
+			if (!polygon.isActive()) {
+				continue;
 			}
 			double weight = polygon.getWeight();
 			cummulativeProbability += weight;
@@ -165,11 +158,8 @@ public class Random {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		double cummulativeProbability = 0;
 		for (GISPolygon polygon : polygons.values()) {
-			if (polygon instanceof GISDensityMeter) {
-				GISDensityMeter densityMeter = (GISDensityMeter) polygon;
-				if (!densityMeter.isActive()) {
-					continue;
-				}
+			if (!polygon.isActive()) {
+				continue;
 			}
 			double weight = polygon.getWorkWeight();
 			cummulativeProbability += weight;

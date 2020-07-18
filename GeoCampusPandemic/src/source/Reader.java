@@ -17,6 +17,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.opengis.feature.simple.SimpleFeature;
 import config.DBFeatures;
 import gis.GISDensityMeter;
+import gis.GISPolygon;
 import model.Group;
 
 public class Reader {
@@ -150,8 +151,8 @@ public class Reader {
 		return scheduleSelection;
 	}
 
-	public static HashMap<String, GISDensityMeter> readFacilityAttributes(String filename) {
-		HashMap<String, GISDensityMeter> areas = new HashMap<String, GISDensityMeter>();
+	public static HashMap<String, GISPolygon> readFacilityAttributes(String filename) {
+		HashMap<String, GISPolygon> attributes = new HashMap<String, GISPolygon>();
 		try {
 			File file = new File(filename);
 			Scanner scanner = new Scanner(file);
@@ -167,34 +168,36 @@ public class Reader {
 				double area = 0;
 				double weight = 0;
 				boolean active = false;
-				String link = "";
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
-					case DBFeatures.FACILITIES_ID_COLUMN:
+					case DBFeatures.FACILITIES_ATTRIBUTES_ID_COLUMN:
 						id = elements[i];
 						break;
-					case DBFeatures.FACILITIES_AREA_COLUMN:
+					case DBFeatures.FACILITIES_ATTRIBUTES_AREA_COLUMN:
 						area = Double.parseDouble(elements[i]);
 						break;
-					case DBFeatures.FACILITIES_WEIGHT_COLUMN:
+					case DBFeatures.FACILITIES_ATTRIBUTES_WEIGHT_COLUMN:
 						weight = Double.parseDouble(elements[i]);
 						break;
-					case DBFeatures.FACILITIES_ACTIVE_COLUMN:
+					case DBFeatures.FACILITIES_ATTRIBUTES_ACTIVE_COLUMN:
 						active = elements[i].equals("1");
-					case DBFeatures.FACILITIES_LINK_COLUMN:
-						link = elements[i];
 					default:
 						break;
 					}
 				}
-				GISDensityMeter densityMeter = new GISDensityMeter(area, weight, active, link);
-				areas.put(id, densityMeter);
+				GISPolygon polygon = null;
+				if (area > 0.0) {
+					polygon = new GISDensityMeter(area, weight, active);
+				} else {
+					polygon = new GISPolygon(weight, active);
+				}
+				attributes.put(id, polygon);
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		return areas;
+		return attributes;
 	}
 
 	public static HashMap<String, Double> readWorkplaces(String filename) {

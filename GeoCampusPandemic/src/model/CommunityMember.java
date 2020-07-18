@@ -36,19 +36,9 @@ public abstract class CommunityMember {
 	protected GISPolygon currentPolygon;
 
 	/**
-	 * Last exit polygon
-	 */
-	protected GISPolygon lastExit;
-
-	/**
 	 * Action's values
 	 */
 	protected HashMap<Integer, Pair<Double, Integer>> actionValues;
-
-	/**
-	 * Last reward
-	 */
-	protected double lastReward;
 
 	/**
 	 * Create a new community member agent
@@ -73,7 +63,7 @@ public abstract class CommunityMember {
 	 * Move to random in-out spot and vanish to limbo
 	 */
 	public void returnHome() {
-		this.lastExit = moveToRandomInOutSpot("vanishToLimbo");
+		moveToRandomInOutSpot("vanishToLimbo");
 	}
 
 	/**
@@ -109,13 +99,6 @@ public abstract class CommunityMember {
 		this.currentPolygon.onDeparture();
 		this.currentPolygon = polygon;
 		this.currentPolygon.onArrival();
-	}
-
-	/**
-	 * Get last reward
-	 */
-	public double getLastReward() {
-		return this.lastReward;
 	}
 
 	/**

@@ -8,28 +8,15 @@ public class GISDensityMeter extends GISPolygon {
 	protected double area;
 
 	/**
-	 * Active
-	 */
-	protected boolean active;
-
-	/**
-	 * Active
-	 */
-	protected String link;
-
-	/**
 	 * Create a new geo-spatial density meter
 	 * 
 	 * @param area   Area
 	 * @param weight Weight
 	 * @param active Active
-	 * @param link   Link
 	 */
-	public GISDensityMeter(double area, double weight, boolean active, String link) {
-		super(weight);
+	public GISDensityMeter(double area, double weight, boolean active) {
+		super(weight, active);
 		this.area = area;
-		this.active = active;
-		this.link = link;
 	}
 
 	/**
@@ -51,13 +38,6 @@ public class GISDensityMeter extends GISPolygon {
 	 */
 	public double getArea() {
 		return this.area;
-	}
-
-	/**
-	 * Is active?
-	 */
-	public boolean isActive() {
-		return this.active;
 	}
 
 }

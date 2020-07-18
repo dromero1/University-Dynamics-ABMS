@@ -68,34 +68,49 @@ public final class Paths {
 	public static final String ROUTES_DATABASE = "./data/databases/routes.csv";
 
 	/**
-	 * Teaching areas database
+	 * Teaching facilities attributes database
 	 */
-	public static final String TEACHING_AREAS_DATABASE = "./data/databases/teaching-areas.csv";
+	public static final String TEACHING_FACILITIES_ATTRIBUTES_DATABASE = "./data/databases/teaching-facilities-attributes.csv";
 
 	/**
-	 * In-out areas database
+	 * In-out spots attributes database
 	 */
-	public static final String INOUT_AREAS_DATABASE = "./data/databases/inout-areas.csv";
+	public static final String INOUT_SPOTS_ATTRIBUTES_DATABASE = "./data/databases/inout-spots-attributes.csv";
 
 	/**
-	 * Vehicle in-out areas database
+	 * Vehicle in-out spots attributes database
 	 */
-	public static final String VEHICLE_INOUT_AREAS_DATABASE = "./data/databases/vehicle-inout-areas.csv";
+	public static final String VEHICLE_INOUT_SPOTS_ATTRIBUTES_DATABASE = "./data/databases/vehicle-inout-spots-attributes.csv";
 
 	/**
-	 * Eating areas database
+	 * Eating places attributes database
 	 */
-	public static final String EATING_AREAS_DATABASE = "./data/databases/eating-areas.csv";
+	public static final String EATING_PLACES_ATTRIBUTES_DATABASE = "./data/databases/eating-places-attributes.csv";
 
 	/**
-	 * Shared areas database
+	 * Shared areas attributes database
 	 */
-	public static final String SHARED_AREAS_DATABASE = "./data/databases/shared-areas.csv";
+	public static final String SHARED_AREAS_ATTRIBUTES_DATABASE = "./data/databases/shared-areas-attributes.csv";
 
 	/**
-	 * Transit areas database
+	 * Transit areas attributes database
 	 */
-	public static final String TRANSIT_AREAS_DATABASE = "./data/databases/transit-areas.csv";
+	public static final String TRANSIT_AREAS_ATTRIBUTES_DATABASE = "./data/databases/transit-areas-attributes.csv";
+
+	/**
+	 * Other facilities attributes database
+	 */
+	public static final String OTHER_FACILITIES_ATTRIBUTES_DATABASE = "./data/databases/other-facilities-attributes.csv";
+
+	/**
+	 * Parking lots attributes database
+	 */
+	public static final String PARKING_LOTS_ATTRIBUTES_DATABASE = "./data/databases/parking-lots-attributes.csv";
+
+	/**
+	 * Limbos attributes database
+	 */
+	public static final String LIMBOS_ATTRIBUTES_DATABASE = "./data/databases/limbos-attributes.csv";
 
 	/**
 	 * Workplaces database

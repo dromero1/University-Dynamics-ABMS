@@ -28,6 +28,11 @@ public class GISPolygon {
 	protected double workWeight;
 
 	/**
+	 * Active
+	 */
+	protected boolean active;
+
+	/**
 	 * Reference to geography projection
 	 */
 	protected Geography<Object> geography;
@@ -53,20 +58,24 @@ public class GISPolygon {
 	 * @param id       Polygon id
 	 * @param geometry Reference to geometry
 	 * @param weight   Weight
+	 * @param active   Active
 	 */
-	public GISPolygon(String id, Geometry geometry, double weight) {
+	public GISPolygon(String id, Geometry geometry, double weight, boolean active) {
 		this.id = id;
 		this.geometry = geometry;
 		this.weight = weight;
+		this.active = active;
 	}
 
 	/**
 	 * Create a new geo-spatial polygon
 	 * 
 	 * @param weight Weight
+	 * @param active Active
 	 */
-	public GISPolygon(double weight) {
+	public GISPolygon(double weight, boolean active) {
 		this.weight = weight;
+		this.active = active;
 	}
 
 	/**
@@ -167,6 +176,13 @@ public class GISPolygon {
 	 */
 	public double getWorkWeight() {
 		return this.workWeight;
+	}
+
+	/**
+	 * Is active?
+	 */
+	public boolean isActive() {
+		return this.active;
 	}
 
 }
