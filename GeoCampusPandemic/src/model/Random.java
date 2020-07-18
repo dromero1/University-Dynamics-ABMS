@@ -120,9 +120,18 @@ public class Random {
 	 * @param polygons Map of polygons
 	 */
 	public static GISPolygon getRandomPolygon(HashMap<String, GISPolygon> polygons) {
-		Object[] locations = polygons.values().toArray();
-		int i = RandomHelper.nextIntFromTo(0, locations.length - 1);
-		return (GISPolygon) locations[i];
+		ArrayList<GISPolygon> polyList = new ArrayList<GISPolygon>();
+		for (GISPolygon polygon : polygons.values()) {
+			if (polygon instanceof GISDensityMeter) {
+				GISDensityMeter densityMeter = (GISDensityMeter) polygon;
+				if (!densityMeter.isActive()) {
+					continue;
+				}
+			}
+			polyList.add(polygon);
+		}
+		int index = RandomHelper.nextIntFromTo(0, polyList.size() - 1);
+		return polyList.get(index);
 	}
 
 	/**
