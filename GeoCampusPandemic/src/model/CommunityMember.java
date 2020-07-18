@@ -59,9 +59,11 @@ public abstract class CommunityMember {
 	 * Create a new community member agent
 	 * 
 	 * @param contextBuilder Reference to the simulation builder
+	 * @param diseaseStage   Disease stage
 	 */
-	public CommunityMember(SimulationBuilder contextBuilder) {
+	public CommunityMember(SimulationBuilder contextBuilder, DiseaseStage diseaseStage) {
 		this.contextBuilder = contextBuilder;
+		this.diseaseStage = diseaseStage;
 		this.isVehicleUser = Random.getRandomVehicleUsage();
 	}
 
@@ -167,6 +169,13 @@ public abstract class CommunityMember {
 		this.currentPolygon.onDeparture();
 		this.currentPolygon = polygon;
 		this.currentPolygon.onArrival();
+	}
+
+	/**
+	 * Get disease stage
+	 */
+	public DiseaseStage getDiseaseStage() {
+		return this.diseaseStage;
 	}
 
 	/**

@@ -12,6 +12,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import config.Paths;
 import gis.GISCampus;
 import gis.GISPolygon;
+import model.DiseaseStage;
 import model.Group;
 import model.Heuristics;
 import model.Schedule;
@@ -267,7 +268,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private ArrayList<Student> createStudents(int studentCount) {
 		ArrayList<Student> students = new ArrayList<Student>();
 		for (int i = 0; i < studentCount; i++) {
-			Student student = new Student(this, Integer.toString(i));
+			Student student = new Student(this, DiseaseStage.SUSCEPTIBLE, Integer.toString(i));
 			students.add(student);
 		}
 		return students;
@@ -281,7 +282,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private ArrayList<SupportStaff> createSupportStaff(int staffCount) {
 		ArrayList<SupportStaff> staff = new ArrayList<SupportStaff>();
 		for (int i = 0; i < staffCount; i++) {
-			SupportStaff supportStaff = new SupportStaff(this);
+			SupportStaff supportStaff = new SupportStaff(this, DiseaseStage.SUSCEPTIBLE);
 			staff.add(supportStaff);
 		}
 		return staff;

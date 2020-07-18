@@ -21,9 +21,10 @@ public class SupportStaff extends CommunityMember {
 	 * Create a new support staff agent
 	 * 
 	 * @param contextBuilder Reference to the simulation builder
+	 * @param diseaseStage   Disease stage
 	 */
-	public SupportStaff(SimulationBuilder contextBuilder) {
-		super(contextBuilder);
+	public SupportStaff(SimulationBuilder contextBuilder, DiseaseStage diseaseStage) {
+		super(contextBuilder, diseaseStage);
 		this.workplace = Random.getRandomPolygonWorkWeightBased(this.contextBuilder.workplaces);
 		this.workStartTime = Random.getRandomWorkStartTime();
 	}

@@ -30,10 +30,11 @@ public class Student extends CommunityMember {
 	 * Create a new student agent
 	 * 
 	 * @param contextBuilder Reference to the simulation builder
+	 * @param diseaseStage   Disease stage
 	 * @param id             Student id
 	 */
-	public Student(SimulationBuilder contextBuilder, String id) {
-		super(contextBuilder);
+	public Student(SimulationBuilder contextBuilder, DiseaseStage diseaseStage, String id) {
+		super(contextBuilder, diseaseStage);
 		this.id = id;
 	}
 
