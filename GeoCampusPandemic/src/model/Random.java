@@ -140,7 +140,8 @@ public class Random {
 	 * @param polygons Map of polygons
 	 */
 	public static GISPolygon getRandomPolygonWeightBased(HashMap<String, GISPolygon> polygons) {
-		ArrayList<GISPolygon> polyList = new ArrayList<GISPolygon>();
+		double r = RandomHelper.nextDoubleFromTo(0, 1);
+		double cummulativeProbability = 0;
 		for (GISPolygon polygon : polygons.values()) {
 			if (polygon instanceof GISDensityMeter) {
 				GISDensityMeter densityMeter = (GISDensityMeter) polygon;
@@ -148,23 +149,6 @@ public class Random {
 					continue;
 				}
 			}
-			polyList.add(polygon);
-		}
-		Collections.sort(polyList, new Comparator<GISPolygon>() {
-			@Override
-			public int compare(GISPolygon poly1, GISPolygon poly2) {
-				if (poly1.getWeight() > poly2.getWeight()) {
-					return 1;
-				} else if (poly1.getWeight() < poly2.getWeight()) {
-					return -1;
-				} else {
-					return 0;
-				}
-			}
-		});
-		double r = RandomHelper.nextDoubleFromTo(0, 1);
-		double cummulativeProbability = 0;
-		for (GISPolygon polygon : polyList) {
 			double weight = polygon.getWeight();
 			cummulativeProbability += weight;
 			if (r <= cummulativeProbability) {
@@ -180,7 +164,8 @@ public class Random {
 	 * @param polygons Map of polygons
 	 */
 	public static GISPolygon getRandomPolygonWorkWeightBased(HashMap<String, GISPolygon> polygons) {
-		ArrayList<GISPolygon> polyList = new ArrayList<GISPolygon>();
+		double r = RandomHelper.nextDoubleFromTo(0, 1);
+		double cummulativeProbability = 0;
 		for (GISPolygon polygon : polygons.values()) {
 			if (polygon instanceof GISDensityMeter) {
 				GISDensityMeter densityMeter = (GISDensityMeter) polygon;
@@ -188,23 +173,6 @@ public class Random {
 					continue;
 				}
 			}
-			polyList.add(polygon);
-		}
-		Collections.sort(polyList, new Comparator<GISPolygon>() {
-			@Override
-			public int compare(GISPolygon poly1, GISPolygon poly2) {
-				if (poly1.getWorkWeight() > poly2.getWorkWeight()) {
-					return 1;
-				} else if (poly1.getWorkWeight() < poly2.getWorkWeight()) {
-					return -1;
-				} else {
-					return 0;
-				}
-			}
-		});
-		double r = RandomHelper.nextDoubleFromTo(0, 1);
-		double cummulativeProbability = 0;
-		for (GISPolygon polygon : polyList) {
 			double weight = polygon.getWorkWeight();
 			cummulativeProbability += weight;
 			if (r <= cummulativeProbability) {
