@@ -19,14 +19,29 @@ import repast.simphony.visualization.gis3D.style.MarkStyle;
 
 public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 
-	private Map<String, WWTexture> textureMap;
+	/**
+	 * Maximum scale
+	 */
+	private static final float MAX_SCALE = 1f;
 
-	private static final float MAX_SCALE = 2f;
-
+	/**
+	 * Dimension width
+	 */
 	private static final int WIDTH = 3;
 
+	/**
+	 * Dimension height
+	 */
 	private static final int HEIGHT = 3;
 
+	/**
+	 * Texture map
+	 */
+	private Map<String, WWTexture> textureMap;
+
+	/**
+	 * Create a new community member style
+	 */
 	public CommunityMemberStyle() {
 		Dimension dimension = new Dimension(WIDTH, HEIGHT);
 		this.textureMap = new HashMap<String, WWTexture>();
@@ -51,6 +66,12 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 		this.textureMap.put("gray-circle", new BasicWWTexture(image));
 	}
 
+	/**
+	 * Get texture
+	 * 
+	 * @param communityMember Community member
+	 * @param texture         Texture
+	 */
 	@Override
 	public WWTexture getTexture(CommunityMember communityMember, WWTexture texture) {
 		DiseaseStage diseaseStage = communityMember.getDiseaseStage();
@@ -70,21 +91,42 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 		}
 	}
 
+	/**
+	 * Get scale
+	 * 
+	 * @param communityMember Community member
+	 */
 	@Override
 	public double getScale(CommunityMember communityMember) {
 		return MAX_SCALE;
 	}
 
+	/**
+	 * Get icon offset
+	 * 
+	 * @param communityMember Community member
+	 */
 	@Override
 	public Offset getIconOffset(CommunityMember communityMember) {
 		return Offset.CENTER;
 	}
 
+	/**
+	 * Get label offset
+	 * 
+	 * @param communityMember Community member
+	 */
 	@Override
 	public Offset getLabelOffset(CommunityMember communityMember) {
 		return null;
 	}
 
+	/**
+	 * Get place mark
+	 * 
+	 * @param communityMember Community member
+	 * @param mark            Place mark
+	 */
 	@Override
 	public PlaceMark getPlaceMark(CommunityMember communityMember, PlaceMark mark) {
 		if (mark == null) {
@@ -95,36 +137,72 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 		return mark;
 	}
 
+	/**
+	 * Get elevation
+	 * 
+	 * @param communityMember Community member
+	 */
 	@Override
 	public double getElevation(CommunityMember communityMember) {
 		return 0;
 	}
 
+	/**
+	 * Get heading
+	 * 
+	 * @param communityMember Community member
+	 */
 	@Override
 	public double getHeading(CommunityMember communityMember) {
 		return 0;
 	}
 
+	/**
+	 * Get label color
+	 * 
+	 * @param communityMember Community member
+	 */
 	@Override
 	public Color getLabelColor(CommunityMember communityMember) {
 		return null;
 	}
 
+	/**
+	 * Get line width
+	 * 
+	 * @param communityMember Community member
+	 */
 	@Override
 	public double getLineWidth(CommunityMember communityMember) {
 		return 1;
 	}
 
+	/**
+	 * Get label font
+	 * 
+	 * @param communityMember Community member
+	 */
 	@Override
 	public Font getLabelFont(CommunityMember communityMember) {
 		return null;
 	}
 
+	/**
+	 * Get label
+	 * 
+	 * @param communityMember Community member
+	 */
 	@Override
 	public String getLabel(CommunityMember communityMember) {
 		return null;
 	}
 
+	/**
+	 * Get line material
+	 * 
+	 * @param communityMember Community member
+	 * @param lineMaterial    Line material
+	 */
 	@Override
 	public Material getLineMaterial(CommunityMember communityMember, Material lineMaterial) {
 		if (lineMaterial == null) {

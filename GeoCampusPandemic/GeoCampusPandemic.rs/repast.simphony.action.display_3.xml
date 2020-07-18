@@ -8,11 +8,11 @@
     </entry>
     <entry>
       <string>model.SupportStaff</string>
-      <string>repast.simphony.visualization.gis3D.style.DefaultMarkStyle</string>
+      <string>styles.CommunityMemberStyle</string>
     </entry>
     <entry>
       <string>model.Student</string>
-      <string>repast.simphony.visualization.gis3D.style.DefaultMarkStyle</string>
+      <string>styles.CommunityMemberStyle</string>
     </entry>
     <entry>
       <string>gis.GISDensityMeter</string>
@@ -55,41 +55,29 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1732486521</hashCode>
+    <hashCode>837403169</hashCode>
   </schedParams>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
       <string>gis.GISCampus</string>
-      <int>3</int>
-    </entry>
-    <entry>
-      <string>Scale bar</string>
-      <int>2</int>
-    </entry>
-    <entry>
-      <string>World Map</string>
-      <int>1</int>
-    </entry>
-    <entry>
-      <string>model.SupportStaff</string>
-      <int>6</int>
-    </entry>
-    <entry>
-      <string>model.Student</string>
-      <int>7</int>
-    </entry>
-    <entry>
-      <string>gis.GISDensityMeter</string>
-      <int>4</int>
-    </entry>
-    <entry>
-      <string>Compass</string>
       <int>0</int>
     </entry>
     <entry>
+      <string>model.SupportStaff</string>
+      <int>3</int>
+    </entry>
+    <entry>
+      <string>model.Student</string>
+      <int>4</int>
+    </entry>
+    <entry>
+      <string>gis.GISDensityMeter</string>
+      <int>1</int>
+    </entry>
+    <entry>
       <string>gis.GISPolygon</string>
-      <int>5</int>
+      <int>2</int>
     </entry>
   </layerOrder>
   <projections>
