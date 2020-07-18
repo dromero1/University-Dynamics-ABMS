@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import cern.jet.random.Binomial;
 import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
 import gis.GISPolygon;
@@ -89,6 +91,17 @@ public class Random {
 	public static final double STD_INCUBATION_PERIOD = 2.41;
 
 	/**
+	 * Groups to enroll trials parameter (unit: groups). Reference: <pending>
+	 */
+	public static final int TRIALS_GROUPS_TO_ENROLL = 7;
+
+	/**
+	 * Groups to enroll success probability parameter (unit: probability).
+	 * Reference: <pending>
+	 */
+	public static final double SUCCESS_PROBABILITY_GROUPS_TO_ENROLL = 0.71;
+
+	/**
 	 * Get random lunch time. Reference: <pending>
 	 */
 	public static double getRandomLunchTime() {
@@ -132,7 +145,9 @@ public class Random {
 	 * Get random number of groups to enroll to. Reference: <pending>
 	 */
 	public static int getRandomGroupsToEnrollTo() {
-		return 2;
+		Binomial binomial = RandomHelper.createBinomial(TRIALS_GROUPS_TO_ENROLL, SUCCESS_PROBABILITY_GROUPS_TO_ENROLL);
+		System.out.println(binomial.nextInt());
+		return binomial.nextInt();
 	}
 
 	/**
