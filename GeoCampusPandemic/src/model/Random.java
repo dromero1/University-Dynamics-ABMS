@@ -2,11 +2,13 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
 import gis.GISPolygon;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
+import util.TickConverter;
 
 public class Random {
 
@@ -49,6 +51,42 @@ public class Random {
 	 * Maximum walking speed (unit: meters/minute). Reference: <pending>
 	 */
 	public static final double MAX_WALKING_SPEED = 100;
+
+	/**
+	 * Infection alpha parameter. Reference: <pending>
+	 */
+	public static final double INFECTION_ALPHA = 2.11;
+
+	/**
+	 * Infection beta parameter. Reference: <pending>
+	 */
+	public static final double INFECTION_BETA = 1.3;
+
+	/**
+	 * Infection minimum parameter. Reference: <pending>
+	 */
+	public static final double INFECTION_MIN = -2.4;
+
+	/**
+	 * Discharge alpha parameter. Reference: <pending>
+	 */
+	public static final double DISCHARGE_ALPHA = 1.99;
+
+	/**
+	 * Discharge beta parameter. Reference: <pending>
+	 */
+	public static final double DISCHARGE_BETA = 7.77;
+
+	/**
+	 * Incubation period mean parameter (unit: days). Reference: <pending>
+	 */
+	public static final double MEAN_INCUBATION_PERIOD = 5.52;
+
+	/**
+	 * Incubation period standard deviation parameter (unit: days). Reference:
+	 * <pending>
+	 */
+	public static final double STD_INCUBATION_PERIOD = 2.41;
 
 	/**
 	 * Get random lunch time. Reference: <pending>
@@ -109,6 +147,74 @@ public class Random {
 	 */
 	public static double getRandomWorkEndTime() {
 		return 18;
+	}
+
+	/**
+	 * Get random incubation period (unit: days). Reference: <pending>
+	 */
+	public static double getRandomIncubationPeriod() {
+		double t = Math.pow(MEAN_INCUBATION_PERIOD, 2) + Math.pow(STD_INCUBATION_PERIOD, 2);
+		double mu = Math.log(Math.pow(MEAN_INCUBATION_PERIOD, 2) / Math.sqrt(t));
+		double sigma = Math.log(t / Math.pow(MEAN_INCUBATION_PERIOD, 2));
+		Normal normal = RandomHelper.createNormal(mu, sigma);
+		double y = normal.nextDouble();
+		return Math.exp(y);
+	}
+
+	/**
+	 * Get random patient type. Reference: <pending>
+	 */
+	public static PatientType getRandomPatientType() {
+		double r1 = RandomHelper.nextDoubleFromTo(0, 1);
+		if (r1 < 0.111) {
+			return PatientType.NO_SYMPTOMS;
+		} else {
+			double r2 = RandomHelper.nextDoubleFromTo(0, 1);
+			if (r2 < 0.814) {
+				return PatientType.MODERATE_SYMPTOMS;
+			} else if (r2 < 0.953) {
+				return PatientType.SEVERE_SYMPTOMS;
+			} else {
+				return PatientType.CRITICAL_SYMPTOMS;
+			}
+		}
+	}
+
+	/**
+	 * Is the patient going to die? Reference: <pending>
+	 */
+	public static boolean isGoingToDie(PatientType patientType) {
+		double r = RandomHelper.nextDoubleFromTo(0, 1);
+		switch (patientType) {
+		case SEVERE_SYMPTOMS:
+			return r < 0.15;
+		case CRITICAL_SYMPTOMS:
+			return r < 0.5;
+		default:
+			return false;
+		}
+	}
+
+	/**
+	 * Is the citizen getting exposed? Reference: <pending>
+	 */
+	public static boolean isGettingExposed(double incubationShift) {
+		double r = RandomHelper.nextDoubleFromTo(0, 1);
+		Gamma gamma = RandomHelper.createGamma(INFECTION_ALPHA, 1.0 / INFECTION_BETA);
+		if (incubationShift < INFECTION_MIN) {
+			return false;
+		}
+		double days = TickConverter.ticksToDays(incubationShift);
+		double p = gamma.pdf(days - INFECTION_MIN);
+		return r < p;
+	}
+
+	/**
+	 * Get random time to discharge (unit: days). Reference: <pending>
+	 */
+	public static double getRandomTimeToDischarge() {
+		Gamma gamma = RandomHelper.createGamma(DISCHARGE_ALPHA, 1.0 / DISCHARGE_BETA);
+		return gamma.nextDouble();
 	}
 
 	/**

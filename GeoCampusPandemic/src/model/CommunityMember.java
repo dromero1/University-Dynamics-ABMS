@@ -1,18 +1,23 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import gis.GISPolygon;
+import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.gis.util.GeometryUtil;
-import repast.simphony.util.collections.Pair;
+import repast.simphony.engine.schedule.ISchedulableAction;
+import repast.simphony.engine.schedule.ISchedule;
+import repast.simphony.parameter.Parameters;
 import simulation.EventScheduler;
 import simulation.SimulationBuilder;
 import util.TickConverter;
@@ -26,9 +31,14 @@ public abstract class CommunityMember {
 	protected boolean isVehicleUser;
 
 	/**
-	 * Reference to simulation builder
+	 * Disease stage
 	 */
-	protected SimulationBuilder contextBuilder;
+	private DiseaseStage diseaseStage;
+
+	/**
+	 * Ticks to incubation end
+	 */
+	private double incubationShift;
 
 	/**
 	 * Current polygon
@@ -36,9 +46,14 @@ public abstract class CommunityMember {
 	protected GISPolygon currentPolygon;
 
 	/**
-	 * Action's values
+	 * Reference to simulation builder
 	 */
-	protected HashMap<Integer, Pair<Double, Integer>> actionValues;
+	protected SimulationBuilder contextBuilder;
+
+	/**
+	 * Scheduled actions
+	 */
+	private ArrayList<ISchedulableAction> scheduledActions;
 
 	/**
 	 * Create a new community member agent
@@ -60,6 +75,18 @@ public abstract class CommunityMember {
 	}
 
 	/**
+	 * Step
+	 */
+	public void step() {
+		if (this.diseaseStage == DiseaseStage.INFECTED) {
+			infect();
+		}
+		if (isActiveCase()) {
+			this.incubationShift++;
+		}
+	}
+
+	/**
 	 * Move to random in-out spot and vanish to limbo
 	 */
 	public void returnHome() {
@@ -71,6 +98,47 @@ public abstract class CommunityMember {
 	 */
 	public void haveLunch() {
 		moveToRandomPolygon(this.contextBuilder.eatingPlaces, "", SelectionStrategy.WEIGHT_BASED);
+	}
+
+	/**
+	 * Set exposed
+	 */
+	public void setExposed() {
+		this.diseaseStage = DiseaseStage.EXPOSED;
+		double incubationPeriod = Random.getRandomIncubationPeriod();
+		this.incubationShift = -TickConverter.daysToTicks(incubationPeriod);
+		double infectiousPeriod = Math.max(incubationPeriod + Random.INFECTION_MIN, 1);
+		double ticks = TickConverter.daysToTicks(infectiousPeriod);
+		EventScheduler eventScheduler = EventScheduler.getInstance();
+		eventScheduler.scheduleOneTimeEvent(ticks, this, "setInfected");
+	}
+
+	/**
+	 * Set infected
+	 */
+	public void setInfected() {
+		this.diseaseStage = DiseaseStage.INFECTED;
+		PatientType patientType = Random.getRandomPatientType();
+		String method = Random.isGoingToDie(patientType) ? "kill" : "setImmune";
+		double daysToEvent = Random.getRandomTimeToDischarge() - Random.INFECTION_MIN;
+		double ticks = TickConverter.daysToTicks(daysToEvent);
+		EventScheduler eventScheduler = EventScheduler.getInstance();
+		eventScheduler.scheduleOneTimeEvent(ticks, this, method);
+	}
+
+	/**
+	 * Set immune
+	 */
+	public void setImmune() {
+		this.diseaseStage = DiseaseStage.IMMUNE;
+	}
+
+	/**
+	 * Kill community member
+	 */
+	public void kill() {
+		this.diseaseStage = DiseaseStage.DEAD;
+		removeScheduledEvents();
 	}
 
 	/**
@@ -99,6 +167,41 @@ public abstract class CommunityMember {
 		this.currentPolygon.onDeparture();
 		this.currentPolygon = polygon;
 		this.currentPolygon.onArrival();
+	}
+
+	/**
+	 * Is susceptible?
+	 */
+	public int isSusceptible() {
+		return diseaseStage == DiseaseStage.SUSCEPTIBLE ? 1 : 0;
+	}
+
+	/**
+	 * Is exposed?
+	 */
+	public int isExposed() {
+		return diseaseStage == DiseaseStage.EXPOSED ? 1 : 0;
+	}
+
+	/**
+	 * Is infected?
+	 */
+	public int isInfected() {
+		return diseaseStage == DiseaseStage.INFECTED ? 1 : 0;
+	}
+
+	/**
+	 * Is immune?
+	 */
+	public int isImmune() {
+		return diseaseStage == DiseaseStage.IMMUNE ? 1 : 0;
+	}
+
+	/**
+	 * Is dead?
+	 */
+	public int isDead() {
+		return diseaseStage == DiseaseStage.DEAD ? 1 : 0;
 	}
 
 	/**
@@ -183,6 +286,24 @@ public abstract class CommunityMember {
 	}
 
 	/**
+	 * Infect nearby susceptible individuals
+	 */
+	private void infect() {
+		Parameters simParams = RunEnvironment.getInstance().getParameters();
+		double distance = simParams.getDouble("infectionRadius");
+		Geometry searchArea = GeometryUtil.generateBuffer(this.contextBuilder.geography,
+				this.contextBuilder.geography.getGeometry(this), distance);
+		Envelope searchEnvelope = searchArea.getEnvelopeInternal();
+		Iterable<CommunityMember> communityMembers = this.contextBuilder.geography.getObjectsWithin(searchEnvelope,
+				CommunityMember.class);
+		for (CommunityMember communityMember : communityMembers) {
+			if (communityMember.diseaseStage == DiseaseStage.SUSCEPTIBLE && Random.isGettingExposed(incubationShift)) {
+				communityMember.setExposed();
+			}
+		}
+	}
+
+	/**
 	 * Move to random in-out spot
 	 */
 	private GISPolygon moveToRandomInOutSpot(String method) {
@@ -193,6 +314,25 @@ public abstract class CommunityMember {
 			inOuts = this.contextBuilder.inOuts;
 		}
 		return moveToRandomPolygon(inOuts, method, SelectionStrategy.RANDOM);
+	}
+
+	/**
+	 * Is an active case (infected or exposed)?
+	 */
+	private boolean isActiveCase() {
+		return this.diseaseStage == DiseaseStage.INFECTED || this.diseaseStage == DiseaseStage.EXPOSED;
+	}
+
+	/**
+	 * Remove scheduled events
+	 */
+	private void removeScheduledEvents() {
+		ISchedule schedule = RunEnvironment.getInstance().getCurrentSchedule();
+		for (int i = 0; i < this.scheduledActions.size(); i++) {
+			ISchedulableAction action = this.scheduledActions.get(i);
+			schedule.removeAction(action);
+			this.scheduledActions.remove(action);
+		}
 	}
 
 }

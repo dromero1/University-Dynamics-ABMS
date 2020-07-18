@@ -49,4 +49,22 @@ public class TickConverter {
 		return minutes * TICKS_PER_MINUTE;
 	}
 
+	/**
+	 * Days to ticks
+	 * 
+	 * @param days Days
+	 */
+	public static double daysToTicks(double days) {
+		return days * TICKS_PER_DAY;
+	}
+
+	/**
+	 * Ticks to days
+	 * 
+	 * @param ticks Ticks
+	 */
+	public static double ticksToDays(double ticks) {
+		return ticks / TICKS_PER_DAY;
+	}
+
 }
