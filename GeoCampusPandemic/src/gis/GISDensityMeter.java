@@ -53,4 +53,11 @@ public class GISDensityMeter extends GISPolygon {
 		return this.area;
 	}
 
+	/**
+	 * Is active?
+	 */
+	public boolean isActive() {
+		return this.active;
+	}
+
 }

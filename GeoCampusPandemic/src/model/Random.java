@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import cern.jet.random.Normal;
+import gis.GISDensityMeter;
 import gis.GISPolygon;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
@@ -26,7 +27,7 @@ public class Random {
 	 * Mean lunch duration (unit: hours). Reference: <pending>
 	 */
 	public static final double MEAN_LUNCH_DURATION = 0.66;
-	
+
 	/**
 	 * Standard deviation of lunch duration (unit: hours). Reference: <pending>
 	 */
@@ -36,7 +37,7 @@ public class Random {
 	 * Mean arrival shift (unit: hours). Reference: <pending>
 	 */
 	public static final double MEAN_ARRIVAL_SHIFT = 10.0 / 60;
-	
+
 	/**
 	 * Standard deviation of arrival shift (unit: hours). Reference: <pending>
 	 */
@@ -74,7 +75,7 @@ public class Random {
 		Normal normal = RandomHelper.createNormal(MEAN_ARRIVAL_SHIFT, STD_ARRIVAL_SHIFT);
 		return normal.nextDouble();
 	}
-	
+
 	/**
 	 * Get random vehicle usage. Reference: <pending>
 	 */
@@ -132,6 +133,12 @@ public class Random {
 	public static GISPolygon getRandomPolygonWeightBased(HashMap<String, GISPolygon> polygons) {
 		ArrayList<GISPolygon> polyList = new ArrayList<GISPolygon>();
 		for (GISPolygon polygon : polygons.values()) {
+			if (polygon instanceof GISDensityMeter) {
+				GISDensityMeter densityMeter = (GISDensityMeter) polygon;
+				if (!densityMeter.isActive()) {
+					continue;
+				}
+			}
 			polyList.add(polygon);
 		}
 		Collections.sort(polyList, new Comparator<GISPolygon>() {
@@ -166,6 +173,12 @@ public class Random {
 	public static GISPolygon getRandomPolygonWorkWeightBased(HashMap<String, GISPolygon> polygons) {
 		ArrayList<GISPolygon> polyList = new ArrayList<GISPolygon>();
 		for (GISPolygon polygon : polygons.values()) {
+			if (polygon instanceof GISDensityMeter) {
+				GISDensityMeter densityMeter = (GISDensityMeter) polygon;
+				if (!densityMeter.isActive()) {
+					continue;
+				}
+			}
 			polyList.add(polygon);
 		}
 		Collections.sort(polyList, new Comparator<GISPolygon>() {
