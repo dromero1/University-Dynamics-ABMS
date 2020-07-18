@@ -22,7 +22,7 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 	/**
 	 * Maximum scale
 	 */
-	private static final float MAX_SCALE = 1f;
+	private static final float MAX_SCALE = 1.5f;
 
 	/**
 	 * Dimension width
