@@ -146,7 +146,6 @@ public class Random {
 	 */
 	public static int getRandomGroupsToEnrollTo() {
 		Binomial binomial = RandomHelper.createBinomial(TRIALS_GROUPS_TO_ENROLL, SUCCESS_PROBABILITY_GROUPS_TO_ENROLL);
-		System.out.println(binomial.nextInt());
 		return binomial.nextInt();
 	}
 
