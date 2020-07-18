@@ -25,15 +25,15 @@ import util.TickConverter;
 public abstract class CommunityMember {
 
 	/**
+	 * Disease stage
+	 */
+	private DiseaseStage diseaseStage;
+
+	/**
 	 * Vehicle user flag. Determines whether the student enters the campus by car or
 	 * by foot.
 	 */
 	protected boolean isVehicleUser;
-
-	/**
-	 * Disease stage
-	 */
-	private DiseaseStage diseaseStage;
 
 	/**
 	 * Ticks to incubation end
