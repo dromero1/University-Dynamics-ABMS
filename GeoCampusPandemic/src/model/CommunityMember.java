@@ -135,14 +135,17 @@ public abstract class CommunityMember {
 	public void transitionInfected() {
 		this.compartment = Compartment.INFECTED;
 		PatientType patientType = Random.getRandomPatientType();
+		// Schedule regular expulsion
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		double tickInterval = TickConverter.minutesToTicks(EXPULSION_INTERVAL);
 		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(1, this, tickInterval, "expel");
 		this.schedulableActions.put(SchedulableAction.EXPEL, expelAction);
-		String method = Random.isGoingToDie(patientType) ? "die" : "transitionToImmune";
-		double daysToRemoval = Random.getRandomTimeToDischarge() - Random.INFECTION_MIN;
-		double ticks = TickConverter.daysToTicks(daysToRemoval);
-		eventScheduler.scheduleOneTimeEvent(ticks, this, method);
+		// Schedule removal
+		boolean isDying = Random.isGoingToDie(patientType);
+		String removalMethod = (isDying) ? "die" : "transitionToImmune";
+		double timeToDischarge = Random.getRandomTimeToDischarge();
+		double ticksToRemoval = TickConverter.daysToTicks(timeToDischarge - Random.INFECTION_MIN);
+		eventScheduler.scheduleOneTimeEvent(ticksToRemoval, this, removalMethod);
 	}
 
 	/**
@@ -290,14 +293,16 @@ public abstract class CommunityMember {
 	protected void moveToPolygon(GISPolygon polygon, String method) {
 		String source = this.currentPolygon.getId();
 		String sink = polygon.getId();
+		// Get shortest paths
 		Graph<String, DefaultWeightedEdge> routes = this.contextBuilder.routes;
 		HashMap<String, GraphPath<String, DefaultWeightedEdge>> shortestPaths = this.contextBuilder.shortestPaths;
 		GraphPath<String, DefaultWeightedEdge> path = shortestPaths.get(source + "-" + sink);
 		List<String> vertexes = path.getVertexList();
 		List<DefaultWeightedEdge> edges = path.getEdgeList();
+		// Schedule relocations
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		double speed = Random.getRandomWalkingSpeed();
 		double totalTime = 0.0;
+		double speed = Random.getRandomWalkingSpeed();
 		for (int i = 0; i < vertexes.size() - 1; i++) {
 			String id = vertexes.get(i + 1);
 			GISPolygon nextPolygon = this.contextBuilder.getPolygonById(id);
@@ -308,6 +313,7 @@ public abstract class CommunityMember {
 			double ticks = TickConverter.minutesToTicks(totalTime);
 			eventScheduler.scheduleOneTimeEvent(ticks, this, "relocate", nextPolygon);
 		}
+		// Schedule method
 		if (!method.isEmpty()) {
 			totalTime += 1;
 			double ticks = TickConverter.minutesToTicks(totalTime);
