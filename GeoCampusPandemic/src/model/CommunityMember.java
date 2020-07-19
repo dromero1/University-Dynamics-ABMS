@@ -25,9 +25,14 @@ import util.TickConverter;
 public abstract class CommunityMember {
 
 	/**
+	 * Step interval (unit: minutes)
+	 */
+	public static final double STEP_INTERVAL = 15;
+
+	/**
 	 * Disease stage
 	 */
-	private DiseaseStage diseaseStage;
+	protected DiseaseStage diseaseStage;
 
 	/**
 	 * Vehicle user flag. Determines whether the student enters the campus by car or
@@ -70,6 +75,7 @@ public abstract class CommunityMember {
 		this.contextBuilder = contextBuilder;
 		this.diseaseStage = diseaseStage;
 		this.isVehicleUser = Random.getRandomVehicleUsage();
+		this.scheduledActions = new ArrayList<>();
 	}
 
 	/**
@@ -78,6 +84,7 @@ public abstract class CommunityMember {
 	@ScheduledMethod(start = 0)
 	public void init() {
 		goHome();
+		initDisease();
 		scheduleRecurringEvents();
 	}
 
@@ -244,9 +251,12 @@ public abstract class CommunityMember {
 	 * Schedule step
 	 */
 	protected void scheduleStep() {
-		
+		EventScheduler eventScheduler = EventScheduler.getInstance();
+		double tickInterval = TickConverter.minutesToTicks(STEP_INTERVAL);
+		ISchedulableAction stepAction = eventScheduler.scheduleRecurringEvent(1, this, tickInterval, "step");
+		this.scheduledActions.add(stepAction);
 	}
-	
+
 	/**
 	 * Get random polygon
 	 * 
@@ -302,6 +312,22 @@ public abstract class CommunityMember {
 	}
 
 	/**
+	 * Initialize disease
+	 */
+	private void initDisease() {
+		switch (this.diseaseStage) {
+		case EXPOSED:
+			setExposed();
+			break;
+		case INFECTED:
+			setInfected();
+			break;
+		default:
+			break;
+		}
+	}
+
+	/**
 	 * Schedule recurring events
 	 */
 	private void scheduleRecurringEvents() {
@@ -320,11 +346,16 @@ public abstract class CommunityMember {
 		Geometry searchArea = GeometryUtil.generateBuffer(this.contextBuilder.geography,
 				this.contextBuilder.geography.getGeometry(this), distance);
 		Envelope searchEnvelope = searchArea.getEnvelopeInternal();
-		Iterable<CommunityMember> communityMembers = this.contextBuilder.geography.getObjectsWithin(searchEnvelope,
-				CommunityMember.class);
-		for (CommunityMember communityMember : communityMembers) {
-			if (communityMember.diseaseStage == DiseaseStage.SUSCEPTIBLE && Random.isGettingExposed(incubationShift)) {
-				communityMember.setExposed();
+		Iterable<Student> students = this.contextBuilder.geography.getObjectsWithin(searchEnvelope, Student.class);
+		for (Student student : students) {
+			if (student.diseaseStage == DiseaseStage.SUSCEPTIBLE && Random.isGettingExposed(incubationShift)) {
+				student.setExposed();
+			}
+		}
+		Iterable<Staffer> staffers = this.contextBuilder.geography.getObjectsWithin(searchEnvelope, Staffer.class);
+		for (Staffer staffer : staffers) {
+			if (staffer.diseaseStage == DiseaseStage.SUSCEPTIBLE && Random.isGettingExposed(incubationShift)) {
+				staffer.setExposed();
 			}
 		}
 	}

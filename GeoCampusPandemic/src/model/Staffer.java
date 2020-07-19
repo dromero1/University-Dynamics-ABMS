@@ -5,7 +5,7 @@ import simulation.EventScheduler;
 import simulation.SimulationBuilder;
 import util.TickConverter;
 
-public class SupportStaff extends CommunityMember {
+public class Staffer extends CommunityMember {
 
 	/**
 	 * Workplace
@@ -18,12 +18,12 @@ public class SupportStaff extends CommunityMember {
 	private double workStartTime;
 
 	/**
-	 * Create a new support staff agent
+	 * Create a new staffer agent
 	 * 
 	 * @param contextBuilder Reference to the simulation builder
 	 * @param diseaseStage   Disease stage
 	 */
-	public SupportStaff(SimulationBuilder contextBuilder, DiseaseStage diseaseStage) {
+	public Staffer(SimulationBuilder contextBuilder, DiseaseStage diseaseStage) {
 		super(contextBuilder, diseaseStage);
 		this.workplace = Random.getRandomPolygonWorkWeightBased(this.contextBuilder.workplaces);
 		this.workStartTime = Random.getRandomWorkStartTime();

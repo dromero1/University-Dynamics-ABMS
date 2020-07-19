@@ -16,7 +16,7 @@ import model.Group;
 import model.Heuristics;
 import model.Schedule;
 import model.Student;
-import model.SupportStaff;
+import model.Staffer;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.gis.GeographyFactory;
 import repast.simphony.context.space.gis.GeographyFactoryFinder;
@@ -170,7 +170,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 
 		// Add students to simulation
 		Parameters simParams = RunEnvironment.getInstance().getParameters();
-		ArrayList<Student> students = createStudents(simParams.getInteger("students"));
+		ArrayList<Student> students = createStudents(simParams.getInteger("susceptibleStudents"),
+				simParams.getInteger("infectedStudents"));
 		for (Student student : students) {
 			Schedule schedule = Heuristics.buildRandomSchedule(groups);
 			if (schedule != null && schedule.getGroupCount() > 0) {
@@ -179,9 +180,10 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 			}
 		}
 
-		// Add support staff to simulation
-		ArrayList<SupportStaff> supportStaff = createSupportStaff(simParams.getInteger("supportStaff"));
-		for (SupportStaff staff : supportStaff) {
+		// Add staffers to simulation
+		ArrayList<Staffer> staffers = createSupportStaff(simParams.getInteger("susceptibleStaffers"),
+				simParams.getInteger("infectedStaffers"));
+		for (Staffer staff : staffers) {
 			context.add(staff);
 		}
 
@@ -239,11 +241,16 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	/**
 	 * Create students
 	 * 
-	 * @param studentCount Number of students to create
+	 * @param susceptibleStudents Number of susceptible students
+	 * @param infectedStudents    Number of infected students
 	 */
-	private ArrayList<Student> createStudents(int studentCount) {
+	private ArrayList<Student> createStudents(int susceptibleStudents, int infectedStudents) {
 		ArrayList<Student> students = new ArrayList<Student>();
-		for (int i = 0; i < studentCount; i++) {
+		for (int i = 0; i < infectedStudents; i++) {
+			Student student = new Student(this, DiseaseStage.INFECTED, Integer.toString(i));
+			students.add(student);
+		}
+		for (int i = 0; i < susceptibleStudents; i++) {
 			Student student = new Student(this, DiseaseStage.SUSCEPTIBLE, Integer.toString(i));
 			students.add(student);
 		}
@@ -253,15 +260,20 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	/**
 	 * Create support staff
 	 * 
-	 * @param staffCount Number of staffers to create
+	 * @param susceptibleStaffers Number of susceptible staffers
+	 * @param infectedStaffers    Number of infected staffers
 	 */
-	private ArrayList<SupportStaff> createSupportStaff(int staffCount) {
-		ArrayList<SupportStaff> staff = new ArrayList<SupportStaff>();
-		for (int i = 0; i < staffCount; i++) {
-			SupportStaff supportStaff = new SupportStaff(this, DiseaseStage.SUSCEPTIBLE);
-			staff.add(supportStaff);
+	private ArrayList<Staffer> createSupportStaff(int susceptibleStaffers, int infectedStaffers) {
+		ArrayList<Staffer> staffers = new ArrayList<Staffer>();
+		for (int i = 0; i < susceptibleStaffers; i++) {
+			Staffer staffer = new Staffer(this, DiseaseStage.SUSCEPTIBLE);
+			staffers.add(staffer);
 		}
-		return staff;
+		for (int i = 0; i < infectedStaffers; i++) {
+			Staffer staffer = new Staffer(this, DiseaseStage.INFECTED);
+			staffers.add(staffer);
+		}
+		return staffers;
 	}
 
 	/**

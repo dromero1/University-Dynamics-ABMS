@@ -3,7 +3,7 @@
   <type>GIS 3D</type>
   <styles>
     <entry>
-      <string>model.SupportStaff</string>
+      <string>model.Staffer</string>
       <string>styles.CommunityMemberStyle</string>
     </entry>
     <entry>
@@ -21,7 +21,7 @@
   </styles>
   <editedStyles>
     <entry>
-      <string>model.SupportStaff</string>
+      <string>model.Staffer</string>
       <null/>
     </entry>
     <entry>
@@ -47,7 +47,7 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>84666959</hashCode>
+    <hashCode>451302176</hashCode>
   </schedParams>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
@@ -60,7 +60,7 @@
       <int>1</int>
     </entry>
     <entry>
-      <string>model.SupportStaff</string>
+      <string>model.Staffer</string>
       <int>5</int>
     </entry>
     <entry>
