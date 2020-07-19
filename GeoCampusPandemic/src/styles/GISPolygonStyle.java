@@ -35,7 +35,7 @@ public class GISPolygonStyle implements SurfaceShapeStyle<GISPolygon> {
 		if (effectiveContacts > 0) {
 			return Color.RED;
 		} else {
-			return Color.white;
+			return Color.WHITE;
 		}
 	}
 
