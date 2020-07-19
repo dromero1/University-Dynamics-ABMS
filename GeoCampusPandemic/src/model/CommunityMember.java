@@ -77,7 +77,7 @@ public abstract class CommunityMember {
 	 */
 	@ScheduledMethod(start = 0)
 	public void init() {
-		vanishToLimbo();
+		goHome();
 		scheduleRecurringEvents();
 	}
 
@@ -94,11 +94,15 @@ public abstract class CommunityMember {
 	}
 
 	/**
-	 * Return home. Move to a random in-out spot and vanish to limbo.
+	 * Go home. Move to a random in-out spot and vanish to limbo.
 	 */
-	public void returnHome() {
+	public void goHome() {
 		this.lastExit = getRandomInOutSpot();
-		moveToPolygon(this.lastExit, "vanishToLimbo");
+		if (this.currentPolygon != null) {
+			moveToPolygon(this.lastExit, "vanishToLimbo");
+		} else {
+			vanishToLimbo();
+		}
 	}
 
 	/**
@@ -156,6 +160,9 @@ public abstract class CommunityMember {
 	public void vanishToLimbo() {
 		String limboId = this.lastExit.getLink();
 		GISPolygon limbo = this.contextBuilder.getPolygonById(limboId);
+		if (this.currentPolygon == null) {
+			this.currentPolygon = limbo;
+		}
 		relocate(limbo);
 	}
 
@@ -234,6 +241,13 @@ public abstract class CommunityMember {
 	protected abstract void scheduleLunch();
 
 	/**
+	 * Schedule step
+	 */
+	protected void scheduleStep() {
+		
+	}
+	
+	/**
 	 * Get random polygon
 	 * 
 	 * @param polygons          Map of polygons to choose from
@@ -294,6 +308,7 @@ public abstract class CommunityMember {
 		scheduleActivities();
 		scheduleDepartures();
 		scheduleLunch();
+		scheduleStep();
 	}
 
 	/**

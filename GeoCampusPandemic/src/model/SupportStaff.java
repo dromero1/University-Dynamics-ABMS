@@ -57,7 +57,7 @@ public class SupportStaff extends CommunityMember {
 		for (int i = 1; i <= 6; i++) {
 			double endTime = Random.getRandomWorkEndTime();
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, endTime);
-			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "returnHome");
+			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "goHome");
 		}
 	}
 

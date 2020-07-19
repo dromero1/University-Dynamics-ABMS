@@ -22,6 +22,11 @@ import model.Group;
 
 public class Reader {
 
+	/**
+	 * Load geometry from shapefile
+	 * 
+	 * @param filename File name
+	 */
 	public static ArrayList<SimpleFeature> loadGeometryFromShapefile(String filename) {
 		File file = new File(filename);
 		try {
@@ -41,6 +46,11 @@ public class Reader {
 		return null;
 	}
 
+	/**
+	 * Read groups database
+	 * 
+	 * @param filename File name
+	 */
 	public static HashMap<String, Group> readGroupsDatabase(String filename) {
 		HashMap<String, Group> groups = new HashMap<String, Group>();
 		try {
@@ -102,6 +112,11 @@ public class Reader {
 		return groups;
 	}
 
+	/**
+	 * Read schedule selection database
+	 * 
+	 * @param filename File name
+	 */
 	public static HashMap<String, ArrayList<String>> readScheduleSelectionDatabase(String filename) {
 		HashMap<String, ArrayList<String>> scheduleSelection = new HashMap<String, ArrayList<String>>();
 		try {
@@ -151,7 +166,12 @@ public class Reader {
 		return scheduleSelection;
 	}
 
-	public static HashMap<String, GISPolygon> readFacilityAttributes(String filename) {
+	/**
+	 * Read facility attributes database
+	 * 
+	 * @param filename File name
+	 */
+	public static HashMap<String, GISPolygon> readFacilityAttributesDatabase(String filename) {
 		HashMap<String, GISPolygon> attributes = new HashMap<String, GISPolygon>();
 		try {
 			File file = new File(filename);
@@ -182,8 +202,10 @@ public class Reader {
 						break;
 					case DBFeatures.FACILITIES_ATTRIBUTES_ACTIVE_COLUMN:
 						active = elements[i].equals("1");
+						break;
 					case DBFeatures.FACILITIES_ATTRIBUTES_LINK_COLUMN:
 						link = elements[i];
+						break;
 					default:
 						break;
 					}
@@ -203,7 +225,12 @@ public class Reader {
 		return attributes;
 	}
 
-	public static HashMap<String, Double> readWorkplaces(String filename) {
+	/**
+	 * Read workplaces database
+	 * 
+	 * @param filename File name
+	 */
+	public static HashMap<String, Double> readWorkplacesDatabase(String filename) {
 		HashMap<String, Double> workplaces = new HashMap<String, Double>();
 		try {
 			File file = new File(filename);
@@ -239,7 +266,12 @@ public class Reader {
 		return workplaces;
 	}
 
-	public static Graph<String, DefaultWeightedEdge> readRoutes(String filename) {
+	/**
+	 * Read routes database
+	 * 
+	 * @param filename File name
+	 */
+	public static Graph<String, DefaultWeightedEdge> readRoutesDatabase(String filename) {
 		Graph<String, DefaultWeightedEdge> routes = new DefaultDirectedWeightedGraph<String, DefaultWeightedEdge>(
 				DefaultWeightedEdge.class);
 		try {

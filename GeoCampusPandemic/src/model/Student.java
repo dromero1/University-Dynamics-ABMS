@@ -128,7 +128,7 @@ public class Student extends CommunityMember {
 			AcademicActivity lastActivity = this.schedule.getLastAcademicActivityInDay(day);
 			double endTime = lastActivity.getEndTime();
 			double ticksToEvent = TickConverter.dayTimeToTicks(day, endTime);
-			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "returnHome");
+			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "goHome");
 		}
 	}
 

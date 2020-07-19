@@ -160,7 +160,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		this.workplaces = readWorkplaces();
 
 		// Read routes
-		this.routes = Reader.readRoutes(Paths.ROUTES_DATABASE);
+		this.routes = Reader.readRoutesDatabase(Paths.ROUTES_DATABASE);
 
 		// Find shortest paths
 		this.shortestPaths = Heuristics.findShortestPaths(this.routes);
@@ -209,7 +209,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private HashMap<String, GISPolygon> readPolygons(String geometryPath, String attributesPath) {
 		HashMap<String, GISPolygon> polygons = new HashMap<String, GISPolygon>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(geometryPath);
-		HashMap<String, GISPolygon> attributes = Reader.readFacilityAttributes(attributesPath);
+		HashMap<String, GISPolygon> attributes = Reader.readFacilityAttributesDatabase(attributesPath);
 		for (SimpleFeature feature : features) {
 			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
 			String id = (String) feature.getAttribute(1);
@@ -226,7 +226,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 */
 	private HashMap<String, GISPolygon> readWorkplaces() {
 		HashMap<String, GISPolygon> workplaces = new HashMap<String, GISPolygon>();
-		HashMap<String, Double> places = Reader.readWorkplaces(Paths.WORKPLACES_DATABASE);
+		HashMap<String, Double> places = Reader.readWorkplacesDatabase(Paths.WORKPLACES_DATABASE);
 		for (String workplaceId : places.keySet()) {
 			GISPolygon polygon = getPolygonById(workplaceId);
 			double weight = places.get(workplaceId);
