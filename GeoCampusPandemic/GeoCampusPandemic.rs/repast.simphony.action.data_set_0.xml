@@ -1,63 +1,59 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.7.0">
-  <name>EpidemicTimeSeries</name>
-  <type>AGGREGATE</type>
+  <name>DensitiesTimeSeries</name>
+  <type>NON_AGGREGATE</type>
+  <sourceType>gis.GISDensityMeter</sourceType>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>1.0</interval>
+    <interval>0.25</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>451302176</hashCode>
+    <hashCode>-1303619407</hashCode>
   </scheduleParams>
   <atEnd>true</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>susceptible</string>
+      <string>id</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>susceptible</id>
-        <className>model.CommunityMember</className>
-        <methodName>isSusceptible</methodName>
-        <aggType>SUM</aggType>
+        <id>id</id>
+        <className>gis.GISDensityMeter</className>
+        <methodName>getId</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>exposed</string>
+      <string>density</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>exposed</id>
-        <className>model.CommunityMember</className>
-        <methodName>isExposed</methodName>
-        <aggType>SUM</aggType>
+        <id>density</id>
+        <className>gis.GISDensityMeter</className>
+        <methodName>measureDensity</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>infected</string>
+      <string>agents</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>infected</id>
-        <className>model.CommunityMember</className>
-        <methodName>isInfected</methodName>
-        <aggType>SUM</aggType>
+        <id>agents</id>
+        <className>gis.GISDensityMeter</className>
+        <methodName>countAgents</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>immune</string>
+      <string>agentsCorrected</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>immune</id>
-        <className>model.CommunityMember</className>
-        <methodName>isImmune</methodName>
-        <aggType>SUM</aggType>
+        <id>agentsCorrected</id>
+        <className>gis.GISDensityMeter</className>
+        <methodName>countAgentsCorrected</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>dead</string>
+      <string>densityCorrected</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>dead</id>
-        <className>model.CommunityMember</className>
-        <methodName>isDead</methodName>
-        <aggType>SUM</aggType>
+        <id>densityCorrected</id>
+        <className>gis.GISDensityMeter</className>
+        <methodName>measureDensityCorrected</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

@@ -1,16 +1,12 @@
 <repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.7.0">
-  <name>EpidemicFileSink</name>
-  <dataSet>EpidemicTimeSeries</dataSet>
+  <name>ActiveCasesFileSink</name>
+  <dataSet>ActiveCasesTimeSeries</dataSet>
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
     <string>tick</string>
-    <string>susceptible</string>
-    <string>exposed</string>
-    <string>infected</string>
-    <string>immune</string>
-    <string>dead</string>
+    <string>activeCases</string>
   </sourceIds>
-  <fileName>Output_Epidemic.csv</fileName>
+  <fileName>output/Output_ActiveCases.csv</fileName>
   <addTimeStamp>false</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>
