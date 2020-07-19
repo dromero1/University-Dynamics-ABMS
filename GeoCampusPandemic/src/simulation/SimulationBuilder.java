@@ -213,7 +213,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(geometryPath);
 		HashMap<String, GISPolygon> attributes = Reader.readFacilityAttributesDatabase(attributesPath);
 		for (SimpleFeature feature : features) {
-			Geometry geometry = (MultiPolygon) feature.getDefaultGeometry();
+			MultiPolygon multiPolygon = (MultiPolygon) feature.getDefaultGeometry();
+			Geometry geometry = multiPolygon.getGeometryN(0);
 			String id = (String) feature.getAttribute(1);
 			GISPolygon polygon = attributes.get(id);
 			polygon.setPolygonId(id);

@@ -361,12 +361,14 @@ public abstract class CommunityMember {
 		for (Student student : students) {
 			if (student.compartment == Compartment.SUSCEPTIBLE && Random.isGettingExposed(incubationDiff)) {
 				student.transitionExposed();
+				student.currentPolygon.onEffectiveContact();
 			}
 		}
 		Iterable<Staffer> staffers = this.contextBuilder.geography.getObjectsWithin(searchEnvelope, Staffer.class);
 		for (Staffer staffer : staffers) {
 			if (staffer.compartment == Compartment.SUSCEPTIBLE && Random.isGettingExposed(incubationDiff)) {
 				staffer.transitionExposed();
+				staffer.currentPolygon.onEffectiveContact();
 			}
 		}
 	}

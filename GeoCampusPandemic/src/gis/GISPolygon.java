@@ -58,6 +58,11 @@ public class GISPolygon {
 	protected int departures;
 
 	/**
+	 * Effective contacts
+	 */
+	protected int effectiveContacts;
+
+	/**
 	 * Create a new geo-spatial polygon
 	 * 
 	 * @param weight Weight
@@ -99,6 +104,13 @@ public class GISPolygon {
 	}
 
 	/**
+	 * Handle the 'onEffectiveContact' event
+	 */
+	public void onEffectiveContact() {
+		this.effectiveContacts++;
+	}
+
+	/**
 	 * Count agents (instant)
 	 */
 	public int countAgents() {
@@ -110,6 +122,13 @@ public class GISPolygon {
 	 */
 	public int countAgentsCorrected() {
 		return this.arrivals;
+	}
+
+	/**
+	 * Count effective contacts
+	 */
+	public int countEffectiveContacts() {
+		return this.effectiveContacts;
 	}
 
 	/**

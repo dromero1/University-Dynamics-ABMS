@@ -35,8 +35,9 @@ public class Reader {
 			SimpleFeatureCollection featureCollection = featureSource.getFeatures();
 			SimpleFeatureIterator featureIterator = featureCollection.features();
 			ArrayList<SimpleFeature> simpleFeatures = new ArrayList<SimpleFeature>();
-			while (featureIterator.hasNext())
+			while (featureIterator.hasNext()) {
 				simpleFeatures.add(featureIterator.next());
+			}
 			featureIterator.close();
 			store.dispose();
 			return simpleFeatures;

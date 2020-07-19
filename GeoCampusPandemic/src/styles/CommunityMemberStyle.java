@@ -20,9 +20,9 @@ import repast.simphony.visualization.gis3D.style.MarkStyle;
 public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 
 	/**
-	 * Maximum scale
+	 * Standard scale
 	 */
-	private static final float MAX_SCALE = 1.5f;
+	private static final float STANDARD_SCALE = 1.5f;
 
 	/**
 	 * Dimension width
@@ -46,23 +46,23 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 		Dimension dimension = new Dimension(WIDTH, HEIGHT);
 		this.textureMap = new HashMap<String, WWTexture>();
 		// Black circle
-		BufferedImage image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, MAX_SCALE,
+		BufferedImage image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE,
 				Color.BLACK);
 		this.textureMap.put("black-circle", new BasicWWTexture(image));
 		// Orange circle
-		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, MAX_SCALE, Color.ORANGE);
+		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE, Color.ORANGE);
 		this.textureMap.put("orange-circle", new BasicWWTexture(image));
 		// Green circle
-		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, MAX_SCALE, Color.GREEN);
+		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE, Color.GREEN);
 		this.textureMap.put("green-circle", new BasicWWTexture(image));
 		// Red circle
-		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, MAX_SCALE, Color.RED);
+		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE, Color.RED);
 		this.textureMap.put("red-circle", new BasicWWTexture(image));
 		// Blue circle
-		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, MAX_SCALE, Color.BLUE);
+		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE, Color.BLUE);
 		textureMap.put("blue-circle", new BasicWWTexture(image));
 		// Gray circle
-		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, MAX_SCALE, Color.GRAY);
+		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE, Color.GRAY);
 		this.textureMap.put("gray-circle", new BasicWWTexture(image));
 	}
 
@@ -103,10 +103,10 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 		case SUSCEPTIBLE:
 		case DEAD:
 		case IMMUNE:
-			return MAX_SCALE;
+			return STANDARD_SCALE;
 		case EXPOSED:
 		case INFECTED:
-			return MAX_SCALE * 2;
+			return STANDARD_SCALE * 2;
 		default:
 			return 0;
 		}

@@ -8,6 +8,11 @@ import util.TickConverter;
 public class Staffer extends CommunityMember {
 
 	/**
+	 * Week days
+	 */
+	public static final int WEEKDAYS = 6;
+
+	/**
 	 * Workplace
 	 */
 	private GISPolygon workplace;
@@ -42,7 +47,7 @@ public class Staffer extends CommunityMember {
 	@Override
 	protected void scheduleActivities() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		for (int i = 1; i <= 6; i++) {
+		for (int i = 1; i <= WEEKDAYS; i++) {
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, this.workStartTime);
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "work");
 		}
@@ -54,7 +59,7 @@ public class Staffer extends CommunityMember {
 	@Override
 	protected void scheduleDepartures() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		for (int i = 1; i <= 6; i++) {
+		for (int i = 1; i <= WEEKDAYS; i++) {
 			double endTime = Random.getRandomWorkEndTime();
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, endTime);
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "goHome");
@@ -67,7 +72,7 @@ public class Staffer extends CommunityMember {
 	@Override
 	protected void scheduleLunch() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		for (int i = 1; i <= 6; i++) {
+		for (int i = 1; i <= WEEKDAYS; i++) {
 			double lunchTime = Random.getRandomLunchTime();
 			double lunchDuration = Random.getRandomLunchDuration();
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, lunchTime);
