@@ -49,7 +49,7 @@ public abstract class CommunityMember {
 	 * Last exit
 	 */
 	protected GISPolygon lastExit;
-	
+
 	/**
 	 * Reference to simulation builder
 	 */
@@ -94,17 +94,19 @@ public abstract class CommunityMember {
 	}
 
 	/**
-	 * Move to random in-out spot and vanish to limbo
+	 * Return home. Move to a random in-out spot and vanish to limbo.
 	 */
 	public void returnHome() {
-		this.lastExit = moveToRandomInOutSpot("vanishToLimbo");
+		this.lastExit = getRandomInOutSpot();
+		moveToPolygon(this.lastExit, "vanishToLimbo");
 	}
 
 	/**
 	 * Go have lunch at a designated eating place
 	 */
 	public void haveLunch() {
-		moveToRandomPolygon(this.contextBuilder.eatingPlaces, "", SelectionStrategy.WEIGHT_BASED);
+		GISPolygon polygon = getRandomPolygon(this.contextBuilder.eatingPlaces, SelectionStrategy.WEIGHT_BASED);
+		moveToPolygon(polygon, "");
 	}
 
 	/**
@@ -152,10 +154,8 @@ public abstract class CommunityMember {
 	 * Vanish to limbo. A limbo emulates what's off campus.
 	 */
 	public void vanishToLimbo() {
-		GISPolygon limbo = Random.getRandomPolygon(this.contextBuilder.limbos);
-		if (this.currentPolygon == null) {
-			this.currentPolygon = limbo;
-		}
+		String limboId = this.lastExit.getLink();
+		GISPolygon limbo = this.contextBuilder.getPolygonById(limboId);
 		relocate(limbo);
 	}
 
@@ -234,14 +234,12 @@ public abstract class CommunityMember {
 	protected abstract void scheduleLunch();
 
 	/**
-	 * Move to random polygon
+	 * Get random polygon
 	 * 
 	 * @param polygons          Map of polygons to choose from
-	 * @param method            Method to call after arriving to polygon
 	 * @param selectionStrategy Selection strategy
 	 */
-	protected GISPolygon moveToRandomPolygon(HashMap<String, GISPolygon> polygons, String method,
-			SelectionStrategy strategy) {
+	protected GISPolygon getRandomPolygon(HashMap<String, GISPolygon> polygons, SelectionStrategy strategy) {
 		GISPolygon selectedPolygon = null;
 		switch (strategy) {
 		case WEIGHT_BASED:
@@ -251,7 +249,6 @@ public abstract class CommunityMember {
 			selectedPolygon = Random.getRandomPolygon(polygons);
 			break;
 		}
-		moveToPolygon(selectedPolygon, method);
 		return selectedPolygon;
 	}
 
@@ -318,16 +315,16 @@ public abstract class CommunityMember {
 	}
 
 	/**
-	 * Move to random in-out spot
+	 * Get random in-out spot
 	 */
-	private GISPolygon moveToRandomInOutSpot(String method) {
+	private GISPolygon getRandomInOutSpot() {
 		HashMap<String, GISPolygon> inOuts = null;
 		if (this.isVehicleUser) {
 			inOuts = this.contextBuilder.vehicleInOuts;
 		} else {
 			inOuts = this.contextBuilder.inOuts;
 		}
-		return moveToRandomPolygon(inOuts, method, SelectionStrategy.RANDOM);
+		return getRandomPolygon(inOuts, SelectionStrategy.RANDOM);
 	}
 
 	/**

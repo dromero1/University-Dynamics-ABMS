@@ -83,7 +83,8 @@ public class Student extends CommunityMember {
 	 * Go have fun at a shared area
 	 */
 	public void haveFun() {
-		moveToRandomPolygon(this.contextBuilder.sharedAreas, "", SelectionStrategy.WEIGHT_BASED);
+		GISPolygon polygon = getRandomPolygon(this.contextBuilder.sharedAreas, SelectionStrategy.WEIGHT_BASED);
+		moveToPolygon(polygon, "");
 	}
 
 	/**

@@ -172,4 +172,11 @@ public class GISPolygon {
 		return this.active;
 	}
 
+	/**
+	 * Get link
+	 */
+	public String getLink() {
+		return this.link;
+	}
+
 }
