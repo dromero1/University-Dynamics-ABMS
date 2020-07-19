@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.7.0">
-  <name>Active Cases Time Series Chart</name>
-  <dataSet>ActiveCasesTimeSeries</dataSet>
+  <name>Epidemic Time Series Chart</name>
+  <dataSet>EpidemicTimeSeries</dataSet>
   <xAxisLabel>hour</xAxisLabel>
-  <yAxisLabel>cases</yAxisLabel>
-  <chartTitle>Active Cases Time Series</chartTitle>
+  <yAxisLabel>people</yAxisLabel>
+  <chartTitle>Epidemic Time Series</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,9 +21,57 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>activeCases</string>
+      <string>infected</string>
       <SeriesData>
-        <label>activeCases</label>
+        <label>infected</label>
+        <color>
+          <red>255</red>
+          <green>51</green>
+          <blue>51</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>immune</string>
+      <SeriesData>
+        <label>immune</label>
+        <color>
+          <red>51</red>
+          <green>255</green>
+          <blue>51</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>exposed</string>
+      <SeriesData>
+        <label>exposed</label>
+        <color>
+          <red>255</red>
+          <green>204</green>
+          <blue>102</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>dead</string>
+      <SeriesData>
+        <label>dead</label>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>susceptible</string>
+      <SeriesData>
+        <label>susceptible</label>
         <color>
           <red>0</red>
           <green>0</green>
