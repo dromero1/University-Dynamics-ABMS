@@ -46,6 +46,11 @@ public abstract class CommunityMember {
 	protected GISPolygon currentPolygon;
 
 	/**
+	 * Last exit
+	 */
+	protected GISPolygon lastExit;
+	
+	/**
 	 * Reference to simulation builder
 	 */
 	protected SimulationBuilder contextBuilder;
@@ -92,7 +97,7 @@ public abstract class CommunityMember {
 	 * Move to random in-out spot and vanish to limbo
 	 */
 	public void returnHome() {
-		moveToRandomInOutSpot("vanishToLimbo");
+		this.lastExit = moveToRandomInOutSpot("vanishToLimbo");
 	}
 
 	/**

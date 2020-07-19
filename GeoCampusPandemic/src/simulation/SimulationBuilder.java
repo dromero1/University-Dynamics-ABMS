@@ -10,7 +10,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import config.Paths;
-import gis.GISCampus;
 import gis.GISPolygon;
 import model.DiseaseStage;
 import model.Group;
@@ -97,23 +96,16 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		// Create geography projection
 		this.geography = createGeographyProjection(context);
 
-		// Initialize campus
-		GISCampus campus = readCampus();
-		campus.setGeometryInGeography(this.geography);
-		context.add(campus);
-
 		// Initialize teaching facilities
 		this.teachingFacilities = readPolygons(Paths.TEACHING_FACILITIES_GEOMETRY_SHAPEFILE,
 				Paths.TEACHING_FACILITIES_ATTRIBUTES_DATABASE);
 		for (GISPolygon teachingFacility : this.teachingFacilities.values()) {
-			teachingFacility.setGeometryInGeography(this.geography);
 			context.add(teachingFacility);
 		}
 
 		// Initialize shared areas
 		this.sharedAreas = readPolygons(Paths.SHARED_AREAS_GEOMETRY_SHAPEFILE, Paths.SHARED_AREAS_ATTRIBUTES_DATABASE);
 		for (GISPolygon sharedArea : this.sharedAreas.values()) {
-			sharedArea.setGeometryInGeography(this.geography);
 			context.add(sharedArea);
 		}
 
@@ -121,14 +113,12 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		this.eatingPlaces = readPolygons(Paths.EATING_PLACES_GEOMETRY_SHAPEFILE,
 				Paths.EATING_PLACES_ATTRIBUTES_DATABASE);
 		for (GISPolygon eatingPlace : this.eatingPlaces.values()) {
-			eatingPlace.setGeometryInGeography(this.geography);
 			context.add(eatingPlace);
 		}
 
 		// Initialize in-outs spots
 		this.inOuts = readPolygons(Paths.INOUTS_GEOMETRY_SHAPEFILE, Paths.INOUT_SPOTS_ATTRIBUTES_DATABASE);
 		for (GISPolygon inOut : inOuts.values()) {
-			inOut.setGeometryInGeography(this.geography);
 			context.add(inOut);
 		}
 
@@ -136,7 +126,6 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		this.vehicleInOuts = readPolygons(Paths.VEHICLE_INOUTS_GEOMETRY_SHAPEFILE,
 				Paths.VEHICLE_INOUT_SPOTS_ATTRIBUTES_DATABASE);
 		for (GISPolygon vehicleInOut : vehicleInOuts.values()) {
-			vehicleInOut.setGeometryInGeography(this.geography);
 			context.add(vehicleInOut);
 		}
 
@@ -144,7 +133,6 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		this.transitAreas = readPolygons(Paths.TRANSIT_AREAS_GEOMETRY_SHAPEFILE,
 				Paths.TRANSIT_AREAS_ATTRIBUTES_DATABASE);
 		for (GISPolygon transitArea : transitAreas.values()) {
-			transitArea.setGeometryInGeography(this.geography);
 			context.add(transitArea);
 		}
 
@@ -152,7 +140,6 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		HashMap<String, GISPolygon> otherFacitilies = readPolygons(Paths.OTHER_FACILITIES_GEOMETRY_SHAPEFILE,
 				Paths.OTHER_FACILITIES_ATTRIBUTES_DATABASE);
 		for (GISPolygon otherFacility : otherFacitilies.values()) {
-			otherFacility.setGeometryInGeography(this.geography);
 			context.add(otherFacility);
 		}
 
@@ -160,14 +147,12 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		HashMap<String, GISPolygon> parkingLots = readPolygons(Paths.PARKING_LOTS_GEOMETRY_SHAPEFILE,
 				Paths.PARKING_LOTS_ATTRIBUTES_DATABASE);
 		for (GISPolygon parkingLot : parkingLots.values()) {
-			parkingLot.setGeometryInGeography(this.geography);
 			context.add(parkingLot);
 		}
 
 		// Initialize limbos
 		this.limbos = readPolygons(Paths.LIMBOS_GEOMETRY_SHAPEFILE, Paths.LIMBOS_ATTRIBUTES_DATABASE);
 		for (GISPolygon limbo : this.limbos.values()) {
-			limbo.setGeometryInGeography(this.geography);
 			context.add(limbo);
 		}
 
@@ -216,15 +201,6 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	}
 
 	/**
-	 * Read geo-spatial campus
-	 */
-	private GISCampus readCampus() {
-		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(Paths.CAMPUS_GEOMETRY_SHAPEFILE);
-		Geometry geometry = (MultiPolygon) features.get(0).getDefaultGeometry();
-		return new GISCampus(geometry);
-	}
-
-	/**
 	 * Read polygons
 	 * 
 	 * @param geometryPath   Path to geometry file
@@ -239,7 +215,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 			String id = (String) feature.getAttribute(1);
 			GISPolygon polygon = attributes.get(id);
 			polygon.setPolygonId(id);
-			polygon.setGeometry(geometry);
+			polygon.setGeometryInGeography(this.geography, geometry);
 			polygons.put(id, polygon);
 		}
 		return polygons;

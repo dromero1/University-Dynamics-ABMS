@@ -8,11 +8,6 @@ import repast.simphony.space.gis.Geography;
 public class GISPolygon {
 
 	/**
-	 * Reference to geometry
-	 */
-	protected Geometry geometry;
-
-	/**
 	 * Polygon id
 	 */
 	protected String id;
@@ -31,6 +26,16 @@ public class GISPolygon {
 	 * Active
 	 */
 	protected boolean active;
+
+	/**
+	 * Link
+	 */
+	protected String link;
+
+	/**
+	 * Reference to geometry
+	 */
+	protected Geometry geometry;
 
 	/**
 	 * Reference to geography projection
@@ -55,36 +60,25 @@ public class GISPolygon {
 	/**
 	 * Create a new geo-spatial polygon
 	 * 
-	 * @param id       Polygon id
-	 * @param geometry Reference to geometry
-	 * @param weight   Weight
-	 * @param active   Active
-	 */
-	public GISPolygon(String id, Geometry geometry, double weight, boolean active) {
-		this.id = id;
-		this.geometry = geometry;
-		this.weight = weight;
-		this.active = active;
-	}
-
-	/**
-	 * Create a new geo-spatial polygon
-	 * 
 	 * @param weight Weight
 	 * @param active Active
+	 * @param link   Link
 	 */
-	public GISPolygon(double weight, boolean active) {
+	public GISPolygon(double weight, boolean active, String link) {
 		this.weight = weight;
 		this.active = active;
+		this.link = link;
 	}
 
 	/**
 	 * Set geometry in the geography projection
 	 * 
 	 * @param geography Reference to geography projection
+	 * @param geometry  Reference to geometry
 	 */
-	public void setGeometryInGeography(Geography<Object> geography) {
+	public void setGeometryInGeography(Geography<Object> geography, Geometry geometry) {
 		this.geography = geography;
+		this.geometry = geometry;
 		this.geography.move(this, this.geometry);
 	}
 
@@ -155,13 +149,6 @@ public class GISPolygon {
 	 */
 	public Geometry getGeometry() {
 		return this.geometry;
-	}
-
-	/**
-	 * Set reference to geometry
-	 */
-	public void setGeometry(Geometry geometry) {
-		this.geometry = geometry;
 	}
 
 	/**

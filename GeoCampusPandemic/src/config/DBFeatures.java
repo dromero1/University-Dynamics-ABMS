@@ -73,6 +73,11 @@ public class DBFeatures {
 	public static final int FACILITIES_ATTRIBUTES_ACTIVE_COLUMN = 3;
 
 	/**
+	 * Facilities attributes database - link column
+	 */
+	public static final int FACILITIES_ATTRIBUTES_LINK_COLUMN = 4;
+
+	/**
 	 * Workplaces database - id column
 	 */
 	public static final int WORKPLACES_ID_COLUMN = 0;

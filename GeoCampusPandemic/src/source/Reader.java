@@ -168,6 +168,7 @@ public class Reader {
 				double area = 0;
 				double weight = 0;
 				boolean active = false;
+				String link = "";
 				for (int i = 0; i < elements.length; i++) {
 					switch (i) {
 					case DBFeatures.FACILITIES_ATTRIBUTES_ID_COLUMN:
@@ -181,15 +182,17 @@ public class Reader {
 						break;
 					case DBFeatures.FACILITIES_ATTRIBUTES_ACTIVE_COLUMN:
 						active = elements[i].equals("1");
+					case DBFeatures.FACILITIES_ATTRIBUTES_LINK_COLUMN:
+						link = elements[i];
 					default:
 						break;
 					}
 				}
 				GISPolygon polygon = null;
 				if (area > 0.0) {
-					polygon = new GISDensityMeter(area, weight, active);
+					polygon = new GISDensityMeter(area, weight, active, link);
 				} else {
-					polygon = new GISPolygon(weight, active);
+					polygon = new GISPolygon(weight, active, link);
 				}
 				attributes.put(id, polygon);
 			}

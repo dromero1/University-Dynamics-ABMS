@@ -65,7 +65,7 @@ public class Random {
 	public static final double INFECTION_BETA = 1.3;
 
 	/**
-	 * Infection minimum parameter. Reference: <pending>
+	 * Infection minimum parameter (unit: days). Reference: <pending>
 	 */
 	public static final double INFECTION_MIN = -2.4;
 
