@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.jgrapht.Graph;
@@ -13,10 +12,10 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import gis.GISPolygon;
 import repast.simphony.engine.environment.RunEnvironment;
-import repast.simphony.engine.schedule.ScheduledMethod;
-import repast.simphony.gis.util.GeometryUtil;
 import repast.simphony.engine.schedule.ISchedulableAction;
-import repast.simphony.engine.schedule.ISchedule;
+import repast.simphony.engine.schedule.ScheduledMethod;
+import repast.simphony.essentials.RepastEssentials;
+import repast.simphony.gis.util.GeometryUtil;
 import repast.simphony.parameter.Parameters;
 import simulation.EventScheduler;
 import simulation.SimulationBuilder;
@@ -25,9 +24,9 @@ import util.TickConverter;
 public abstract class CommunityMember {
 
 	/**
-	 * Step interval (unit: minutes)
+	 * Expulsion interval (unit: minutes)
 	 */
-	public static final double STEP_INTERVAL = 15;
+	public static final double EXPULSION_INTERVAL = 15;
 
 	/**
 	 * Disease stage
@@ -35,15 +34,15 @@ public abstract class CommunityMember {
 	protected DiseaseStage diseaseStage;
 
 	/**
+	 * Incubation end (unit: tick)
+	 */
+	protected double incubationEnd;
+
+	/**
 	 * Vehicle user flag. Determines whether the student enters the campus by car or
 	 * by foot.
 	 */
 	protected boolean isVehicleUser;
-
-	/**
-	 * Ticks to incubation end
-	 */
-	private double incubationShift;
 
 	/**
 	 * Current polygon
@@ -63,7 +62,7 @@ public abstract class CommunityMember {
 	/**
 	 * Scheduled actions
 	 */
-	private ArrayList<ISchedulableAction> scheduledActions;
+	private HashMap<SchedulableAction, ISchedulableAction> schedulableActions;
 
 	/**
 	 * Create a new community member agent
@@ -75,7 +74,7 @@ public abstract class CommunityMember {
 		this.contextBuilder = contextBuilder;
 		this.diseaseStage = diseaseStage;
 		this.isVehicleUser = Random.getRandomVehicleUsage();
-		this.scheduledActions = new ArrayList<>();
+		this.schedulableActions = new HashMap<>();
 	}
 
 	/**
@@ -89,14 +88,11 @@ public abstract class CommunityMember {
 	}
 
 	/**
-	 * Step
+	 * Expel particles
 	 */
-	public void step() {
-		if (this.diseaseStage == DiseaseStage.INFECTED) {
+	public void expel() {
+		if (isInCampus()) {
 			infect();
-		}
-		if (isActiveCase()) {
-			this.incubationShift++;
 		}
 	}
 
@@ -126,8 +122,8 @@ public abstract class CommunityMember {
 	public void setExposed() {
 		this.diseaseStage = DiseaseStage.EXPOSED;
 		double incubationPeriod = Random.getRandomIncubationPeriod();
-		this.incubationShift = -TickConverter.daysToTicks(incubationPeriod);
 		double infectiousPeriod = Math.max(incubationPeriod + Random.INFECTION_MIN, 1);
+		this.incubationEnd = RepastEssentials.GetTickCount() + TickConverter.daysToTicks(incubationPeriod);
 		double ticks = TickConverter.daysToTicks(infectiousPeriod);
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		eventScheduler.scheduleOneTimeEvent(ticks, this, "setInfected");
@@ -138,11 +134,14 @@ public abstract class CommunityMember {
 	 */
 	public void setInfected() {
 		this.diseaseStage = DiseaseStage.INFECTED;
+		EventScheduler eventScheduler = EventScheduler.getInstance();
+		double tickInterval = TickConverter.minutesToTicks(EXPULSION_INTERVAL);
+		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(1, this, tickInterval, "expel");
+		this.schedulableActions.put(SchedulableAction.EXPEL, expelAction);
 		PatientType patientType = Random.getRandomPatientType();
 		String method = Random.isGoingToDie(patientType) ? "kill" : "setImmune";
 		double daysToEvent = Random.getRandomTimeToDischarge() - Random.INFECTION_MIN;
 		double ticks = TickConverter.daysToTicks(daysToEvent);
-		EventScheduler eventScheduler = EventScheduler.getInstance();
 		eventScheduler.scheduleOneTimeEvent(ticks, this, method);
 	}
 
@@ -151,6 +150,7 @@ public abstract class CommunityMember {
 	 */
 	public void setImmune() {
 		this.diseaseStage = DiseaseStage.IMMUNE;
+		this.schedulableActions.remove(SchedulableAction.EXPEL);
 	}
 
 	/**
@@ -158,7 +158,7 @@ public abstract class CommunityMember {
 	 */
 	public void kill() {
 		this.diseaseStage = DiseaseStage.DEAD;
-		removeScheduledEvents();
+		this.schedulableActions.remove(SchedulableAction.EXPEL);
 	}
 
 	/**
@@ -198,6 +198,14 @@ public abstract class CommunityMember {
 	}
 
 	/**
+	 * Is in campus?
+	 */
+	public boolean isInCampus() {
+		String polygonId = this.currentPolygon.getId();
+		return !this.contextBuilder.limbos.containsKey(polygonId);
+	}
+
+	/**
 	 * Is susceptible?
 	 */
 	public int isSusceptible() {
@@ -233,6 +241,13 @@ public abstract class CommunityMember {
 	}
 
 	/**
+	 * Is active case?
+	 */
+	public int isActiveCase() {
+		return diseaseStage == DiseaseStage.EXPOSED || diseaseStage == DiseaseStage.INFECTED ? 1 : 0;
+	}
+
+	/**
 	 * Schedule activities
 	 */
 	protected abstract void scheduleActivities();
@@ -246,16 +261,6 @@ public abstract class CommunityMember {
 	 * Schedule in-campus lunch
 	 */
 	protected abstract void scheduleLunch();
-
-	/**
-	 * Schedule step
-	 */
-	protected void scheduleStep() {
-		EventScheduler eventScheduler = EventScheduler.getInstance();
-		double tickInterval = TickConverter.minutesToTicks(STEP_INTERVAL);
-		ISchedulableAction stepAction = eventScheduler.scheduleRecurringEvent(1, this, tickInterval, "step");
-		this.scheduledActions.add(stepAction);
-	}
 
 	/**
 	 * Get random polygon
@@ -320,6 +325,7 @@ public abstract class CommunityMember {
 			setExposed();
 			break;
 		case INFECTED:
+			this.incubationEnd = -TickConverter.daysToTicks(Random.INFECTION_MIN);
 			setInfected();
 			break;
 		default:
@@ -334,7 +340,6 @@ public abstract class CommunityMember {
 		scheduleActivities();
 		scheduleDepartures();
 		scheduleLunch();
-		scheduleStep();
 	}
 
 	/**
@@ -347,14 +352,15 @@ public abstract class CommunityMember {
 				this.contextBuilder.geography.getGeometry(this), distance);
 		Envelope searchEnvelope = searchArea.getEnvelopeInternal();
 		Iterable<Student> students = this.contextBuilder.geography.getObjectsWithin(searchEnvelope, Student.class);
+		double incubationDiff = RepastEssentials.GetTickCount() - this.incubationEnd;
 		for (Student student : students) {
-			if (student.diseaseStage == DiseaseStage.SUSCEPTIBLE && Random.isGettingExposed(incubationShift)) {
+			if (student.diseaseStage == DiseaseStage.SUSCEPTIBLE && Random.isGettingExposed(incubationDiff)) {
 				student.setExposed();
 			}
 		}
 		Iterable<Staffer> staffers = this.contextBuilder.geography.getObjectsWithin(searchEnvelope, Staffer.class);
 		for (Staffer staffer : staffers) {
-			if (staffer.diseaseStage == DiseaseStage.SUSCEPTIBLE && Random.isGettingExposed(incubationShift)) {
+			if (staffer.diseaseStage == DiseaseStage.SUSCEPTIBLE && Random.isGettingExposed(incubationDiff)) {
 				staffer.setExposed();
 			}
 		}
@@ -371,25 +377,6 @@ public abstract class CommunityMember {
 			inOuts = this.contextBuilder.inOuts;
 		}
 		return getRandomPolygon(inOuts, SelectionStrategy.RANDOM);
-	}
-
-	/**
-	 * Is an active case (infected or exposed)?
-	 */
-	private boolean isActiveCase() {
-		return this.diseaseStage == DiseaseStage.INFECTED || this.diseaseStage == DiseaseStage.EXPOSED;
-	}
-
-	/**
-	 * Remove scheduled events
-	 */
-	private void removeScheduledEvents() {
-		ISchedule schedule = RunEnvironment.getInstance().getCurrentSchedule();
-		for (int i = 0; i < this.scheduledActions.size(); i++) {
-			ISchedulableAction action = this.scheduledActions.get(i);
-			schedule.removeAction(action);
-			this.scheduledActions.remove(action);
-		}
 	}
 
 }

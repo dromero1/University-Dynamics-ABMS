@@ -98,7 +98,18 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 	 */
 	@Override
 	public double getScale(CommunityMember communityMember) {
-		return MAX_SCALE;
+		DiseaseStage diseaseStage = communityMember.getDiseaseStage();
+		switch (diseaseStage) {
+		case EXPOSED:
+		case INFECTED:
+			return MAX_SCALE * 2;
+		case SUSCEPTIBLE:
+		case DEAD:
+		case IMMUNE:
+			return MAX_SCALE;
+		default:
+			return 0;
+		}
 	}
 
 	/**

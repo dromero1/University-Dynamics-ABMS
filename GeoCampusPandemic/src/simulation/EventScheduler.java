@@ -35,11 +35,11 @@ public class EventScheduler {
 	 * @param ticksToEvent Ticks to event
 	 * @param obj          Object
 	 * @param methodName   Method's name
-	 * @param methodParms  Method's parameters
+	 * @param methodParams Method's parameters
 	 */
 	public void scheduleOneTimeEvent(double ticksToEvent, Object obj, String methodName, Object... methodParams) {
 		ISchedule schedule = RunEnvironment.getInstance().getCurrentSchedule();
-		double currentTick = Math.max(RepastEssentials.GetTickCount(), 0);
+		double currentTick = RepastEssentials.GetTickCount();
 		double startTime = currentTick + ticksToEvent;
 		ScheduleParameters params = ScheduleParameters.createOneTime(startTime);
 		schedule.schedule(params, obj, methodName, methodParams);
@@ -52,12 +52,12 @@ public class EventScheduler {
 	 * @param obj          Object
 	 * @param tickInterval Tick interval
 	 * @param methodName   Method's name
-	 * @param methodParms  Method's parameters
+	 * @param methodParams Method's parameters
 	 */
 	public ISchedulableAction scheduleRecurringEvent(double ticksToEvent, Object obj, double tickInterval,
 			String methodName, Object... methodParams) {
 		ISchedule schedule = RunEnvironment.getInstance().getCurrentSchedule();
-		double currentTick = Math.max(RepastEssentials.GetTickCount(), 0);
+		double currentTick = RepastEssentials.GetTickCount();
 		double startTime = currentTick + ticksToEvent;
 		ScheduleParameters params = ScheduleParameters.createRepeating(startTime, tickInterval);
 		return schedule.schedule(params, obj, methodName, methodParams);

@@ -196,6 +196,8 @@ public class Random {
 
 	/**
 	 * Is the patient going to die? Reference: <pending>
+	 * 
+	 * @param patientType Patient type
 	 */
 	public static boolean isGoingToDie(PatientType patientType) {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
@@ -211,14 +213,16 @@ public class Random {
 
 	/**
 	 * Is the citizen getting exposed? Reference: <pending>
+	 * 
+	 * @param incubationDiff Incubation difference
 	 */
-	public static boolean isGettingExposed(double incubationShift) {
+	public static boolean isGettingExposed(double incubationDiff) {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		Gamma gamma = RandomHelper.createGamma(INFECTION_ALPHA, 1.0 / INFECTION_BETA);
-		if (incubationShift < INFECTION_MIN) {
+		double days = TickConverter.ticksToDays(incubationDiff);
+		if (days < INFECTION_MIN) {
 			return false;
 		}
-		double days = TickConverter.ticksToDays(incubationShift);
 		double p = gamma.pdf(days - INFECTION_MIN);
 		return r < p;
 	}
