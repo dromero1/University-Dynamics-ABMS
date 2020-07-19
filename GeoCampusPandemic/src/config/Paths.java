@@ -3,11 +3,6 @@ package config;
 public final class Paths {
 
 	/**
-	 * Campus geometry
-	 */
-	public static final String CAMPUS_GEOMETRY_SHAPEFILE = "./data/maps/Campus-polygon.shp";
-
-	/**
 	 * Limbos geometry
 	 */
 	public static final String LIMBOS_GEOMETRY_SHAPEFILE = "./data/maps/Limbos-polygon.shp";

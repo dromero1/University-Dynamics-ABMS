@@ -3,10 +3,6 @@
   <type>GIS 3D</type>
   <styles>
     <entry>
-      <string>gis.GISCampus</string>
-      <string>styles.GISPolygonStyle</string>
-    </entry>
-    <entry>
       <string>model.SupportStaff</string>
       <string>styles.CommunityMemberStyle</string>
     </entry>
@@ -24,10 +20,6 @@
     </entry>
   </styles>
   <editedStyles>
-    <entry>
-      <string>gis.GISCampus</string>
-      <null/>
-    </entry>
     <entry>
       <string>model.SupportStaff</string>
       <null/>
@@ -55,29 +47,37 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>837403169</hashCode>
+    <hashCode>84666959</hashCode>
   </schedParams>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>gis.GISCampus</string>
-      <int>0</int>
+      <string>Scale bar</string>
+      <int>2</int>
     </entry>
     <entry>
-      <string>model.SupportStaff</string>
-      <int>3</int>
-    </entry>
-    <entry>
-      <string>model.Student</string>
-      <int>4</int>
-    </entry>
-    <entry>
-      <string>gis.GISDensityMeter</string>
+      <string>World Map</string>
       <int>1</int>
     </entry>
     <entry>
+      <string>model.SupportStaff</string>
+      <int>5</int>
+    </entry>
+    <entry>
+      <string>model.Student</string>
+      <int>6</int>
+    </entry>
+    <entry>
+      <string>gis.GISDensityMeter</string>
+      <int>4</int>
+    </entry>
+    <entry>
+      <string>Compass</string>
+      <int>0</int>
+    </entry>
+    <entry>
       <string>gis.GISPolygon</string>
-      <int>2</int>
+      <int>3</int>
     </entry>
   </layerOrder>
   <projections>
