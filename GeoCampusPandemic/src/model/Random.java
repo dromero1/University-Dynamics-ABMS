@@ -241,7 +241,7 @@ public class Random {
 	 * @param polygons Map of polygons
 	 */
 	public static GISPolygon getRandomPolygon(HashMap<String, GISPolygon> polygons) {
-		ArrayList<GISPolygon> polyList = new ArrayList<GISPolygon>();
+		ArrayList<GISPolygon> polyList = new ArrayList<>();
 		for (GISPolygon polygon : polygons.values()) {
 			if (!polygon.isActive()) {
 				continue;

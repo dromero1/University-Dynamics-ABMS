@@ -11,7 +11,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import config.Paths;
 import gis.GISPolygon;
-import model.DiseaseStage;
+import model.Compartment;
 import model.Group;
 import model.Heuristics;
 import model.Schedule;
@@ -181,7 +181,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		}
 
 		// Add staffers to simulation
-		ArrayList<Staffer> staffers = createSupportStaff(simParams.getInteger("susceptibleStaffers"),
+		ArrayList<Staffer> staffers = createStaffers(simParams.getInteger("susceptibleStaffers"),
 				simParams.getInteger("infectedStaffers"));
 		for (Staffer staff : staffers) {
 			context.add(staff);
@@ -209,7 +209,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * @param attributesPath Path to attributes file
 	 */
 	private HashMap<String, GISPolygon> readPolygons(String geometryPath, String attributesPath) {
-		HashMap<String, GISPolygon> polygons = new HashMap<String, GISPolygon>();
+		HashMap<String, GISPolygon> polygons = new HashMap<>();
 		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(geometryPath);
 		HashMap<String, GISPolygon> attributes = Reader.readFacilityAttributesDatabase(attributesPath);
 		for (SimpleFeature feature : features) {
@@ -227,7 +227,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * Read workplaces
 	 */
 	private HashMap<String, GISPolygon> readWorkplaces() {
-		HashMap<String, GISPolygon> workplaces = new HashMap<String, GISPolygon>();
+		HashMap<String, GISPolygon> workplaces = new HashMap<>();
 		HashMap<String, Double> places = Reader.readWorkplacesDatabase(Paths.WORKPLACES_DATABASE);
 		for (String workplaceId : places.keySet()) {
 			GISPolygon polygon = getPolygonById(workplaceId);
@@ -245,32 +245,32 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * @param infectedStudents    Number of infected students
 	 */
 	private ArrayList<Student> createStudents(int susceptibleStudents, int infectedStudents) {
-		ArrayList<Student> students = new ArrayList<Student>();
+		ArrayList<Student> students = new ArrayList<>();
 		for (int i = 0; i < infectedStudents; i++) {
-			Student student = new Student(this, DiseaseStage.INFECTED, Integer.toString(i));
+			Student student = new Student(this, Compartment.INFECTED, Integer.toString(i));
 			students.add(student);
 		}
 		for (int i = 0; i < susceptibleStudents; i++) {
-			Student student = new Student(this, DiseaseStage.SUSCEPTIBLE, Integer.toString(i));
+			Student student = new Student(this, Compartment.SUSCEPTIBLE, Integer.toString(i));
 			students.add(student);
 		}
 		return students;
 	}
 
 	/**
-	 * Create support staff
+	 * Create staffers
 	 * 
 	 * @param susceptibleStaffers Number of susceptible staffers
 	 * @param infectedStaffers    Number of infected staffers
 	 */
-	private ArrayList<Staffer> createSupportStaff(int susceptibleStaffers, int infectedStaffers) {
-		ArrayList<Staffer> staffers = new ArrayList<Staffer>();
+	private ArrayList<Staffer> createStaffers(int susceptibleStaffers, int infectedStaffers) {
+		ArrayList<Staffer> staffers = new ArrayList<>();
 		for (int i = 0; i < susceptibleStaffers; i++) {
-			Staffer staffer = new Staffer(this, DiseaseStage.SUSCEPTIBLE);
+			Staffer staffer = new Staffer(this, Compartment.SUSCEPTIBLE);
 			staffers.add(staffer);
 		}
 		for (int i = 0; i < infectedStaffers; i++) {
-			Staffer staffer = new Staffer(this, DiseaseStage.INFECTED);
+			Staffer staffer = new Staffer(this, Compartment.INFECTED);
 			staffers.add(staffer);
 		}
 		return staffers;

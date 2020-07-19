@@ -1,5 +1,5 @@
 package model;
 
-public enum DiseaseStage {
+public enum Compartment {
 	SUSCEPTIBLE, EXPOSED, INFECTED, IMMUNE, DEAD
 }

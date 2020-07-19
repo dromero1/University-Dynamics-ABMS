@@ -21,10 +21,10 @@ public class Staffer extends CommunityMember {
 	 * Create a new staffer agent
 	 * 
 	 * @param contextBuilder Reference to the simulation builder
-	 * @param diseaseStage   Disease stage
+	 * @param compartment    Compartment
 	 */
-	public Staffer(SimulationBuilder contextBuilder, DiseaseStage diseaseStage) {
-		super(contextBuilder, diseaseStage);
+	public Staffer(SimulationBuilder contextBuilder, Compartment compartment) {
+		super(contextBuilder, compartment);
 		this.workplace = Random.getRandomPolygonWorkWeightBased(this.contextBuilder.workplaces);
 		this.workStartTime = Random.getRandomWorkStartTime();
 	}

@@ -15,7 +15,7 @@ public class Schedule {
 	 * Create a new schedule
 	 */
 	public Schedule() {
-		this.groups = new ArrayList<Group>();
+		this.groups = new ArrayList<>();
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class Schedule {
 	 * Get list of days in campus
 	 */
 	public ArrayList<Integer> getCampusDays() {
-		ArrayList<Integer> campusDays = new ArrayList<Integer>();
+		ArrayList<Integer> campusDays = new ArrayList<>();
 		Set<Integer> days = new HashSet<Integer>();
 		for (Group group : this.groups) {
 			Set<Integer> activityDays = group.getActivityDays();
@@ -48,8 +48,9 @@ public class Schedule {
 				days.add(day);
 			}
 		}
-		for (Integer day : days)
+		for (Integer day : days) {
 			campusDays.add(day);
+		}
 		return campusDays;
 	}
 
@@ -127,8 +128,8 @@ public class Schedule {
 	 * Checks whether a proposed event collides with the current schedule
 	 * 
 	 * @param day        Day
-	 * @param eventStart Event's start
-	 * @param duration   Event's duration
+	 * @param eventStart Event start
+	 * @param duration   Event duration
 	 */
 	public boolean collides(int day, double eventStart, double duration) {
 		for (Group group : this.groups) {

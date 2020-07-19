@@ -20,7 +20,7 @@ public class Heuristics {
 	public static Schedule buildRandomSchedule(HashMap<String, Group> groups) {
 		int toEnroll = Random.getRandomGroupsToEnrollTo();
 		int enrolled = 0;
-		ArrayList<Group> groupList = new ArrayList<Group>();
+		ArrayList<Group> groupList = new ArrayList<>();
 		for (String groupId : groups.keySet()) {
 			groupList.add(groups.get(groupId));
 		}
@@ -93,7 +93,7 @@ public class Heuristics {
 	 */
 	public static HashMap<String, GraphPath<String, DefaultWeightedEdge>> findShortestPaths(
 			Graph<String, DefaultWeightedEdge> routes) {
-		HashMap<String, GraphPath<String, DefaultWeightedEdge>> paths = new HashMap<String, GraphPath<String, DefaultWeightedEdge>>();
+		HashMap<String, GraphPath<String, DefaultWeightedEdge>> paths = new HashMap<>();
 		DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(routes);
 		for (String source : routes.vertexSet()) {
 			SingleSourcePaths<String, DefaultWeightedEdge> iPaths = dijkstraAlg.getPaths(source);

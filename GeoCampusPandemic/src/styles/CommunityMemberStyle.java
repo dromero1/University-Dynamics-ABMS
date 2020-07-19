@@ -1,7 +1,7 @@
 package styles;
 
 import model.CommunityMember;
-import model.DiseaseStage;
+import model.Compartment;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -74,8 +74,8 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 	 */
 	@Override
 	public WWTexture getTexture(CommunityMember communityMember, WWTexture texture) {
-		DiseaseStage diseaseStage = communityMember.getDiseaseStage();
-		switch (diseaseStage) {
+		Compartment compartment = communityMember.getCompartment();
+		switch (compartment) {
 		case DEAD:
 			return textureMap.get("black-circle");
 		case EXPOSED:
@@ -98,15 +98,15 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 	 */
 	@Override
 	public double getScale(CommunityMember communityMember) {
-		DiseaseStage diseaseStage = communityMember.getDiseaseStage();
-		switch (diseaseStage) {
-		case EXPOSED:
-		case INFECTED:
-			return MAX_SCALE * 2;
+		Compartment compartment = communityMember.getCompartment();
+		switch (compartment) {
 		case SUSCEPTIBLE:
 		case DEAD:
 		case IMMUNE:
 			return MAX_SCALE;
+		case EXPOSED:
+		case INFECTED:
+			return MAX_SCALE * 2;
 		default:
 			return 0;
 		}

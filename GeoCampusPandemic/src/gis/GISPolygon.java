@@ -139,6 +139,8 @@ public class GISPolygon {
 
 	/**
 	 * Set polygon id
+	 * 
+	 * @param id Polygon id
 	 */
 	public void setPolygonId(String id) {
 		this.id = id;

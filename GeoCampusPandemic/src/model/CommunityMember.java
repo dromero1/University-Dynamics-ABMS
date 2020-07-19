@@ -29,12 +29,12 @@ public abstract class CommunityMember {
 	public static final double EXPULSION_INTERVAL = 15;
 
 	/**
-	 * Disease stage
+	 * Compartment
 	 */
-	protected DiseaseStage diseaseStage;
+	protected Compartment compartment;
 
 	/**
-	 * Incubation end (unit: tick)
+	 * Incubation end (unit: hour)
 	 */
 	protected double incubationEnd;
 
@@ -68,11 +68,11 @@ public abstract class CommunityMember {
 	 * Create a new community member agent
 	 * 
 	 * @param contextBuilder Reference to the simulation builder
-	 * @param diseaseStage   Disease stage
+	 * @param compartment    Compartment
 	 */
-	public CommunityMember(SimulationBuilder contextBuilder, DiseaseStage diseaseStage) {
+	public CommunityMember(SimulationBuilder contextBuilder, Compartment compartment) {
 		this.contextBuilder = contextBuilder;
-		this.diseaseStage = diseaseStage;
+		this.compartment = compartment;
 		this.isVehicleUser = Random.getRandomVehicleUsage();
 		this.schedulableActions = new HashMap<>();
 	}
@@ -117,47 +117,47 @@ public abstract class CommunityMember {
 	}
 
 	/**
-	 * Set exposed
+	 * Transition to the exposed compartment
 	 */
-	public void setExposed() {
-		this.diseaseStage = DiseaseStage.EXPOSED;
+	public void transitionExposed() {
+		this.compartment = Compartment.EXPOSED;
 		double incubationPeriod = Random.getRandomIncubationPeriod();
 		double infectiousPeriod = Math.max(incubationPeriod + Random.INFECTION_MIN, 1);
 		this.incubationEnd = RepastEssentials.GetTickCount() + TickConverter.daysToTicks(incubationPeriod);
 		double ticks = TickConverter.daysToTicks(infectiousPeriod);
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		eventScheduler.scheduleOneTimeEvent(ticks, this, "setInfected");
+		eventScheduler.scheduleOneTimeEvent(ticks, this, "transitionInfected");
 	}
 
 	/**
-	 * Set infected
+	 * Transition to the infected compartment
 	 */
-	public void setInfected() {
-		this.diseaseStage = DiseaseStage.INFECTED;
+	public void transitionInfected() {
+		this.compartment = Compartment.INFECTED;
+		PatientType patientType = Random.getRandomPatientType();
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		double tickInterval = TickConverter.minutesToTicks(EXPULSION_INTERVAL);
 		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(1, this, tickInterval, "expel");
 		this.schedulableActions.put(SchedulableAction.EXPEL, expelAction);
-		PatientType patientType = Random.getRandomPatientType();
-		String method = Random.isGoingToDie(patientType) ? "kill" : "setImmune";
-		double daysToEvent = Random.getRandomTimeToDischarge() - Random.INFECTION_MIN;
-		double ticks = TickConverter.daysToTicks(daysToEvent);
+		String method = Random.isGoingToDie(patientType) ? "die" : "transitionToImmune";
+		double daysToRemoval = Random.getRandomTimeToDischarge() - Random.INFECTION_MIN;
+		double ticks = TickConverter.daysToTicks(daysToRemoval);
 		eventScheduler.scheduleOneTimeEvent(ticks, this, method);
 	}
 
 	/**
-	 * Set immune
+	 * Transition to the immune compartment
 	 */
-	public void setImmune() {
-		this.diseaseStage = DiseaseStage.IMMUNE;
+	public void transitionToImmune() {
+		this.compartment = Compartment.IMMUNE;
 		this.schedulableActions.remove(SchedulableAction.EXPEL);
 	}
 
 	/**
-	 * Kill community member
+	 * Transition to the dead compartment
 	 */
-	public void kill() {
-		this.diseaseStage = DiseaseStage.DEAD;
+	public void die() {
+		this.compartment = Compartment.DEAD;
 		this.schedulableActions.remove(SchedulableAction.EXPEL);
 	}
 
@@ -191,10 +191,10 @@ public abstract class CommunityMember {
 	}
 
 	/**
-	 * Get disease stage
+	 * Get compartment
 	 */
-	public DiseaseStage getDiseaseStage() {
-		return this.diseaseStage;
+	public Compartment getCompartment() {
+		return this.compartment;
 	}
 
 	/**
@@ -209,42 +209,42 @@ public abstract class CommunityMember {
 	 * Is susceptible?
 	 */
 	public int isSusceptible() {
-		return diseaseStage == DiseaseStage.SUSCEPTIBLE ? 1 : 0;
+		return this.compartment == Compartment.SUSCEPTIBLE ? 1 : 0;
 	}
 
 	/**
 	 * Is exposed?
 	 */
 	public int isExposed() {
-		return diseaseStage == DiseaseStage.EXPOSED ? 1 : 0;
+		return this.compartment == Compartment.EXPOSED ? 1 : 0;
 	}
 
 	/**
 	 * Is infected?
 	 */
 	public int isInfected() {
-		return diseaseStage == DiseaseStage.INFECTED ? 1 : 0;
+		return this.compartment == Compartment.INFECTED ? 1 : 0;
 	}
 
 	/**
 	 * Is immune?
 	 */
 	public int isImmune() {
-		return diseaseStage == DiseaseStage.IMMUNE ? 1 : 0;
+		return this.compartment == Compartment.IMMUNE ? 1 : 0;
 	}
 
 	/**
 	 * Is dead?
 	 */
 	public int isDead() {
-		return diseaseStage == DiseaseStage.DEAD ? 1 : 0;
+		return this.compartment == Compartment.DEAD ? 1 : 0;
 	}
 
 	/**
 	 * Is active case?
 	 */
 	public int isActiveCase() {
-		return diseaseStage == DiseaseStage.EXPOSED || diseaseStage == DiseaseStage.INFECTED ? 1 : 0;
+		return this.compartment == Compartment.EXPOSED || this.compartment == Compartment.INFECTED ? 1 : 0;
 	}
 
 	/**
@@ -265,8 +265,8 @@ public abstract class CommunityMember {
 	/**
 	 * Get random polygon
 	 * 
-	 * @param polygons          Map of polygons to choose from
-	 * @param selectionStrategy Selection strategy
+	 * @param polygons Map of polygons to choose from
+	 * @param strategy Selection strategy
 	 */
 	protected GISPolygon getRandomPolygon(HashMap<String, GISPolygon> polygons, SelectionStrategy strategy) {
 		GISPolygon selectedPolygon = null;
@@ -282,8 +282,7 @@ public abstract class CommunityMember {
 	}
 
 	/**
-	 * Move to an specific polygon. Find the shortest route and traverse the route
-	 * graph.
+	 * Move to an specific polygon. Find the shortest route and traverse the graph.
 	 * 
 	 * @param polygon Polygon to go to
 	 * @param method  Method to call after arriving to polygon
@@ -320,13 +319,13 @@ public abstract class CommunityMember {
 	 * Initialize disease
 	 */
 	private void initDisease() {
-		switch (this.diseaseStage) {
+		switch (this.compartment) {
 		case EXPOSED:
-			setExposed();
+			transitionExposed();
 			break;
 		case INFECTED:
 			this.incubationEnd = -TickConverter.daysToTicks(Random.INFECTION_MIN);
-			setInfected();
+			transitionInfected();
 			break;
 		default:
 			break;
@@ -354,14 +353,14 @@ public abstract class CommunityMember {
 		Iterable<Student> students = this.contextBuilder.geography.getObjectsWithin(searchEnvelope, Student.class);
 		double incubationDiff = RepastEssentials.GetTickCount() - this.incubationEnd;
 		for (Student student : students) {
-			if (student.diseaseStage == DiseaseStage.SUSCEPTIBLE && Random.isGettingExposed(incubationDiff)) {
-				student.setExposed();
+			if (student.compartment == Compartment.SUSCEPTIBLE && Random.isGettingExposed(incubationDiff)) {
+				student.transitionExposed();
 			}
 		}
 		Iterable<Staffer> staffers = this.contextBuilder.geography.getObjectsWithin(searchEnvelope, Staffer.class);
 		for (Staffer staffer : staffers) {
-			if (staffer.diseaseStage == DiseaseStage.SUSCEPTIBLE && Random.isGettingExposed(incubationDiff)) {
-				staffer.setExposed();
+			if (staffer.compartment == Compartment.SUSCEPTIBLE && Random.isGettingExposed(incubationDiff)) {
+				staffer.transitionExposed();
 			}
 		}
 	}
