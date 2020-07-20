@@ -18,7 +18,7 @@
     <alpha>255</alpha>
   </gridLineColor>
   <showGrid>true</showGrid>
-  <showLegend>true</showLegend>
+  <showLegend>false</showLegend>
   <seriesIds>
     <entry>
       <string>activeCases</string>
