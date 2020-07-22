@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import cern.jet.random.Binomial;
 import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
