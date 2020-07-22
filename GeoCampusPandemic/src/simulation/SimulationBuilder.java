@@ -92,82 +92,67 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	@Override
 	public Context<Object> build(Context<Object> context) {
 		context.setId("GeoCampusPandemic");
-
 		// Create geography projection
 		this.geography = createGeographyProjection(context);
-
 		// Initialize teaching facilities
 		this.teachingFacilities = readPolygons(Paths.TEACHING_FACILITIES_GEOMETRY_SHAPEFILE,
 				Paths.TEACHING_FACILITIES_ATTRIBUTES_DATABASE);
 		for (GISPolygon teachingFacility : this.teachingFacilities.values()) {
 			context.add(teachingFacility);
 		}
-
 		// Initialize shared areas
 		this.sharedAreas = readPolygons(Paths.SHARED_AREAS_GEOMETRY_SHAPEFILE, Paths.SHARED_AREAS_ATTRIBUTES_DATABASE);
 		for (GISPolygon sharedArea : this.sharedAreas.values()) {
 			context.add(sharedArea);
 		}
-
 		// Initialize eating places
 		this.eatingPlaces = readPolygons(Paths.EATING_PLACES_GEOMETRY_SHAPEFILE,
 				Paths.EATING_PLACES_ATTRIBUTES_DATABASE);
 		for (GISPolygon eatingPlace : this.eatingPlaces.values()) {
 			context.add(eatingPlace);
 		}
-
 		// Initialize in-outs spots
 		this.inOuts = readPolygons(Paths.INOUTS_GEOMETRY_SHAPEFILE, Paths.INOUT_SPOTS_ATTRIBUTES_DATABASE);
 		for (GISPolygon inOut : inOuts.values()) {
 			context.add(inOut);
 		}
-
 		// Initialize vehicle in-out spots
 		this.vehicleInOuts = readPolygons(Paths.VEHICLE_INOUTS_GEOMETRY_SHAPEFILE,
 				Paths.VEHICLE_INOUT_SPOTS_ATTRIBUTES_DATABASE);
 		for (GISPolygon vehicleInOut : vehicleInOuts.values()) {
 			context.add(vehicleInOut);
 		}
-
 		// Initialize transit areas
 		this.transitAreas = readPolygons(Paths.TRANSIT_AREAS_GEOMETRY_SHAPEFILE,
 				Paths.TRANSIT_AREAS_ATTRIBUTES_DATABASE);
 		for (GISPolygon transitArea : transitAreas.values()) {
 			context.add(transitArea);
 		}
-
 		// Initialize other facilities
 		HashMap<String, GISPolygon> otherFacitilies = readPolygons(Paths.OTHER_FACILITIES_GEOMETRY_SHAPEFILE,
 				Paths.OTHER_FACILITIES_ATTRIBUTES_DATABASE);
 		for (GISPolygon otherFacility : otherFacitilies.values()) {
 			context.add(otherFacility);
 		}
-
 		// Initialize parking lots
 		HashMap<String, GISPolygon> parkingLots = readPolygons(Paths.PARKING_LOTS_GEOMETRY_SHAPEFILE,
 				Paths.PARKING_LOTS_ATTRIBUTES_DATABASE);
 		for (GISPolygon parkingLot : parkingLots.values()) {
 			context.add(parkingLot);
 		}
-
 		// Initialize limbos
 		this.limbos = readPolygons(Paths.LIMBOS_GEOMETRY_SHAPEFILE, Paths.LIMBOS_ATTRIBUTES_DATABASE);
 		for (GISPolygon limbo : this.limbos.values()) {
 			context.add(limbo);
 		}
-
 		// Initialize workplaces
 		this.workplaces = readWorkplaces();
-
 		// Read routes
 		this.routes = Reader.readRoutesDatabase(Paths.ROUTES_DATABASE);
-
 		// Find shortest paths
 		this.shortestPaths = Heuristics.findShortestPaths(this.routes);
-
 		// Read groups
 		HashMap<String, Group> groups = Reader.readGroupsDatabase(Paths.GROUPS_DATABASE);
-
 		// Add students to simulation
 		Parameters simParams = RunEnvironment.getInstance().getParameters();
 		ArrayList<Student> students = createStudents(simParams.getInteger("susceptibleStudents"),
@@ -179,14 +164,12 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 				context.add(student);
 			}
 		}
-
 		// Add staffers to simulation
 		ArrayList<Staffer> staffers = createStaffers(simParams.getInteger("susceptibleStaffers"),
 				simParams.getInteger("infectedStaffers"));
 		for (Staffer staff : staffers) {
 			context.add(staff);
 		}
-
 		return context;
 	}
 
