@@ -41,7 +41,6 @@ End with an example of getting some data out of the system or using it for a lit
 1. Paula Escudero, PhD.
 2. David Romero
 3. Mariana Gómez
-4. Jhon Miranda
 
 See also the list of [contributors](https://github.com/dromero1/GeoCampusPandemic/contributors) who participated in this project.
 
