@@ -10,7 +10,7 @@ public class Staffer extends CommunityMember {
 	/**
 	 * Week days
 	 */
-	public static final int WEEKDAYS = 6;
+	public static final int WEEKDAYS = 5;
 
 	/**
 	 * Workplace
@@ -30,8 +30,8 @@ public class Staffer extends CommunityMember {
 	 */
 	public Staffer(SimulationBuilder contextBuilder, Compartment compartment) {
 		super(contextBuilder, compartment);
-		this.workplace = Random.getRandomPolygonWorkWeightBased(this.contextBuilder.workplaces);
-		this.workStartTime = Random.getRandomWorkStartTime();
+		this.workplace = Probabilities.getRandomPolygonWorkWeightBased(this.contextBuilder.workplaces);
+		this.workStartTime = Probabilities.getRandomWorkStartTime();
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class Staffer extends CommunityMember {
 	protected void scheduleDepartures() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		for (int i = 1; i <= WEEKDAYS; i++) {
-			double endTime = Random.getRandomWorkEndTime();
+			double endTime = Probabilities.getRandomWorkEndTime();
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, endTime);
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "goHome");
 		}
@@ -73,8 +73,8 @@ public class Staffer extends CommunityMember {
 	protected void scheduleLunch() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		for (int i = 1; i <= WEEKDAYS; i++) {
-			double lunchTime = Random.getRandomLunchTime();
-			double lunchDuration = Random.getRandomLunchDuration();
+			double lunchTime = Probabilities.getRandomLunchTime();
+			double lunchDuration = Probabilities.getRandomLunchDuration();
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, lunchTime);
 			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "haveLunch");
 			ticksToEvent += lunchDuration;

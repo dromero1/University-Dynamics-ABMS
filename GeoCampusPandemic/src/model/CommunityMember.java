@@ -73,7 +73,7 @@ public abstract class CommunityMember {
 	public CommunityMember(SimulationBuilder contextBuilder, Compartment compartment) {
 		this.contextBuilder = contextBuilder;
 		this.compartment = compartment;
-		this.isVehicleUser = Random.getRandomVehicleUsage();
+		this.isVehicleUser = Probabilities.getRandomVehicleUsage();
 		this.schedulableActions = new HashMap<>();
 	}
 
@@ -119,32 +119,32 @@ public abstract class CommunityMember {
 	/**
 	 * Transition to the exposed compartment
 	 */
-	public void transitionExposed() {
+	public void transitionToExposed() {
 		this.compartment = Compartment.EXPOSED;
-		double incubationPeriod = Random.getRandomIncubationPeriod();
-		double infectiousPeriod = Math.max(incubationPeriod + Random.INFECTION_MIN, 1);
+		double incubationPeriod = Probabilities.getRandomIncubationPeriod();
+		double infectiousPeriod = Math.max(incubationPeriod + Probabilities.INFECTION_MIN, 1);
 		this.incubationEnd = RepastEssentials.GetTickCount() + TickConverter.daysToTicks(incubationPeriod);
 		double ticks = TickConverter.daysToTicks(infectiousPeriod);
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		eventScheduler.scheduleOneTimeEvent(ticks, this, "transitionInfected");
+		eventScheduler.scheduleOneTimeEvent(ticks, this, "transitionToInfected");
 	}
 
 	/**
 	 * Transition to the infected compartment
 	 */
-	public void transitionInfected() {
+	public void transitionToInfected() {
 		this.compartment = Compartment.INFECTED;
-		PatientType patientType = Random.getRandomPatientType();
+		PatientType patientType = Probabilities.getRandomPatientType();
 		// Schedule regular expulsion
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		double tickInterval = TickConverter.minutesToTicks(EXPULSION_INTERVAL);
-		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(1, this, tickInterval, "expel");
+		double expelInterval = TickConverter.minutesToTicks(EXPULSION_INTERVAL);
+		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(1, this, expelInterval, "expel");
 		this.schedulableActions.put(SchedulableAction.EXPEL, expelAction);
 		// Schedule removal
-		boolean isDying = Random.isGoingToDie(patientType);
+		boolean isDying = Probabilities.isGoingToDie(patientType);
 		String removalMethod = (isDying) ? "die" : "transitionToImmune";
-		double timeToDischarge = Random.getRandomTimeToDischarge();
-		double ticksToRemoval = TickConverter.daysToTicks(timeToDischarge - Random.INFECTION_MIN);
+		double timeToDischarge = Probabilities.getRandomTimeToDischarge();
+		double ticksToRemoval = TickConverter.daysToTicks(timeToDischarge - Probabilities.INFECTION_MIN);
 		eventScheduler.scheduleOneTimeEvent(ticksToRemoval, this, removalMethod);
 	}
 
@@ -275,10 +275,10 @@ public abstract class CommunityMember {
 		GISPolygon selectedPolygon = null;
 		switch (strategy) {
 		case WEIGHT_BASED:
-			selectedPolygon = Random.getRandomPolygonWeightBased(polygons);
+			selectedPolygon = Probabilities.getRandomPolygonWeightBased(polygons);
 			break;
 		default:
-			selectedPolygon = Random.getRandomPolygon(polygons);
+			selectedPolygon = Probabilities.getRandomPolygon(polygons);
 			break;
 		}
 		return selectedPolygon;
@@ -302,7 +302,7 @@ public abstract class CommunityMember {
 		// Schedule relocations
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		double totalTime = 0.0;
-		double speed = Random.getRandomWalkingSpeed();
+		double speed = Probabilities.getRandomWalkingSpeed();
 		for (int i = 0; i < vertexes.size() - 1; i++) {
 			String id = vertexes.get(i + 1);
 			GISPolygon nextPolygon = this.contextBuilder.getPolygonById(id);
@@ -327,11 +327,11 @@ public abstract class CommunityMember {
 	private void initDisease() {
 		switch (this.compartment) {
 		case EXPOSED:
-			transitionExposed();
+			transitionToExposed();
 			break;
 		case INFECTED:
-			this.incubationEnd = -TickConverter.daysToTicks(Random.INFECTION_MIN);
-			transitionInfected();
+			this.incubationEnd = -TickConverter.daysToTicks(Probabilities.INFECTION_MIN);
+			transitionToInfected();
 			break;
 		default:
 			break;
@@ -359,15 +359,15 @@ public abstract class CommunityMember {
 		Iterable<Student> students = this.contextBuilder.geography.getObjectsWithin(searchEnvelope, Student.class);
 		double incubationDiff = RepastEssentials.GetTickCount() - this.incubationEnd;
 		for (Student student : students) {
-			if (student.compartment == Compartment.SUSCEPTIBLE && Random.isGettingExposed(incubationDiff)) {
-				student.transitionExposed();
+			if (student.compartment == Compartment.SUSCEPTIBLE && Probabilities.isGettingExposed(incubationDiff)) {
+				student.transitionToExposed();
 				student.currentPolygon.onEffectiveContact();
 			}
 		}
 		Iterable<Staffer> staffers = this.contextBuilder.geography.getObjectsWithin(searchEnvelope, Staffer.class);
 		for (Staffer staffer : staffers) {
-			if (staffer.compartment == Compartment.SUSCEPTIBLE && Random.isGettingExposed(incubationDiff)) {
-				staffer.transitionExposed();
+			if (staffer.compartment == Compartment.SUSCEPTIBLE && Probabilities.isGettingExposed(incubationDiff)) {
+				staffer.transitionToExposed();
 				staffer.currentPolygon.onEffectiveContact();
 			}
 		}

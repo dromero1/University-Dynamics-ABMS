@@ -103,7 +103,7 @@ public class Student extends CommunityMember {
 		for (Group group : this.schedule.getGroups()) {
 			for (AcademicActivity activity : group.getAcademicActivities()) {
 				int day = activity.getDay();
-				double arrivalShift = Random.getRandomArrivalShift();
+				double arrivalShift = Probabilities.getRandomArrivalShift();
 				double startTime = activity.getStartTime() - arrivalShift;
 				String teachingFacilityId = activity.getTeachingFacilityId();
 				double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
