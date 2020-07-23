@@ -5,10 +5,8 @@ import java.util.List;
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import gis.GISPolygon;
 import repast.simphony.engine.environment.RunEnvironment;
@@ -19,6 +17,7 @@ import repast.simphony.gis.util.GeometryUtil;
 import repast.simphony.parameter.Parameters;
 import simulation.EventScheduler;
 import simulation.SimulationBuilder;
+import util.PolygonUtil;
 import util.TickConverter;
 
 public abstract class CommunityMember {
@@ -182,11 +181,7 @@ public abstract class CommunityMember {
 	 * @param polygon Polygon to go to
 	 */
 	public void relocate(GISPolygon polygon) {
-		Geometry geometry = polygon.getGeometry();
-		List<Coordinate> coordinates = GeometryUtil.generateRandomPointsInPolygon(geometry, 1);
-		GeometryFactory geometryFactory = new GeometryFactory();
-		Coordinate coordinate = coordinates.get(0);
-		Point destination = geometryFactory.createPoint(coordinate);
+		Point destination = PolygonUtil.getRandomPoint(polygon);
 		this.simulationBuilder.geography.move(this, destination);
 		this.currentPolygon.onDeparture();
 		this.currentPolygon = polygon;
