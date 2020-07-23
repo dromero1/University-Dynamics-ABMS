@@ -53,7 +53,7 @@ public class Student extends CommunityMember {
 	 * @param teachingFacilityId Id of the teaching facility
 	 */
 	public void attendActivity(String teachingFacilityId) {
-		HashMap<String, GISPolygon> teachingFacilities = this.contextBuilder.teachingFacilities;
+		HashMap<String, GISPolygon> teachingFacilities = this.simulationBuilder.teachingFacilities;
 		GISPolygon teachingFacility = teachingFacilities.get(teachingFacilityId);
 		moveToPolygon(teachingFacility, "");
 	}
@@ -83,7 +83,7 @@ public class Student extends CommunityMember {
 	 * Go have fun at a shared area
 	 */
 	public void haveFun() {
-		GISPolygon polygon = getRandomPolygon(this.contextBuilder.sharedAreas, SelectionStrategy.WEIGHT_BASED);
+		GISPolygon polygon = getRandomPolygon(this.simulationBuilder.sharedAreas, SelectionStrategy.WEIGHT_BASED);
 		moveToPolygon(polygon, "");
 	}
 

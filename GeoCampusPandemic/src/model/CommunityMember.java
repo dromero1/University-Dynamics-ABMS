@@ -24,9 +24,9 @@ import util.TickConverter;
 public abstract class CommunityMember {
 
 	/**
-	 * Expulsion interval (unit: minutes)
+	 * Particle expulsion interval (unit: minutes)
 	 */
-	public static final double EXPULSION_INTERVAL = 15;
+	public static final double PARTICLE_EXPULSION_INTERVAL = 15;
 
 	/**
 	 * Compartment
@@ -34,7 +34,7 @@ public abstract class CommunityMember {
 	protected Compartment compartment;
 
 	/**
-	 * Incubation end (unit: hour)
+	 * Incubation end (unit: hours)
 	 */
 	protected double incubationEnd;
 
@@ -57,24 +57,24 @@ public abstract class CommunityMember {
 	/**
 	 * Reference to simulation builder
 	 */
-	protected SimulationBuilder contextBuilder;
+	protected SimulationBuilder simulationBuilder;
 
 	/**
 	 * Scheduled actions
 	 */
-	private HashMap<SchedulableAction, ISchedulableAction> schedulableActions;
+	private HashMap<SchedulableAction, ISchedulableAction> scheduledActions;
 
 	/**
 	 * Create a new community member agent
 	 * 
-	 * @param contextBuilder Reference to the simulation builder
-	 * @param compartment    Compartment
+	 * @param simulationBuilder Reference to the simulation builder
+	 * @param compartment       Compartment
 	 */
-	public CommunityMember(SimulationBuilder contextBuilder, Compartment compartment) {
-		this.contextBuilder = contextBuilder;
+	public CommunityMember(SimulationBuilder simulationBuilder, Compartment compartment) {
+		this.simulationBuilder = simulationBuilder;
 		this.compartment = compartment;
 		this.isVehicleUser = Probabilities.getRandomVehicleUsage();
-		this.schedulableActions = new HashMap<>();
+		this.scheduledActions = new HashMap<>();
 	}
 
 	/**
@@ -90,7 +90,7 @@ public abstract class CommunityMember {
 	/**
 	 * Expel particles
 	 */
-	public void expel() {
+	public void expelParticles() {
 		if (isInCampus()) {
 			infect();
 		}
@@ -112,7 +112,7 @@ public abstract class CommunityMember {
 	 * Go have lunch at a designated eating place
 	 */
 	public void haveLunch() {
-		GISPolygon polygon = getRandomPolygon(this.contextBuilder.eatingPlaces, SelectionStrategy.WEIGHT_BASED);
+		GISPolygon polygon = getRandomPolygon(this.simulationBuilder.eatingPlaces, SelectionStrategy.WEIGHT_BASED);
 		moveToPolygon(polygon, "");
 	}
 
@@ -137,9 +137,9 @@ public abstract class CommunityMember {
 		PatientType patientType = Probabilities.getRandomPatientType();
 		// Schedule regular expulsion
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		double expelInterval = TickConverter.minutesToTicks(EXPULSION_INTERVAL);
-		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(1, this, expelInterval, "expel");
-		this.schedulableActions.put(SchedulableAction.EXPEL, expelAction);
+		double expelInterval = TickConverter.minutesToTicks(PARTICLE_EXPULSION_INTERVAL);
+		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(1, this, expelInterval, "expelParticles");
+		this.scheduledActions.put(SchedulableAction.EXPEL_PARTICLES, expelAction);
 		// Schedule removal
 		boolean isDying = Probabilities.isGoingToDie(patientType);
 		String removalMethod = (isDying) ? "die" : "transitionToImmune";
@@ -153,7 +153,7 @@ public abstract class CommunityMember {
 	 */
 	public void transitionToImmune() {
 		this.compartment = Compartment.IMMUNE;
-		this.schedulableActions.remove(SchedulableAction.EXPEL);
+		this.scheduledActions.remove(SchedulableAction.EXPEL_PARTICLES);
 	}
 
 	/**
@@ -161,7 +161,7 @@ public abstract class CommunityMember {
 	 */
 	public void die() {
 		this.compartment = Compartment.DEAD;
-		this.schedulableActions.remove(SchedulableAction.EXPEL);
+		this.scheduledActions.remove(SchedulableAction.EXPEL_PARTICLES);
 	}
 
 	/**
@@ -169,7 +169,7 @@ public abstract class CommunityMember {
 	 */
 	public void vanishToLimbo() {
 		String limboId = this.lastExit.getLink();
-		GISPolygon limbo = this.contextBuilder.getPolygonById(limboId);
+		GISPolygon limbo = this.simulationBuilder.getPolygonById(limboId);
 		if (this.currentPolygon == null) {
 			this.currentPolygon = limbo;
 		}
@@ -187,7 +187,7 @@ public abstract class CommunityMember {
 		GeometryFactory geometryFactory = new GeometryFactory();
 		Coordinate coordinate = coordinates.get(0);
 		Point destination = geometryFactory.createPoint(coordinate);
-		this.contextBuilder.geography.move(this, destination);
+		this.simulationBuilder.geography.move(this, destination);
 		this.currentPolygon.onDeparture();
 		this.currentPolygon = polygon;
 		this.currentPolygon.onArrival();
@@ -205,7 +205,7 @@ public abstract class CommunityMember {
 	 */
 	public boolean isInCampus() {
 		String polygonId = this.currentPolygon.getId();
-		return !this.contextBuilder.limbos.containsKey(polygonId);
+		return !this.simulationBuilder.limbos.containsKey(polygonId);
 	}
 
 	/**
@@ -294,8 +294,8 @@ public abstract class CommunityMember {
 		String source = this.currentPolygon.getId();
 		String sink = polygon.getId();
 		// Get shortest paths
-		Graph<String, DefaultWeightedEdge> routes = this.contextBuilder.routes;
-		HashMap<String, GraphPath<String, DefaultWeightedEdge>> shortestPaths = this.contextBuilder.shortestPaths;
+		Graph<String, DefaultWeightedEdge> routes = this.simulationBuilder.routes;
+		HashMap<String, GraphPath<String, DefaultWeightedEdge>> shortestPaths = this.simulationBuilder.shortestPaths;
 		GraphPath<String, DefaultWeightedEdge> path = shortestPaths.get(source + "-" + sink);
 		List<String> vertexes = path.getVertexList();
 		List<DefaultWeightedEdge> edges = path.getEdgeList();
@@ -305,7 +305,7 @@ public abstract class CommunityMember {
 		double speed = Probabilities.getRandomWalkingSpeed();
 		for (int i = 0; i < vertexes.size() - 1; i++) {
 			String id = vertexes.get(i + 1);
-			GISPolygon nextPolygon = this.contextBuilder.getPolygonById(id);
+			GISPolygon nextPolygon = this.simulationBuilder.getPolygonById(id);
 			DefaultWeightedEdge edge = edges.get(i);
 			double meters = routes.getEdgeWeight(edge);
 			double minutes = meters / speed;
@@ -353,10 +353,10 @@ public abstract class CommunityMember {
 	private void infect() {
 		Parameters simParams = RunEnvironment.getInstance().getParameters();
 		double distance = simParams.getDouble("infectionRadius");
-		Geometry searchArea = GeometryUtil.generateBuffer(this.contextBuilder.geography,
-				this.contextBuilder.geography.getGeometry(this), distance);
+		Geometry searchArea = GeometryUtil.generateBuffer(this.simulationBuilder.geography,
+				this.simulationBuilder.geography.getGeometry(this), distance);
 		Envelope searchEnvelope = searchArea.getEnvelopeInternal();
-		Iterable<Student> students = this.contextBuilder.geography.getObjectsWithin(searchEnvelope, Student.class);
+		Iterable<Student> students = this.simulationBuilder.geography.getObjectsWithin(searchEnvelope, Student.class);
 		double incubationDiff = RepastEssentials.GetTickCount() - this.incubationEnd;
 		for (Student student : students) {
 			if (student.compartment == Compartment.SUSCEPTIBLE && Probabilities.isGettingExposed(incubationDiff)) {
@@ -364,7 +364,7 @@ public abstract class CommunityMember {
 				student.currentPolygon.onEffectiveContact();
 			}
 		}
-		Iterable<Staffer> staffers = this.contextBuilder.geography.getObjectsWithin(searchEnvelope, Staffer.class);
+		Iterable<Staffer> staffers = this.simulationBuilder.geography.getObjectsWithin(searchEnvelope, Staffer.class);
 		for (Staffer staffer : staffers) {
 			if (staffer.compartment == Compartment.SUSCEPTIBLE && Probabilities.isGettingExposed(incubationDiff)) {
 				staffer.transitionToExposed();
@@ -379,9 +379,9 @@ public abstract class CommunityMember {
 	private GISPolygon getRandomInOutSpot() {
 		HashMap<String, GISPolygon> inOuts = null;
 		if (this.isVehicleUser) {
-			inOuts = this.contextBuilder.vehicleInOuts;
+			inOuts = this.simulationBuilder.vehicleInOuts;
 		} else {
-			inOuts = this.contextBuilder.inOuts;
+			inOuts = this.simulationBuilder.inOuts;
 		}
 		return getRandomPolygon(inOuts, SelectionStrategy.RANDOM);
 	}

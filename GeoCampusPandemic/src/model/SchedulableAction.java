@@ -1,5 +1,5 @@
 package model;
 
 public enum SchedulableAction {
-	EXPEL
+	EXPEL_PARTICLES
 }

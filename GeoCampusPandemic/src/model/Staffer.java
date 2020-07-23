@@ -30,7 +30,7 @@ public class Staffer extends CommunityMember {
 	 */
 	public Staffer(SimulationBuilder contextBuilder, Compartment compartment) {
 		super(contextBuilder, compartment);
-		this.workplace = Probabilities.getRandomPolygonWorkWeightBased(this.contextBuilder.workplaces);
+		this.workplace = Probabilities.getRandomPolygonWorkWeightBased(this.simulationBuilder.workplaces);
 		this.workStartTime = Probabilities.getRandomWorkStartTime();
 	}
 
