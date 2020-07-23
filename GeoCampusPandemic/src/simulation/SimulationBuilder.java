@@ -30,6 +30,11 @@ import repast.simphony.space.gis.GeographyParameters;
 public class SimulationBuilder implements ContextBuilder<Object> {
 
 	/**
+	 * Geography projection id
+	 */
+	public static final String GEOGRAPHY_PROJECTION_ID = "campus";
+	
+	/**
 	 * Reference to geography projection
 	 */
 	public Geography<Object> geography;
@@ -181,7 +186,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	private Geography<Object> createGeographyProjection(Context<Object> context) {
 		GeographyParameters<Object> params = new GeographyParameters<Object>();
 		GeographyFactory geographyFactory = GeographyFactoryFinder.createGeographyFactory(null);
-		Geography<Object> geography = geographyFactory.createGeography("campus", context, params);
+		Geography<Object> geography = geographyFactory.createGeography(GEOGRAPHY_PROJECTION_ID, context, params);
 		return geography;
 	}
 
