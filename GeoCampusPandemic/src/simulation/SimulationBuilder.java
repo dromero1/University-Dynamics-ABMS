@@ -10,6 +10,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import config.Paths;
+import datasource.Reader;
 import gis.GISPolygon;
 import model.Compartment;
 import model.Group;
@@ -25,7 +26,6 @@ import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.space.gis.Geography;
 import repast.simphony.space.gis.GeographyParameters;
-import source.Reader;
 
 public class SimulationBuilder implements ContextBuilder<Object> {
 

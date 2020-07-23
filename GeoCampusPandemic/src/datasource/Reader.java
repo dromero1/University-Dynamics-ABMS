@@ -1,4 +1,4 @@
-package source;
+package datasource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -311,7 +311,9 @@ public class Reader {
 					routes.addVertex(destination);
 				}
 				DefaultWeightedEdge edge = routes.addEdge(origin, destination);
-				routes.setEdgeWeight(edge, weight);
+				if (edge != null) {
+					routes.setEdgeWeight(edge, weight);
+				}
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
