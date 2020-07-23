@@ -178,18 +178,15 @@ public class Probabilities {
 	 * Get random patient type. Reference: <pending>
 	 */
 	public static PatientType getRandomPatientType() {
-		double r1 = RandomHelper.nextDoubleFromTo(0, 1);
-		if (r1 < 0.111) {
+		double r = RandomHelper.nextDoubleFromTo(0, 1);
+		if (r < 0.3) {
 			return PatientType.NO_SYMPTOMS;
+		} else if (r < 0.85) {
+			return PatientType.MODERATE_SYMPTOMS;
+		} else if (r < 0.95) {
+			return PatientType.SEVERE_SYMPTOMS;
 		} else {
-			double r2 = RandomHelper.nextDoubleFromTo(0, 1);
-			if (r2 < 0.814) {
-				return PatientType.MODERATE_SYMPTOMS;
-			} else if (r2 < 0.953) {
-				return PatientType.SEVERE_SYMPTOMS;
-			} else {
-				return PatientType.CRITICAL_SYMPTOMS;
-			}
+			return PatientType.CRITICAL_SYMPTOMS;
 		}
 	}
 
