@@ -166,13 +166,6 @@ public class GISPolygon {
 	}
 
 	/**
-	 * Get reference to geometry
-	 */
-	public Geometry getGeometry() {
-		return this.geometry;
-	}
-
-	/**
 	 * Get weight
 	 */
 	public double getWeight() {
@@ -198,6 +191,13 @@ public class GISPolygon {
 	 */
 	public String getLink() {
 		return this.link;
+	}
+
+	/**
+	 * Get reference to geometry
+	 */
+	public Geometry getGeometry() {
+		return this.geometry;
 	}
 
 }
