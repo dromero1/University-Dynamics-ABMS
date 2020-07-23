@@ -1,7 +1,7 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.7.0">
   <name>Epidemic Time Series Chart</name>
   <dataSet>EpidemicTimeSeries</dataSet>
-  <xAxisLabel>hour</xAxisLabel>
+  <xAxisLabel>hours</xAxisLabel>
   <yAxisLabel>people</yAxisLabel>
   <chartTitle>Epidemic Time Series</chartTitle>
   <type>TIME_SERIES</type>

@@ -1,7 +1,7 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.7.0">
   <name>Active Cases Time Series Chart</name>
   <dataSet>ActiveCasesTimeSeries</dataSet>
-  <xAxisLabel>hour</xAxisLabel>
+  <xAxisLabel>hours</xAxisLabel>
   <yAxisLabel>cases</yAxisLabel>
   <chartTitle>Active Cases Time Series</chartTitle>
   <type>TIME_SERIES</type>
