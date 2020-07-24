@@ -4,11 +4,12 @@
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
-    <string>id</string>
+    <string>run</string>
     <string>tick</string>
-    <string>density</string>
+    <string>id</string>
     <string>agents</string>
     <string>agentsCorrected</string>
+    <string>density</string>
     <string>densityCorrected</string>
   </sourceIds>
   <fileName>output/Output_Densities.csv</fileName>

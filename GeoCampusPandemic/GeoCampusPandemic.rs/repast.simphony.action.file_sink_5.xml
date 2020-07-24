@@ -4,6 +4,7 @@
   <delimiter>;</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
+    <string>run</string>
     <string>tick</string>
     <string>susceptible</string>
     <string>exposed</string>
