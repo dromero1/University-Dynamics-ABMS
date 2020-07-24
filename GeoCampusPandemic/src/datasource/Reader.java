@@ -64,12 +64,12 @@ public class Reader {
 					first = false;
 				} else {
 					String[] elements = data.split(";");
-					String groupId = "";
+					String groupId = null;
 					int capacity = 0;
 					int day = 0;
 					double startTime = 0;
 					double endTime = 0;
-					String teachingFacilityId = "";
+					String teachingFacilityId = null;
 					for (int i = 0; i < elements.length; i++) {
 						switch (i) {
 						case DBFeatures.GROUPS_SUBJECT_ID_COLUMN:
@@ -130,8 +130,8 @@ public class Reader {
 					first = false;
 				} else {
 					String[] elements = data.split(";");
-					String studentId = "";
-					String groupId = "";
+					String studentId = null;
+					String groupId = null;
 					for (int i = 0; i < elements.length; i++) {
 						switch (i) {
 						case DBFeatures.SELECTION_STUDENT_ID_COLUMN:
@@ -184,11 +184,11 @@ public class Reader {
 					first = false;
 				} else {
 					String[] elements = data.split(";");
-					String id = "";
+					String id = null;
 					double area = 0;
 					double weight = 0;
 					boolean active = false;
-					String link = "";
+					String link = null;
 					for (int i = 0; i < elements.length; i++) {
 						switch (i) {
 						case DBFeatures.FACILITIES_ATTRIBUTES_ID_COLUMN:
@@ -243,7 +243,7 @@ public class Reader {
 					first = false;
 				} else {
 					String[] elements = data.split(";");
-					String id = "";
+					String id = null;
 					double weight = 0;
 					for (int i = 0; i < elements.length; i++) {
 						switch (i) {
@@ -285,8 +285,8 @@ public class Reader {
 					first = false;
 				} else {
 					String[] elements = data.split(";");
-					String origin = "";
-					String destination = "";
+					String origin = null;
+					String destination = null;
 					double weight = 0.0;
 					for (int i = 0; i < elements.length; i++) {
 						switch (i) {
