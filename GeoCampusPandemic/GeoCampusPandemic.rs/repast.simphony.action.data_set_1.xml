@@ -14,7 +14,7 @@
     <frequency>REPEAT</frequency>
     <hashCode>-1303619407</hashCode>
   </scheduleParams>
-  <atEnd>true</atEnd>
+  <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
       <string>id</string>

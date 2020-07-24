@@ -184,7 +184,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * @param context Simulation context
 	 */
 	private Geography<Object> createGeographyProjection(Context<Object> context) {
-		GeographyParameters<Object> params = new GeographyParameters<Object>();
+		GeographyParameters<Object> params = new GeographyParameters<>();
 		GeographyFactory geographyFactory = GeographyFactoryFinder.createGeographyFactory(null);
 		Geography<Object> geography = geographyFactory.createGeography(GEOGRAPHY_PROJECTION_ID, context, params);
 		return geography;

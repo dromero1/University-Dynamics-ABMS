@@ -13,7 +13,7 @@
     <frequency>REPEAT</frequency>
     <hashCode>451302176</hashCode>
   </scheduleParams>
-  <atEnd>true</atEnd>
+  <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
       <string>susceptible</string>

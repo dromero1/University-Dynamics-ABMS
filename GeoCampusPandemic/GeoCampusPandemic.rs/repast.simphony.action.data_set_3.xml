@@ -13,7 +13,7 @@
     <frequency>REPEAT</frequency>
     <hashCode>-1381754899</hashCode>
   </scheduleParams>
-  <atEnd>true</atEnd>
+  <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
       <string>activeCases</string>
