@@ -49,7 +49,7 @@ public class Group {
 	 */
 	public void addAcademicActivity(int day, double startTime, double endTime, String teachingFacilityId) {
 		AcademicActivity activity = new AcademicActivity(day, startTime, endTime, teachingFacilityId);
-		academicActivities.add(activity);
+		this.academicActivities.add(activity);
 	}
 
 	/**
@@ -58,8 +58,8 @@ public class Group {
 	 */
 	public boolean enroll() {
 		boolean enrolled = false;
-		if (enrollmentsCount < capacity) {
-			enrollmentsCount++;
+		if (this.enrollmentsCount < this.capacity) {
+			this.enrollmentsCount++;
 			enrolled = true;
 		}
 		return enrolled;
@@ -83,7 +83,7 @@ public class Group {
 	 * Get list of academic activities
 	 */
 	public ArrayList<AcademicActivity> getAcademicActivities() {
-		return academicActivities;
+		return this.academicActivities;
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class Group {
 	 */
 	public Set<Integer> getActivityDays() {
 		Set<Integer> days = new HashSet<Integer>();
-		for (AcademicActivity activity : academicActivities) {
+		for (AcademicActivity activity : this.academicActivities) {
 			int day = activity.getDay();
 			days.add(day);
 		}

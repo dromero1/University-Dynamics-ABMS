@@ -77,17 +77,17 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 		Compartment compartment = communityMember.getCompartment();
 		switch (compartment) {
 		case DEAD:
-			return textureMap.get("black-circle");
+			return this.textureMap.get("black-circle");
 		case EXPOSED:
-			return textureMap.get("orange-circle");
+			return this.textureMap.get("orange-circle");
 		case IMMUNE:
-			return textureMap.get("green-circle");
+			return this.textureMap.get("green-circle");
 		case INFECTED:
-			return textureMap.get("red-circle");
+			return this.textureMap.get("red-circle");
 		case SUSCEPTIBLE:
-			return textureMap.get("blue-circle");
+			return this.textureMap.get("blue-circle");
 		default:
-			return textureMap.get("gray-circle");
+			return this.textureMap.get("gray-circle");
 		}
 	}
 
