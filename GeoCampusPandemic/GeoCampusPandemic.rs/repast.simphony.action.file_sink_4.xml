@@ -1,17 +1,18 @@
-<repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.7.0">
-  <name>DensitiesFileSink</name>
-  <dataSet>DensitiesTimeSeries</dataSet>
-  <delimiter>;</delimiter>
-  <format>TABULAR</format>
-  <sourceIds class="linked-hash-set">
-    <string>run</string>
-    <string>tick</string>
-    <string>id</string>
-    <string>agents</string>
-    <string>agentsCorrected</string>
-    <string>density</string>
-    <string>densityCorrected</string>
-  </sourceIds>
-  <fileName>output/Output_Densities.csv</fileName>
-  <addTimeStamp>false</addTimeStamp>
+<repast.simphony.data2.engine.FileSinkDescriptor
+	simphonyVersion="2.7.0">
+	<name>DensitiesFileSink</name>
+	<dataSet>DensitiesTimeSeries</dataSet>
+	<delimiter>;</delimiter>
+	<format>TABULAR</format>
+	<sourceIds class="linked-hash-set">
+		<string>run</string>
+		<string>tick</string>
+		<string>id</string>
+		<string>agents</string>
+		<string>agentsCorrected</string>
+		<string>density</string>
+		<string>densityCorrected</string>
+	</sourceIds>
+	<fileName>output/Output_Densities.csv</fileName>
+	<addTimeStamp>false</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>
