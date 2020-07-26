@@ -33,7 +33,7 @@ public abstract class CommunityMember {
 	protected Compartment compartment;
 
 	/**
-	 * Incubation end (unit: hours)
+	 * Time to incubation end (unit: hours)
 	 */
 	protected double incubationEnd;
 
