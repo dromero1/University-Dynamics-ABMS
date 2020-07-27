@@ -7,7 +7,7 @@
 	<inclBatchRun>true</inclBatchRun>
 	<inclRandomSeed>false</inclRandomSeed>
 	<scheduleParams>
-		<start>1.0</start>
+		<start>0.0</start>
 		<interval>0.25</interval>
 		<priority>-Infinity</priority>
 		<pType>LAST</pType>

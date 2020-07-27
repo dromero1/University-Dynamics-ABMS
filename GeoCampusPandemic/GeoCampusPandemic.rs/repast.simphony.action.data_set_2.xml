@@ -6,7 +6,7 @@
 	<inclBatchRun>true</inclBatchRun>
 	<inclRandomSeed>false</inclRandomSeed>
 	<scheduleParams>
-		<start>1.0</start>
+		<start>0.0</start>
 		<interval>1.0</interval>
 		<priority>-Infinity</priority>
 		<pType>LAST</pType>
@@ -17,9 +17,9 @@
 	<atEnd>false</atEnd>
 	<methodDataSources class="linked-hash-map">
 		<entry>
-			<string>activeCases</string>
+			<string>cases</string>
 			<repast.simphony.data2.engine.MethodDataSourceDefinition>
-				<id>activeCases</id>
+				<id>cases</id>
 				<className>model.CommunityMember</className>
 				<methodName>isActiveCase</methodName>
 				<aggType>SUM</aggType>

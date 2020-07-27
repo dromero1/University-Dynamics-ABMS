@@ -15,19 +15,16 @@
 	<repast.simphony.action.file_sink
 		context="GeoCampusPandemic"
 		file="repast.simphony.action.file_sink_4.xml" />
-	<repast.simphony.action.file_sink
-		context="GeoCampusPandemic"
-		file="repast.simphony.action.file_sink_5.xml" />
 	<repast.simphony.dataLoader.engine.ClassNameDataLoaderAction
 		context="GeoCampusPandemic"
-		file="repast.simphony.dataLoader.engine.ClassNameDataLoaderAction_6.xml" />
+		file="repast.simphony.dataLoader.engine.ClassNameDataLoaderAction_5.xml" />
+	<repast.simphony.action.time_series_chart
+		context="GeoCampusPandemic"
+		file="repast.simphony.action.time_series_chart_6.xml" />
 	<repast.simphony.action.time_series_chart
 		context="GeoCampusPandemic"
 		file="repast.simphony.action.time_series_chart_7.xml" />
-	<repast.simphony.action.time_series_chart
-		context="GeoCampusPandemic"
-		file="repast.simphony.action.time_series_chart_8.xml" />
 	<repast.simphony.action.display
 		context="GeoCampusPandemic"
-		file="repast.simphony.action.display_9.xml" />
+		file="repast.simphony.action.display_8.xml" />
 </Scenario>
