@@ -30,6 +30,11 @@ import repast.simphony.space.gis.GeographyParameters;
 public class SimulationBuilder implements ContextBuilder<Object> {
 
 	/**
+	 * End tick (unit: hours)
+	 */
+	public static final double END_TICK = 1440;
+	
+	/**
 	 * Geography projection id
 	 */
 	public static final String GEOGRAPHY_PROJECTION_ID = "campus";
@@ -175,6 +180,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		for (Staffer staff : staffers) {
 			context.add(staff);
 		}
+		// Set end tick
+		RunEnvironment.getInstance().endAt(END_TICK);
 		return context;
 	}
 
