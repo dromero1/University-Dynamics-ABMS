@@ -308,9 +308,13 @@ public class Reader {
 					if (!routes.containsVertex(destination)) {
 						routes.addVertex(destination);
 					}
-					DefaultWeightedEdge edge = routes.addEdge(origin, destination);
-					if (edge != null) {
-						routes.setEdgeWeight(edge, weight);
+					DefaultWeightedEdge edge1 = routes.addEdge(origin, destination);
+					if (edge1 != null) {
+						routes.setEdgeWeight(edge1, weight);
+					}
+					DefaultWeightedEdge edge2 = routes.addEdge(destination, origin);
+					if (edge2 != null) {
+						routes.setEdgeWeight(edge2, weight);
 					}
 				}
 			}
