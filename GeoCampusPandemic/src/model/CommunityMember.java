@@ -11,6 +11,7 @@ import com.vividsolutions.jts.geom.Point;
 import gis.GISPolygon;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ISchedulableAction;
+import repast.simphony.engine.schedule.ISchedule;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.essentials.RepastEssentials;
 import repast.simphony.gis.util.GeometryUtil;
@@ -72,7 +73,7 @@ public abstract class CommunityMember {
 	public CommunityMember(SimulationBuilder simulationBuilder, Compartment compartment) {
 		this.simulationBuilder = simulationBuilder;
 		this.compartment = compartment;
-		this.isVehicleUser = Probabilities.getRandomVehicleUsage();
+		this.isVehicleUser = Randomizer.getRandomVehicleUsage();
 		this.scheduledActions = new HashMap<>();
 	}
 
@@ -120,8 +121,8 @@ public abstract class CommunityMember {
 	 */
 	public void transitionToExposed() {
 		this.compartment = Compartment.EXPOSED;
-		double incubationPeriod = Probabilities.getRandomIncubationPeriod();
-		double infectiousPeriod = Math.max(incubationPeriod + Probabilities.INFECTION_MIN, 1);
+		double incubationPeriod = Randomizer.getRandomIncubationPeriod();
+		double infectiousPeriod = Math.max(incubationPeriod + Randomizer.INFECTION_MIN, 1);
 		this.incubationEnd = RepastEssentials.GetTickCount() + TickConverter.daysToTicks(incubationPeriod);
 		double ticks = TickConverter.daysToTicks(infectiousPeriod);
 		EventScheduler eventScheduler = EventScheduler.getInstance();
@@ -133,17 +134,18 @@ public abstract class CommunityMember {
 	 */
 	public void transitionToInfected() {
 		this.compartment = Compartment.INFECTED;
-		PatientType patientType = Probabilities.getRandomPatientType();
+		PatientType patientType = Randomizer.getRandomPatientType();
 		// Schedule regular expulsion
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		double expelInterval = TickConverter.minutesToTicks(PARTICLE_EXPULSION_INTERVAL);
-		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(1, this, expelInterval, "expelParticles");
+		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(1, this, expelInterval,
+				"expelParticles");
 		this.scheduledActions.put(SchedulableAction.EXPEL_PARTICLES, expelAction);
 		// Schedule removal
-		boolean isDying = Probabilities.isGoingToDie(patientType);
+		boolean isDying = Randomizer.isGoingToDie(patientType);
 		String removalMethod = (isDying) ? "die" : "transitionToImmune";
-		double timeToDischarge = Probabilities.getRandomTimeToDischarge();
-		double ticksToRemoval = TickConverter.daysToTicks(timeToDischarge - Probabilities.INFECTION_MIN);
+		double timeToDischarge = Randomizer.getRandomTimeToDischarge();
+		double ticksToRemoval = TickConverter.daysToTicks(timeToDischarge - Randomizer.INFECTION_MIN);
 		eventScheduler.scheduleOneTimeEvent(ticksToRemoval, this, removalMethod);
 	}
 
@@ -152,7 +154,7 @@ public abstract class CommunityMember {
 	 */
 	public void transitionToImmune() {
 		this.compartment = Compartment.IMMUNE;
-		this.scheduledActions.remove(SchedulableAction.EXPEL_PARTICLES);
+		unscheduleAction(SchedulableAction.EXPEL_PARTICLES);
 	}
 
 	/**
@@ -160,7 +162,7 @@ public abstract class CommunityMember {
 	 */
 	public void die() {
 		this.compartment = Compartment.DEAD;
-		this.scheduledActions.remove(SchedulableAction.EXPEL_PARTICLES);
+		unscheduleAction(SchedulableAction.EXPEL_PARTICLES);
 	}
 
 	/**
@@ -270,10 +272,10 @@ public abstract class CommunityMember {
 		GISPolygon selectedPolygon = null;
 		switch (strategy) {
 		case WEIGHT_BASED:
-			selectedPolygon = Probabilities.getRandomPolygonWeightBased(polygons);
+			selectedPolygon = Randomizer.getRandomPolygonWeightBased(polygons);
 			break;
 		default:
-			selectedPolygon = Probabilities.getRandomPolygon(polygons);
+			selectedPolygon = Randomizer.getRandomPolygon(polygons);
 			break;
 		}
 		return selectedPolygon;
@@ -297,7 +299,7 @@ public abstract class CommunityMember {
 		// Schedule relocations
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		double totalTime = 0.0;
-		double speed = Probabilities.getRandomWalkingSpeed();
+		double speed = Randomizer.getRandomWalkingSpeed();
 		for (int i = 0; i < vertexes.size() - 1; i++) {
 			String id = vertexes.get(i + 1);
 			GISPolygon nextPolygon = this.simulationBuilder.getPolygonById(id);
@@ -325,7 +327,7 @@ public abstract class CommunityMember {
 			transitionToExposed();
 			break;
 		case INFECTED:
-			this.incubationEnd = -TickConverter.daysToTicks(Probabilities.INFECTION_MIN);
+			this.incubationEnd = -TickConverter.daysToTicks(Randomizer.INFECTION_MIN);
 			transitionToInfected();
 			break;
 		default:
@@ -354,14 +356,14 @@ public abstract class CommunityMember {
 		Iterable<Student> students = this.simulationBuilder.geography.getObjectsWithin(searchEnvelope, Student.class);
 		double incubationDiff = RepastEssentials.GetTickCount() - this.incubationEnd;
 		for (Student student : students) {
-			if (student.compartment == Compartment.SUSCEPTIBLE && Probabilities.isGettingExposed(incubationDiff)) {
+			if (student.compartment == Compartment.SUSCEPTIBLE && Randomizer.isGettingExposed(incubationDiff)) {
 				student.transitionToExposed();
 				student.currentPolygon.onEffectiveContact();
 			}
 		}
 		Iterable<Staffer> staffers = this.simulationBuilder.geography.getObjectsWithin(searchEnvelope, Staffer.class);
 		for (Staffer staffer : staffers) {
-			if (staffer.compartment == Compartment.SUSCEPTIBLE && Probabilities.isGettingExposed(incubationDiff)) {
+			if (staffer.compartment == Compartment.SUSCEPTIBLE && Randomizer.isGettingExposed(incubationDiff)) {
 				staffer.transitionToExposed();
 				staffer.currentPolygon.onEffectiveContact();
 			}
@@ -379,6 +381,18 @@ public abstract class CommunityMember {
 			inOuts = this.simulationBuilder.inOuts;
 		}
 		return getRandomPolygon(inOuts, SelectionStrategy.RANDOM);
+	}
+
+	/**
+	 * Unschedule action
+	 * 
+	 * @param schedulableAction Action to unscheduled
+	 */
+	private void unscheduleAction(SchedulableAction schedulableAction) {
+		ISchedulableAction action = this.scheduledActions.get(schedulableAction);
+		ISchedule schedule = RunEnvironment.getInstance().getCurrentSchedule();
+		schedule.removeAction(action);
+		this.scheduledActions.remove(schedulableAction);
 	}
 
 }

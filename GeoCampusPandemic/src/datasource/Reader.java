@@ -53,7 +53,7 @@ public class Reader {
 	 * @param filename File name
 	 */
 	public static HashMap<String, Group> readGroupsDatabase(String filename) {
-		HashMap<String, Group> groups = new HashMap<String, Group>();
+		HashMap<String, Group> groups = new HashMap<>();
 		try {
 			File file = new File(filename);
 			Scanner scanner = new Scanner(file);
@@ -119,7 +119,7 @@ public class Reader {
 	 * @param filename File name
 	 */
 	public static HashMap<String, ArrayList<String>> readScheduleSelectionDatabase(String filename) {
-		HashMap<String, ArrayList<String>> scheduleSelection = new HashMap<String, ArrayList<String>>();
+		HashMap<String, ArrayList<String>> scheduleSelection = new HashMap<>();
 		try {
 			File file = new File(filename);
 			Scanner scanner = new Scanner(file);
@@ -173,7 +173,7 @@ public class Reader {
 	 * @param filename File name
 	 */
 	public static HashMap<String, GISPolygon> readFacilityAttributesDatabase(String filename) {
-		HashMap<String, GISPolygon> attributes = new HashMap<String, GISPolygon>();
+		HashMap<String, GISPolygon> attributes = new HashMap<>();
 		try {
 			File file = new File(filename);
 			Scanner scanner = new Scanner(file);
@@ -232,7 +232,7 @@ public class Reader {
 	 * @param filename File name
 	 */
 	public static HashMap<String, Double> readWorkplacesDatabase(String filename) {
-		HashMap<String, Double> workplaces = new HashMap<String, Double>();
+		HashMap<String, Double> workplaces = new HashMap<>();
 		try {
 			File file = new File(filename);
 			Scanner scanner = new Scanner(file);
@@ -273,8 +273,7 @@ public class Reader {
 	 * @param filename File name
 	 */
 	public static Graph<String, DefaultWeightedEdge> readRoutesDatabase(String filename) {
-		Graph<String, DefaultWeightedEdge> routes = new DefaultDirectedWeightedGraph<String, DefaultWeightedEdge>(
-				DefaultWeightedEdge.class);
+		Graph<String, DefaultWeightedEdge> routes = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
 		try {
 			File file = new File(filename);
 			Scanner scanner = new Scanner(file);

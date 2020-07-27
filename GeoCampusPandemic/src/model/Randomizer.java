@@ -11,7 +11,7 @@ import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
 import util.TickConverter;
 
-public class Probabilities {
+public class Randomizer {
 
 	/**
 	 * Minimum lunch time (unit: hours). Reference: <pending>

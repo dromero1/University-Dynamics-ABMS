@@ -24,14 +24,14 @@ public class GISDensityMeter extends GISPolygon {
 	 * Measure density (instant)
 	 */
 	public double measureDensity() {
-		return this.instantAgentCount / area;
+		return this.instantAgentCount / this.area;
 	}
 
 	/**
 	 * Measure density (without last departures)
 	 */
 	public double measureDensityCorrected() {
-		return this.arrivals / area;
+		return this.arrivals / this.area;
 	}
 
 	/**

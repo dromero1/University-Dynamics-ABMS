@@ -18,7 +18,7 @@ public class Heuristics {
 	 * @param groups Available groups
 	 */
 	public static Schedule buildRandomSchedule(HashMap<String, Group> groups) {
-		int toEnroll = Probabilities.getRandomGroupsToEnrollTo();
+		int toEnroll = Randomizer.getRandomGroupsToEnrollTo();
 		int enrolled = 0;
 		ArrayList<Group> groupList = new ArrayList<>();
 		for (String groupId : groups.keySet()) {
@@ -72,13 +72,13 @@ public class Heuristics {
 		AcademicActivity firstActivity = schedule.getFirstAcademicActivityInDay(day);
 		AcademicActivity lastActivity = schedule.getLastAcademicActivityInDay(day);
 		for (int i = 0; i < 100; i++) {
-			double lunchTime = Probabilities.getRandomLunchTime();
-			double lunchDuration = Probabilities.getRandomLunchDuration();
+			double lunchTime = Randomizer.getRandomLunchTime();
+			double lunchDuration = Randomizer.getRandomLunchDuration();
 			if (lunchTime > firstActivity.getStartTime() && lunchTime < lastActivity.getEndTime()) {
 				if (schedule.collides(day, lunchTime, lunchDuration)) {
 					continue;
 				} else {
-					lunch = new Pair<Double, Double>(lunchTime, lunchDuration);
+					lunch = new Pair<>(lunchTime, lunchDuration);
 					break;
 				}
 			}

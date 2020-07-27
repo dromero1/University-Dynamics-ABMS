@@ -33,7 +33,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * Geography projection id
 	 */
 	public static final String GEOGRAPHY_PROJECTION_ID = "campus";
-	
+
 	/**
 	 * Reference to geography projection
 	 */
