@@ -62,7 +62,7 @@ public class Staffer extends CommunityMember {
 		for (int i = 1; i <= WEEKDAYS; i++) {
 			double endTime = Randomizer.getRandomWorkEndTime();
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, endTime);
-			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "goHome");
+			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "returnHome");
 		}
 	}
 

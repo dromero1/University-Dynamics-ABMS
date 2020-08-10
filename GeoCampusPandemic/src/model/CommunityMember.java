@@ -83,7 +83,7 @@ public abstract class CommunityMember {
 	 */
 	@ScheduledMethod(start = 0)
 	public void init() {
-		goHome();
+		returnHome();
 		initDisease();
 		scheduleRecurringEvents();
 	}
@@ -98,9 +98,9 @@ public abstract class CommunityMember {
 	}
 
 	/**
-	 * Go home. Move to a random in-out spot and vanish to limbo.
+	 * Return to homeplace. Move to a random in-out spot and vanish to limbo.
 	 */
-	public void goHome() {
+	public void returnHome() {
 		this.lastExit = getRandomInOutSpot();
 		if (this.currentPolygon != null) {
 			moveToPolygon(this.lastExit, "vanishToLimbo");
