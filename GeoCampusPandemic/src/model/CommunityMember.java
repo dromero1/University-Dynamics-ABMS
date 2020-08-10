@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.jgrapht.Graph;
@@ -62,7 +63,7 @@ public abstract class CommunityMember {
 	/**
 	 * Scheduled actions
 	 */
-	private HashMap<SchedulableAction, ISchedulableAction> scheduledActions;
+	private HashMap<SchedulableAction, ArrayList<ISchedulableAction>> scheduledActions;
 
 	/**
 	 * Create a new community member agent
@@ -140,7 +141,9 @@ public abstract class CommunityMember {
 		double expelInterval = TickConverter.minutesToTicks(PARTICLE_EXPULSION_INTERVAL);
 		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(1, this, expelInterval,
 				"expelParticles");
-		this.scheduledActions.put(SchedulableAction.EXPEL_PARTICLES, expelAction);
+		ArrayList<ISchedulableAction> actions = new ArrayList<>();
+		actions.add(expelAction);
+		this.scheduledActions.put(SchedulableAction.EXPEL_PARTICLES, actions);
 		// Schedule removal
 		boolean isDying = Randomizer.isGoingToDie(patientType);
 		String removalMethod = (isDying) ? "die" : "transitionToImmune";
@@ -162,6 +165,9 @@ public abstract class CommunityMember {
 	 */
 	public void die() {
 		this.compartment = Compartment.DEAD;
+		unscheduleAction(SchedulableAction.ATTEND_ACTIVITY);
+		unscheduleAction(SchedulableAction.GO_HOME);
+		unscheduleAction(SchedulableAction.HAVE_LUNCH);
 		unscheduleAction(SchedulableAction.EXPEL_PARTICLES);
 	}
 
@@ -389,9 +395,10 @@ public abstract class CommunityMember {
 	 * @param schedulableAction Action to unscheduled
 	 */
 	private void unscheduleAction(SchedulableAction schedulableAction) {
-		ISchedulableAction action = this.scheduledActions.get(schedulableAction);
 		ISchedule schedule = RunEnvironment.getInstance().getCurrentSchedule();
-		schedule.removeAction(action);
+		for (ISchedulableAction action : this.scheduledActions.get(schedulableAction)) {
+			schedule.removeAction(action);
+		}
 		this.scheduledActions.remove(schedulableAction);
 	}
 

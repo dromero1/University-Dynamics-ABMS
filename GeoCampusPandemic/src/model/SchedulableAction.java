@@ -1,5 +1,5 @@
 package model;
 
 public enum SchedulableAction {
-	EXPEL_PARTICLES
+	ATTEND_ACTIVITY, GO_HOME, HAVE_LUNCH, EXPEL_PARTICLES
 }
