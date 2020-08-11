@@ -63,7 +63,7 @@ public abstract class CommunityMember {
 	/**
 	 * Scheduled actions
 	 */
-	private HashMap<SchedulableAction, ArrayList<ISchedulableAction>> scheduledActions;
+	protected HashMap<SchedulableAction, ArrayList<ISchedulableAction>> scheduledActions;
 
 	/**
 	 * Create a new community member agent
@@ -136,7 +136,7 @@ public abstract class CommunityMember {
 	public void transitionToInfected() {
 		this.compartment = Compartment.INFECTED;
 		PatientType patientType = Randomizer.getRandomPatientType();
-		// Schedule regular expulsion
+		// Schedule regular particle expulsion
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		double expelInterval = TickConverter.minutesToTicks(PARTICLE_EXPULSION_INTERVAL);
 		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(1, this, expelInterval,
@@ -166,7 +166,7 @@ public abstract class CommunityMember {
 	public void die() {
 		this.compartment = Compartment.DEAD;
 		unscheduleAction(SchedulableAction.ATTEND_ACTIVITY);
-		unscheduleAction(SchedulableAction.GO_HOME);
+		unscheduleAction(SchedulableAction.RETURN_HOME);
 		unscheduleAction(SchedulableAction.HAVE_LUNCH);
 		unscheduleAction(SchedulableAction.EXPEL_PARTICLES);
 	}

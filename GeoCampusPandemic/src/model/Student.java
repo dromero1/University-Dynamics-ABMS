@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import gis.GISPolygon;
+import repast.simphony.engine.schedule.ISchedulableAction;
 import repast.simphony.essentials.RepastEssentials;
 import repast.simphony.util.collections.Pair;
 import simulation.EventScheduler;
@@ -100,6 +101,7 @@ public class Student extends CommunityMember {
 	@Override
 	protected void scheduleActivities() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
+		ArrayList<ISchedulableAction> actions = new ArrayList<>();
 		for (Group group : this.schedule.getGroups()) {
 			for (AcademicActivity activity : group.getAcademicActivities()) {
 				int day = activity.getDay();
@@ -107,14 +109,17 @@ public class Student extends CommunityMember {
 				double startTime = activity.getStartTime() - arrivalShift;
 				String teachingFacilityId = activity.getTeachingFacilityId();
 				double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
-				eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK,
-						"attendActivity", teachingFacilityId);
+				ISchedulableAction attendActivityAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
+						TickConverter.TICKS_PER_WEEK, "attendActivity", teachingFacilityId);
+				actions.add(attendActivityAction);
 				double endTime = activity.getEndTime();
 				ticksToEvent = TickConverter.dayTimeToTicks(day, endTime);
-				eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK,
-						"leaveActivity");
+				ISchedulableAction leaveActivityAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
+						TickConverter.TICKS_PER_WEEK, "leaveActivity");
+				actions.add(leaveActivityAction);
 			}
 		}
+		this.scheduledActions.put(SchedulableAction.ATTEND_ACTIVITY, actions);
 	}
 
 	/**
@@ -123,13 +128,17 @@ public class Student extends CommunityMember {
 	@Override
 	protected void scheduleDepartures() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
+		ArrayList<ISchedulableAction> actions = new ArrayList<>();
 		ArrayList<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
 			AcademicActivity lastActivity = this.schedule.getLastAcademicActivityInDay(day);
 			double endTime = lastActivity.getEndTime();
 			double ticksToEvent = TickConverter.dayTimeToTicks(day, endTime);
-			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "returnHome");
+			ISchedulableAction returnHomeAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
+					TickConverter.TICKS_PER_WEEK, "returnHome");
+			actions.add(returnHomeAction);
 		}
+		this.scheduledActions.put(SchedulableAction.RETURN_HOME, actions);
 	}
 
 	/**
@@ -138,6 +147,7 @@ public class Student extends CommunityMember {
 	@Override
 	protected void scheduleLunch() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
+		ArrayList<ISchedulableAction> actions = new ArrayList<>();
 		ArrayList<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
 			Pair<Double, Double> lunch = Heuristics.getRandomLunchTime(this.schedule, day);
@@ -147,10 +157,15 @@ public class Student extends CommunityMember {
 			double lunchTime = lunch.getFirst();
 			double lunchDuration = lunch.getSecond();
 			double ticksToEvent = TickConverter.dayTimeToTicks(day, lunchTime);
-			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "haveLunch");
+			ISchedulableAction haveLunchAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
+					TickConverter.TICKS_PER_WEEK, "haveLunch");
+			actions.add(haveLunchAction);
 			ticksToEvent += lunchDuration;
-			eventScheduler.scheduleRecurringEvent(ticksToEvent, this, TickConverter.TICKS_PER_WEEK, "haveFun");
+			ISchedulableAction haveFunAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
+					TickConverter.TICKS_PER_WEEK, "haveFun");
+			actions.add(haveFunAction);
 		}
+		this.scheduledActions.put(SchedulableAction.HAVE_LUNCH, actions);
 	}
 
 }
