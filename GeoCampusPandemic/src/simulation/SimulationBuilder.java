@@ -33,7 +33,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * End tick (unit: hours)
 	 */
 	public static final double END_TICK = 1440;
-	
+
 	/**
 	 * Geography projection id
 	 */
@@ -73,6 +73,11 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * Transit areas
 	 */
 	public HashMap<String, GISPolygon> transitAreas;
+
+	/**
+	 * Parking lots
+	 */
+	public HashMap<String, GISPolygon> parkingLots;
 
 	/**
 	 * Limbos
@@ -138,15 +143,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		for (GISPolygon transitArea : transitAreas.values()) {
 			context.add(transitArea);
 		}
-		// Initialize other facilities
-		HashMap<String, GISPolygon> otherFacitilies = readPolygons(Paths.OTHER_FACILITIES_GEOMETRY_SHAPEFILE,
-				Paths.OTHER_FACILITIES_ATTRIBUTES_DATABASE);
-		for (GISPolygon otherFacility : otherFacitilies.values()) {
-			context.add(otherFacility);
-		}
 		// Initialize parking lots
-		HashMap<String, GISPolygon> parkingLots = readPolygons(Paths.PARKING_LOTS_GEOMETRY_SHAPEFILE,
-				Paths.PARKING_LOTS_ATTRIBUTES_DATABASE);
+		this.parkingLots = readPolygons(Paths.PARKING_LOTS_GEOMETRY_SHAPEFILE, Paths.PARKING_LOTS_ATTRIBUTES_DATABASE);
 		for (GISPolygon parkingLot : parkingLots.values()) {
 			context.add(parkingLot);
 		}
@@ -154,6 +152,12 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		this.limbos = readPolygons(Paths.LIMBOS_GEOMETRY_SHAPEFILE, Paths.LIMBOS_ATTRIBUTES_DATABASE);
 		for (GISPolygon limbo : this.limbos.values()) {
 			context.add(limbo);
+		}
+		// Initialize other facilities
+		HashMap<String, GISPolygon> otherFacitilies = readPolygons(Paths.OTHER_FACILITIES_GEOMETRY_SHAPEFILE,
+				Paths.OTHER_FACILITIES_ATTRIBUTES_DATABASE);
+		for (GISPolygon otherFacility : otherFacitilies.values()) {
+			context.add(otherFacility);
 		}
 		// Initialize workplaces
 		this.workplaces = readWorkplaces();
@@ -295,6 +299,9 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		}
 		if (this.transitAreas.containsKey(id)) {
 			return this.transitAreas.get(id);
+		}
+		if (this.parkingLots.containsKey(id)) {
+			return this.parkingLots.get(id);
 		}
 		if (this.limbos.containsKey(id)) {
 			return this.limbos.get(id);
