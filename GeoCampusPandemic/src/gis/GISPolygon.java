@@ -1,7 +1,6 @@
 package gis;
 
 import com.vividsolutions.jts.geom.Geometry;
-
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.space.gis.Geography;
 
