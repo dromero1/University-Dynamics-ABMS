@@ -29,7 +29,7 @@
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="susceptibleStaffers"
-		displayName="Susceptible staffers" type="int" defaultValue="250"
+		displayName="Susceptible staffers" type="int" defaultValue="20"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 </parameters>
