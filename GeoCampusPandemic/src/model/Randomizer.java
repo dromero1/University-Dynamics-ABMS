@@ -92,7 +92,7 @@ public class Randomizer {
 	/**
 	 * Groups to enroll trials parameter (unit: groups). Reference: <pending>
 	 */
-	public static final int TRIALS_GROUPS_TO_ENROLL = 2;
+	public static final int TRIALS_GROUPS_TO_ENROLL = 7;
 
 	/**
 	 * Groups to enroll success probability parameter (unit: probability).
