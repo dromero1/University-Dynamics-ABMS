@@ -132,7 +132,8 @@ public class Student extends CommunityMember {
 		ArrayList<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
 			AcademicActivity lastActivity = this.schedule.getLastAcademicActivityInDay(day);
-			double endTime = lastActivity.getEndTime();
+			double departureTime = Randomizer.getRandomStudentDepartureTime();
+			double endTime = Math.max(lastActivity.getEndTime(), departureTime);
 			double ticksToEvent = TickConverter.dayTimeToTicks(day, endTime);
 			ISchedulableAction returnHomeAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
 					TickConverter.TICKS_PER_WEEK, "returnHome");

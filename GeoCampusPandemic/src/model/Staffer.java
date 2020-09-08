@@ -33,7 +33,7 @@ public class Staffer extends CommunityMember {
 	public Staffer(SimulationBuilder contextBuilder, Compartment compartment) {
 		super(contextBuilder, compartment);
 		this.workplace = Randomizer.getRandomPolygonWorkWeightBased(this.simulationBuilder.workplaces);
-		this.workStartTime = Randomizer.getRandomWorkStartTime();
+		this.workStartTime = Randomizer.getRandomStafferArrivalTime();
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class Staffer extends CommunityMember {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		ArrayList<ISchedulableAction> actions = new ArrayList<>();
 		for (int i = 1; i <= WEEKDAYS; i++) {
-			double endTime = Randomizer.getRandomWorkEndTime();
+			double endTime = Randomizer.getRandomStafferDepartureTime();
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, endTime);
 			ISchedulableAction returnHomeAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
 					TickConverter.TICKS_PER_WEEK, "returnHome");

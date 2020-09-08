@@ -34,6 +34,36 @@ public class Randomizer {
 	public static final double STD_LUNCH_DURATION = 0.16;
 
 	/**
+	 * Minimum staffer arrival time (unit: hours). Reference: <pending>
+	 */
+	public static final double MIN_STAFFER_ARRIVAL_TIME = 7;
+
+	/**
+	 * Maximum staffer arrival time (unit: hours). Reference: <pending>
+	 */
+	public static final double MAX_STAFFER_ARRIVAL_TIME = 9;
+
+	/**
+	 * Minimum staffer departure time (unit: hours). Reference: <pending>
+	 */
+	public static final double MIN_STAFFER_DEPARTURE_TIME = 17;
+
+	/**
+	 * Maximum staffer departure time (unit: hours). Reference: <pending>
+	 */
+	public static final double MAX_STAFFER_DEPARTURE_TIME = 19;
+
+	/**
+	 * Minimum student departure time (unit: hours). Reference: <pending>
+	 */
+	public static final double MIN_STUDENT_DEPARTURE_TIME = 17;
+
+	/**
+	 * Maximum student departure time (unit: hours). Reference: <pending>
+	 */
+	public static final double MAX_STUDENT_DEPARTURE_TIME = 19;
+
+	/**
 	 * Mean arrival shift (unit: hours). Reference: <pending>
 	 */
 	public static final double MEAN_ARRIVAL_SHIFT = 10.0 / 60;
@@ -149,17 +179,24 @@ public class Randomizer {
 	}
 
 	/**
-	 * Get random work start time. Reference: <pending>
+	 * Get random staffer's arrival time. Reference: <pending>
 	 */
-	public static double getRandomWorkStartTime() {
-		return 8;
+	public static double getRandomStafferArrivalTime() {
+		return RandomHelper.nextDoubleFromTo(MIN_STAFFER_ARRIVAL_TIME, MAX_STAFFER_ARRIVAL_TIME);
 	}
 
 	/**
-	 * Get random work end time. Reference: <pending>
+	 * Get random staffer's departure time. Reference: <pending>
 	 */
-	public static double getRandomWorkEndTime() {
-		return 18;
+	public static double getRandomStafferDepartureTime() {
+		return RandomHelper.nextDoubleFromTo(MIN_STAFFER_DEPARTURE_TIME, MAX_STAFFER_DEPARTURE_TIME);
+	}
+
+	/**
+	 * Get random student's departure time. Reference: <pending>
+	 */
+	public static double getRandomStudentDepartureTime() {
+		return RandomHelper.nextDoubleFromTo(MIN_STUDENT_DEPARTURE_TIME, MAX_STUDENT_DEPARTURE_TIME);
 	}
 
 	/**
