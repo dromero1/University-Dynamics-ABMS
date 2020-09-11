@@ -68,10 +68,10 @@ public class Staffer extends CommunityMember {
 		ArrayList<ISchedulableAction> actions = new ArrayList<>();
 		for (int i = 1; i <= WEEKDAYS; i++) {
 			double arrivalTime = Randomizer.getRandomStafferArrivalTime();
-			double startTime = Math.min(arrivalTime, this.workStartTime);
+			double startTime = Math.min(arrivalTime, this.workStartTime-1);
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, startTime);
 			ISchedulableAction arriveCampusAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
-					TickConverter.TICKS_PER_WEEK, "work");
+					TickConverter.TICKS_PER_WEEK, "haveLunch");
 			actions.add(arriveCampusAction);
 		}
 		this.scheduledActions.put(SchedulableAction.ARRIVE_CAMPUS, actions);
