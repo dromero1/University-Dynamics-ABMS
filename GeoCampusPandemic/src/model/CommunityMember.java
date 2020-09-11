@@ -33,7 +33,7 @@ public abstract class CommunityMember {
 	 * Upper bound of arrival shifts (unit: hours)
 	 */
 	protected static final double UB_ARRIVAL_SHIFT = 1.0;
-	
+
 	/**
 	 * Compartment
 	 */
@@ -268,7 +268,7 @@ public abstract class CommunityMember {
 	 * Schedule arrivals
 	 */
 	protected abstract void scheduleArrivals();
-	
+
 	/**
 	 * Schedule departures
 	 */
