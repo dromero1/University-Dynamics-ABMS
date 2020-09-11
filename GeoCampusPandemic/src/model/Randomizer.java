@@ -42,7 +42,7 @@ public class Randomizer {
 	 * Maximum staffer arrival time (unit: hours). Reference: <pending>
 	 */
 	public static final double MAX_STAFFER_ARRIVAL_TIME = 9;
-
+	
 	/**
 	 * Minimum staffer departure time (unit: hours). Reference: <pending>
 	 */
@@ -53,6 +53,16 @@ public class Randomizer {
 	 */
 	public static final double MAX_STAFFER_DEPARTURE_TIME = 19;
 
+	/**
+	 * Minimum student arrival time (unit: hours). Reference: <pending>
+	 */
+	public static final double MIN_STUDENT_ARRIVAL_TIME = 6;
+
+	/**
+	 * Maximum student arrival time (unit: hours). Reference: <pending>
+	 */
+	public static final double MAX_STUDENT_ARRIVAL_TIME = 17;
+	
 	/**
 	 * Minimum student departure time (unit: hours). Reference: <pending>
 	 */
@@ -192,6 +202,13 @@ public class Randomizer {
 		return RandomHelper.nextDoubleFromTo(MIN_STAFFER_DEPARTURE_TIME, MAX_STAFFER_DEPARTURE_TIME);
 	}
 
+	/**
+	 * Get random student's arrival time. Reference: <pending>
+	 */
+	public static double getRandomStudentArrivalTime() {
+		return RandomHelper.nextDoubleFromTo(MIN_STUDENT_ARRIVAL_TIME, MAX_STUDENT_ARRIVAL_TIME);
+	}
+	
 	/**
 	 * Get random student's departure time. Reference: <pending>
 	 */

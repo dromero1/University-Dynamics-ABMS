@@ -30,6 +30,11 @@ public abstract class CommunityMember {
 	public static final double PARTICLE_EXPULSION_INTERVAL = 15;
 
 	/**
+	 * Upper bound of arrival shifts (unit: hours)
+	 */
+	protected static final double UB_ARRIVAL_SHIFT = 1.0;
+	
+	/**
 	 * Compartment
 	 */
 	protected Compartment compartment;
@@ -166,6 +171,7 @@ public abstract class CommunityMember {
 	public void die() {
 		this.compartment = Compartment.DEAD;
 		unscheduleAction(SchedulableAction.ATTEND_ACTIVITY);
+		unscheduleAction(SchedulableAction.ARRIVE_CAMPUS);
 		unscheduleAction(SchedulableAction.RETURN_HOME);
 		unscheduleAction(SchedulableAction.HAVE_LUNCH);
 		unscheduleAction(SchedulableAction.EXPEL_PARTICLES);
@@ -259,6 +265,11 @@ public abstract class CommunityMember {
 	protected abstract void scheduleActivities();
 
 	/**
+	 * Schedule arrivals
+	 */
+	protected abstract void scheduleArrivals();
+	
+	/**
 	 * Schedule departures
 	 */
 	protected abstract void scheduleDepartures();
@@ -346,6 +357,7 @@ public abstract class CommunityMember {
 	 */
 	private void scheduleRecurringEvents() {
 		scheduleActivities();
+		scheduleArrivals();
 		scheduleDepartures();
 		scheduleLunch();
 	}

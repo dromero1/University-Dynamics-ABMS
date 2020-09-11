@@ -123,6 +123,26 @@ public class Student extends CommunityMember {
 	}
 
 	/**
+	 * Schedule arrivals
+	 */
+	@Override
+	protected void scheduleArrivals() {
+		EventScheduler eventScheduler = EventScheduler.getInstance();
+		ArrayList<ISchedulableAction> actions = new ArrayList<>();
+		ArrayList<Integer> days = this.schedule.getCampusDays();
+		for (Integer day : days) {
+			AcademicActivity firstActivity = this.schedule.getFirstAcademicActivityInDay(day);
+			double arrivalTime = Randomizer.getRandomStudentArrivalTime();
+			double startTime = Math.min(firstActivity.getStartTime() - UB_ARRIVAL_SHIFT, arrivalTime);
+			double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
+			ISchedulableAction arriveCampusAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
+					TickConverter.TICKS_PER_WEEK, "haveFun");
+			actions.add(arriveCampusAction);
+		}
+		this.scheduledActions.put(SchedulableAction.ARRIVE_CAMPUS, actions);
+	}
+
+	/**
 	 * Schedule departures
 	 */
 	@Override
