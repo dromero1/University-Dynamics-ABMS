@@ -106,7 +106,7 @@ public class Schedule {
 	 * @param day  Day
 	 * @param hour Hour
 	 */
-	public AcademicActivity getNextAcademicActivity(double day, double hour) {
+	public AcademicActivity getNextAcademicActivity(int day, double hour) {
 		AcademicActivity nextActivity = null;
 		for (Group group : this.groups) {
 			for (AcademicActivity activity : group.getAcademicActivities()) {

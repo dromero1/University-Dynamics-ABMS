@@ -18,6 +18,11 @@ public class Student extends CommunityMember {
 	public static final double MIN_TIME_TO_FUN = 0.5;
 
 	/**
+	 * Frequency of change between fun places (unit: hours)
+	 */
+	public static final double FUN_CHANGE_FREQUENCY = 1;
+
+	/**
 	 * Student id
 	 */
 	private String id;
@@ -26,6 +31,11 @@ public class Student extends CommunityMember {
 	 * Academic schedule
 	 */
 	private Schedule schedule;
+
+	/**
+	 * Scheduled departures
+	 */
+	protected HashMap<Integer, Double> scheduledDepartures;
 
 	/**
 	 * Create a new student agent
@@ -37,6 +47,7 @@ public class Student extends CommunityMember {
 	public Student(SimulationBuilder contextBuilder, Compartment compartment, String id) {
 		super(contextBuilder, compartment);
 		this.id = id;
+		this.scheduledDepartures = new HashMap<Integer, Double>();
 	}
 
 	/**
@@ -66,8 +77,8 @@ public class Student extends CommunityMember {
 	 */
 	public void leaveActivity() {
 		double tick = RepastEssentials.GetTickCount();
-		Pair<Double, Double> dayTime = TickConverter.tickToDayTime(tick);
-		double day = dayTime.getFirst();
+		Pair<Integer, Double> dayTime = TickConverter.tickToDayTime(tick);
+		int day = dayTime.getFirst();
 		double hour = dayTime.getSecond();
 		AcademicActivity nextActivity = this.schedule.getNextAcademicActivity(day, hour);
 		if (nextActivity != null) {
@@ -84,8 +95,28 @@ public class Student extends CommunityMember {
 	 * Go have fun at a shared area
 	 */
 	public void haveFun() {
+		// Walk to shared area
 		GISPolygon polygon = getRandomPolygon(this.simulationBuilder.sharedAreas, SelectionStrategy.WEIGHT_BASED);
 		moveToPolygon(polygon, "");
+		// Schedule having fun in another place
+		EventScheduler eventScheduler = EventScheduler.getInstance();
+		double tick = RepastEssentials.GetTickCount();
+		Pair<Integer, Double> dayTime = TickConverter.tickToDayTime(tick);
+		int day = dayTime.getFirst();
+		double hour = dayTime.getSecond();
+		double timeToNextEvent = -1;
+		AcademicActivity nextActivity = this.schedule.getNextAcademicActivity(day, hour);
+		if (nextActivity != null) {
+			timeToNextEvent = nextActivity.getStartTime();
+		} else if (this.scheduledDepartures.containsKey(day)) {
+			timeToNextEvent = this.scheduledDepartures.get(day);
+		}
+		if (timeToNextEvent > tick) {
+			double delta = timeToNextEvent - hour;
+			if (delta > FUN_CHANGE_FREQUENCY) {
+				eventScheduler.scheduleOneTimeEvent(FUN_CHANGE_FREQUENCY, this, "haveFun");
+			}
+		}
 	}
 
 	/**
@@ -158,6 +189,7 @@ public class Student extends CommunityMember {
 			ISchedulableAction returnHomeAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
 					TickConverter.TICKS_PER_WEEK, "returnHome");
 			actions.add(returnHomeAction);
+			this.scheduledDepartures.put(day, endTime);
 		}
 		this.scheduledActions.put(SchedulableAction.RETURN_HOME, actions);
 	}
