@@ -18,7 +18,7 @@ public class Student extends CommunityMember {
 	public static final double MIN_TIME_TO_FUN = 0.5;
 
 	/**
-	 * Frequency of change between fun places (unit: hours)
+	 * Change frequency between fun places (unit: hours)
 	 */
 	public static final double FUN_CHANGE_FREQUENCY = 1;
 
