@@ -1,32 +1,67 @@
-<repast.simphony.data2.engine.DataSetDescriptor
-	simphonyVersion="2.7.0">
-	<name>ActiveCasesTimeSeries</name>
-	<type>AGGREGATE</type>
-	<inclTick>true</inclTick>
-	<inclBatchRun>true</inclBatchRun>
-	<inclRandomSeed>false</inclRandomSeed>
-	<scheduleParams>
-		<start>0.0</start>
-		<interval>1.0</interval>
-		<priority>-Infinity</priority>
-		<pType>LAST</pType>
-		<duration>-1.0</duration>
-		<frequency>REPEAT</frequency>
-		<hashCode>-1381754899</hashCode>
-	</scheduleParams>
-	<atEnd>false</atEnd>
-	<methodDataSources class="linked-hash-map">
-		<entry>
-			<string>cases</string>
-			<repast.simphony.data2.engine.MethodDataSourceDefinition>
-				<id>cases</id>
-				<className>model.CommunityMember</className>
-				<methodName>isActiveCase</methodName>
-				<aggType>SUM</aggType>
-			</repast.simphony.data2.engine.MethodDataSourceDefinition>
-		</entry>
-	</methodDataSources>
-	<countSources class="linked-hash-map" />
-	<customNADataSources class="linked-hash-map" />
-	<customAggDataSources class="linked-hash-map" />
+<repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.7.0">
+  <name>EpidemicTimeSeries</name>
+  <type>AGGREGATE</type>
+  <inclTick>true</inclTick>
+  <inclBatchRun>true</inclBatchRun>
+  <inclRandomSeed>false</inclRandomSeed>
+  <scheduleParams>
+    <start>0.0</start>
+    <interval>1.0</interval>
+    <priority>-Infinity</priority>
+    <pType>LAST</pType>
+    <duration>-1.0</duration>
+    <frequency>REPEAT</frequency>
+    <hashCode>451302176</hashCode>
+  </scheduleParams>
+  <atEnd>false</atEnd>
+  <methodDataSources class="linked-hash-map">
+    <entry>
+      <string>susceptible</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>susceptible</id>
+        <className>model.CommunityMember</className>
+        <methodName>isSusceptible</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>exposed</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>exposed</id>
+        <className>model.CommunityMember</className>
+        <methodName>isExposed</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>infected</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>infected</id>
+        <className>model.CommunityMember</className>
+        <methodName>isInfected</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>immune</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>immune</id>
+        <className>model.CommunityMember</className>
+        <methodName>isImmune</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>dead</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>dead</id>
+        <className>model.CommunityMember</className>
+        <methodName>isDead</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+  </methodDataSources>
+  <countSources class="linked-hash-map"/>
+  <customNADataSources class="linked-hash-map"/>
+  <customAggDataSources class="linked-hash-map"/>
 </repast.simphony.data2.engine.DataSetDescriptor>

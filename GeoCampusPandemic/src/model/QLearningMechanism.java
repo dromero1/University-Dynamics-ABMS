@@ -29,6 +29,16 @@ public class QLearningMechanism extends LearningMechanism {
 	private static final double EPSILON = 0.9;
 
 	/**
+	 * Learning rate for update rule
+	 */
+	private static final double LEARNING_RATE = 0.05;
+
+	/**
+	 * Discount factor for update rule
+	 */
+	private static final double DISCOUNT_FACTOR = 0.5;
+
+	/**
 	 * Create a new learning mechanism
 	 * 
 	 * @param teachingFacilities Teaching facilities
@@ -92,7 +102,7 @@ public class QLearningMechanism extends LearningMechanism {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		int index = -1;
 		if (r < EPSILON) {
-			double topValue = -1.0;
+			double topValue = Double.NEGATIVE_INFINITY;
 			ArrayList<Pair<String, Double>> ties = new ArrayList<>();
 			for (Pair<String, Double> destination : destinations) {
 				double qValue = destination.getSecond();
@@ -121,7 +131,28 @@ public class QLearningMechanism extends LearningMechanism {
 	 */
 	@Override
 	public void updateLearning(String newState, double reward) {
-
+		if (this.lastState != null) {
+			double maxQ = Double.NEGATIVE_INFINITY;
+			ArrayList<Pair<String, Double>> newStateActionValues = this.qValues.get(newState);
+			for (Pair<String, Double> stateActionValue : newStateActionValues) {
+				double q = stateActionValue.getSecond();
+				if (q > maxQ) {
+					maxQ = q;
+				}
+			}
+			ArrayList<Pair<String, Double>> lastStateActionValues = this.qValues.get(this.lastState);
+			for (int i = 0; i < lastStateActionValues.size(); i++) {
+				Pair<String, Double> stateActionValue = lastStateActionValues.get(i);
+				String action = stateActionValue.getFirst();
+				if (action == this.lastAction) {
+					double q = stateActionValue.getSecond();
+					q = q + LEARNING_RATE * (reward + DISCOUNT_FACTOR * maxQ - q);
+					stateActionValue.setSecond(q);
+					lastStateActionValues.set(i, stateActionValue);
+				}
+			}
+			this.qValues.put(this.lastState, lastStateActionValues);
+		}
 	}
 
 	/**

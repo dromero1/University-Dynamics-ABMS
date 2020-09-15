@@ -94,9 +94,9 @@ public abstract class CommunityMember {
 	 */
 	@ScheduledMethod(start = 0)
 	public void init() {
-		returnHome();
 		initDisease();
 		initLearning();
+		returnHome();
 		scheduleRecurringEvents();
 	}
 
@@ -125,7 +125,7 @@ public abstract class CommunityMember {
 	 * Go have lunch at a designated eating place
 	 */
 	public void haveLunch() {
-		GISPolygon polygon = getRandomPolygon(this.simulationBuilder.eatingPlaces, SelectionStrategy.WEIGHT_BASED);
+		GISPolygon polygon = getRandomPolygon(this.simulationBuilder.eatingPlaces, SelectionStrategy.RL_BASED);
 		moveToPolygon(polygon, "");
 	}
 
@@ -224,7 +224,7 @@ public abstract class CommunityMember {
 	public Compartment getCompartment() {
 		return this.compartment;
 	}
-
+	
 	/**
 	 * Is in campus?
 	 */
@@ -274,7 +274,7 @@ public abstract class CommunityMember {
 	public int isActiveCase() {
 		return this.compartment == Compartment.EXPOSED || this.compartment == Compartment.INFECTED ? 1 : 0;
 	}
-
+	
 	/**
 	 * Schedule activities
 	 */
