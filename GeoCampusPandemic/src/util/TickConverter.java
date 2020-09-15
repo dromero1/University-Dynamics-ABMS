@@ -37,7 +37,7 @@ public class TickConverter {
 	public static Pair<Integer, Double> tickToDayTime(double tick) {
 		int day = (int) Math.floor(((tick / TICKS_PER_DAY) % 7) + 1);
 		double time = (((tick / TICKS_PER_DAY) % 7) + 1 - day) * TICKS_PER_DAY;
-		return new Pair<Integer, Double>(day, time);
+		return new Pair<>(day, time);
 	}
 
 	/**

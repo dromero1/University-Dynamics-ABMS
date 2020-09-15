@@ -96,7 +96,9 @@ public class Student extends CommunityMember {
 	 */
 	public void haveFun() {
 		// Walk to shared area
-		GISPolygon polygon = getRandomPolygon(this.simulationBuilder.sharedAreas, SelectionStrategy.WEIGHT_BASED);
+		HashMap<String, GISPolygon> places = this.simulationBuilder.sharedAreas;
+		places.putAll(this.simulationBuilder.eatingPlaces);
+		GISPolygon polygon = getRandomPolygon(places, SelectionStrategy.RL_BASED);
 		moveToPolygon(polygon, "");
 		// Schedule having fun in another place
 		EventScheduler eventScheduler = EventScheduler.getInstance();

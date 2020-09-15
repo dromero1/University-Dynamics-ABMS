@@ -9,6 +9,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
+import gis.GISDensityMeter;
 import gis.GISPolygon;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ISchedulableAction;
@@ -43,6 +44,11 @@ public abstract class CommunityMember {
 	 * Time to incubation end (unit: hours)
 	 */
 	protected double incubationEnd;
+
+	/**
+	 * Learning mechanism
+	 */
+	protected LearningMechanism learningMechanism;
 
 	/**
 	 * Vehicle user flag. Determines whether the student enters the campus by car or
@@ -90,6 +96,7 @@ public abstract class CommunityMember {
 	public void init() {
 		returnHome();
 		initDisease();
+		initLearning();
 		scheduleRecurringEvents();
 	}
 
@@ -195,11 +202,20 @@ public abstract class CommunityMember {
 	 * @param polygon Polygon to go to
 	 */
 	public void relocate(GISPolygon polygon) {
+		// Relocation
 		Point destination = PolygonUtil.getRandomPoint(polygon);
 		this.simulationBuilder.geography.move(this, destination);
 		this.currentPolygon.onDeparture();
 		this.currentPolygon = polygon;
 		this.currentPolygon.onArrival();
+		// Update learning
+		String currentLocation = polygon.getId();
+		if (this.learningMechanism.containsState(currentLocation)) {
+			GISDensityMeter densityMeter = (GISDensityMeter) this.currentPolygon;
+			double density = densityMeter.measureDensityCorrected();
+			double reward = 1 - density;
+			this.learningMechanism.updateLearning(currentLocation, reward);
+		}
 	}
 
 	/**
@@ -288,6 +304,15 @@ public abstract class CommunityMember {
 	protected GISPolygon getRandomPolygon(HashMap<String, GISPolygon> polygons, SelectionStrategy strategy) {
 		GISPolygon selectedPolygon = null;
 		switch (strategy) {
+		case RL_BASED:
+			String currentLocation = this.currentPolygon.getId();
+			if (this.learningMechanism.containsState(currentLocation)) {
+				String destination = this.learningMechanism.selectAction(currentLocation);
+				selectedPolygon = this.simulationBuilder.getPolygonById(destination);
+			} else {
+				selectedPolygon = getRandomPolygon(polygons, SelectionStrategy.RANDOM);
+			}
+			break;
 		case WEIGHT_BASED:
 			selectedPolygon = Randomizer.getRandomPolygonWeightBased(polygons);
 			break;
@@ -296,6 +321,7 @@ public abstract class CommunityMember {
 			break;
 		}
 		return selectedPolygon;
+
 	}
 
 	/**
@@ -350,6 +376,15 @@ public abstract class CommunityMember {
 		default:
 			break;
 		}
+	}
+
+	/**
+	 * Initialize learning
+	 */
+	private void initLearning() {
+		this.learningMechanism = LearningFactory.makeLearningMechanism("Q-learning",
+				this.simulationBuilder.teachingFacilities, this.simulationBuilder.sharedAreas,
+				this.simulationBuilder.eatingPlaces);
 	}
 
 	/**

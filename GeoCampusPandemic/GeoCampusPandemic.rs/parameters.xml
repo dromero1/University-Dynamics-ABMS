@@ -25,7 +25,7 @@
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 	<parameter name="infectedStudents"
-		displayName="Infected students" type="int" defaultValue="1"
+		displayName="Infected students" type="int" defaultValue="0"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="susceptibleStaffers"
