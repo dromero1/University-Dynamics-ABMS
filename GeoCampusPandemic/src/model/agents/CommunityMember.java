@@ -1,4 +1,4 @@
-package model;
+package model.agents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +11,13 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import gis.GISDensityMeter;
 import gis.GISPolygon;
+import model.disease.Compartment;
+import model.disease.PatientType;
+import model.learning.LearningFactory;
+import model.learning.LearningMechanism;
+import model.learning.LearningStyle;
+import model.learning.SelectionStrategy;
+import model.util.Randomizer;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ISchedulableAction;
 import repast.simphony.engine.schedule.ISchedule;
@@ -212,8 +219,10 @@ public abstract class CommunityMember {
 		String currentLocation = polygon.getId();
 		if (this.learningMechanism.containsState(currentLocation)) {
 			GISDensityMeter densityMeter = (GISDensityMeter) this.currentPolygon;
+			Parameters simParams = RunEnvironment.getInstance().getParameters();
+			double socialDistancing = simParams.getDouble("socialDistancing");
 			double density = densityMeter.measureDensityCorrected();
-			double reward = 1 - density;
+			double reward = 1.0 / socialDistancing - density;
 			this.learningMechanism.updateLearning(currentLocation, reward);
 		}
 	}
@@ -224,7 +233,7 @@ public abstract class CommunityMember {
 	public Compartment getCompartment() {
 		return this.compartment;
 	}
-	
+
 	/**
 	 * Is in campus?
 	 */
@@ -274,7 +283,7 @@ public abstract class CommunityMember {
 	public int isActiveCase() {
 		return this.compartment == Compartment.EXPOSED || this.compartment == Compartment.INFECTED ? 1 : 0;
 	}
-	
+
 	/**
 	 * Schedule activities
 	 */
@@ -382,7 +391,7 @@ public abstract class CommunityMember {
 	 * Initialize learning
 	 */
 	private void initLearning() {
-		this.learningMechanism = LearningFactory.makeLearningMechanism("Q-learning",
+		this.learningMechanism = LearningFactory.makeLearningMechanism(LearningStyle.Q_LEARNING,
 				this.simulationBuilder.teachingFacilities, this.simulationBuilder.sharedAreas,
 				this.simulationBuilder.eatingPlaces);
 	}

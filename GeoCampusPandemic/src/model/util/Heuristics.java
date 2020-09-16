@@ -1,4 +1,4 @@
-package model;
+package model.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +8,9 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.SingleSourcePaths;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
+import model.agents.AcademicActivity;
+import model.agents.Group;
+import model.agents.Schedule;
 import repast.simphony.util.collections.Pair;
 
 public class Heuristics {

@@ -2,6 +2,7 @@ GeoCampusPandemic/output/*
 GeoCampusPandemic/Repast.settings
 *.class
 *.log
+*.log*
 *.jar
 *.war
 *.nar

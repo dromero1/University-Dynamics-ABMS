@@ -1,4 +1,4 @@
-package model;
+package model.learning;
 
 import java.util.HashMap;
 import gis.GISPolygon;

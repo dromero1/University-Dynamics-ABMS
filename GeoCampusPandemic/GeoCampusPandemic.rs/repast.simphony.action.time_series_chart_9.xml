@@ -2,7 +2,7 @@
   <name>Aggregate Density Time Series Chart</name>
   <dataSet>AggregateDensityTimeSeries</dataSet>
   <xAxisLabel>hours</xAxisLabel>
-  <yAxisLabel>mean density</yAxisLabel>
+  <yAxisLabel>density</yAxisLabel>
   <chartTitle>Aggregate Density Time Series</chartTitle>
   <type>TIME_SERIES</type>
   <background>

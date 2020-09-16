@@ -1,8 +1,12 @@
-package model;
+package model.agents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import gis.GISPolygon;
+import model.disease.Compartment;
+import model.learning.SelectionStrategy;
+import model.util.Heuristics;
+import model.util.Randomizer;
 import repast.simphony.engine.schedule.ISchedulableAction;
 import repast.simphony.essentials.RepastEssentials;
 import repast.simphony.util.collections.Pair;

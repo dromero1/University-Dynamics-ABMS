@@ -1,4 +1,4 @@
-package model;
+package model.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import cern.jet.random.Binomial;
 import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
 import gis.GISPolygon;
+import model.disease.PatientType;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;

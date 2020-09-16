@@ -1,7 +1,9 @@
-package model;
+package model.agents;
 
 import java.util.ArrayList;
 import gis.GISPolygon;
+import model.disease.Compartment;
+import model.util.Randomizer;
 import repast.simphony.engine.schedule.ISchedulableAction;
 import simulation.EventScheduler;
 import simulation.SimulationBuilder;
@@ -68,7 +70,7 @@ public class Staffer extends CommunityMember {
 		ArrayList<ISchedulableAction> actions = new ArrayList<>();
 		for (int i = 1; i <= WEEKDAYS; i++) {
 			double arrivalTime = Randomizer.getRandomStafferArrivalTime();
-			double startTime = Math.min(arrivalTime, this.workStartTime-1);
+			double startTime = Math.min(arrivalTime, this.workStartTime - 1);
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, startTime);
 			ISchedulableAction arriveCampusAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
 					TickConverter.TICKS_PER_WEEK, "haveLunch");
@@ -76,7 +78,7 @@ public class Staffer extends CommunityMember {
 		}
 		this.scheduledActions.put(SchedulableAction.ARRIVE_CAMPUS, actions);
 	}
-	
+
 	/**
 	 * Schedule departures
 	 */

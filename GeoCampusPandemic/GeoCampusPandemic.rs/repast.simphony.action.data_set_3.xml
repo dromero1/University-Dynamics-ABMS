@@ -1,27 +1,27 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.7.0">
-  <name>ActiveCasesTimeSeries</name>
+  <name>AggregateDensityTimeSeries</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>true</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
-    <start>0.0</start>
+    <start>1.0</start>
     <interval>1.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1381754899</hashCode>
+    <hashCode>-1104025288</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>cases</string>
+      <string>meanDensity</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>cases</id>
-        <className>model.CommunityMember</className>
-        <methodName>isActiveCase</methodName>
-        <aggType>SUM</aggType>
+        <id>meanDensity</id>
+        <className>gis.GISDensityMeter</className>
+        <methodName>measureDensityCorrected</methodName>
+        <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

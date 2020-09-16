@@ -18,7 +18,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import config.DBFeatures;
 import gis.GISDensityMeter;
 import gis.GISPolygon;
-import model.Group;
+import model.agents.Group;
 
 public class Reader {
 

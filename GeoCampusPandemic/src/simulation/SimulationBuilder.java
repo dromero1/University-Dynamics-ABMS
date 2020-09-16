@@ -12,12 +12,12 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import config.Paths;
 import datasource.Reader;
 import gis.GISPolygon;
-import model.Compartment;
-import model.Group;
-import model.Heuristics;
-import model.Schedule;
-import model.Student;
-import model.Staffer;
+import model.agents.Group;
+import model.agents.Schedule;
+import model.agents.Staffer;
+import model.agents.Student;
+import model.disease.Compartment;
+import model.util.Heuristics;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.gis.GeographyFactory;
 import repast.simphony.context.space.gis.GeographyFactoryFinder;
@@ -32,7 +32,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	/**
 	 * End tick (unit: hours)
 	 */
-	public static final double END_TICK = 1440;
+	public static final double END_TICK = 4320;
 
 	/**
 	 * Geography projection id
