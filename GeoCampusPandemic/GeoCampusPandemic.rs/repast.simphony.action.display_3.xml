@@ -3,16 +3,16 @@
   <type>GIS 3D</type>
   <styles>
     <entry>
-      <string>model.Staffer</string>
-      <string>styles.CommunityMemberStyle</string>
-    </entry>
-    <entry>
-      <string>model.Student</string>
+      <string>model.agents.Staffer</string>
       <string>styles.CommunityMemberStyle</string>
     </entry>
     <entry>
       <string>gis.GISDensityMeter</string>
       <string>styles.GISPolygonStyle</string>
+    </entry>
+    <entry>
+      <string>model.agents.Student</string>
+      <string>styles.CommunityMemberStyle</string>
     </entry>
     <entry>
       <string>gis.GISPolygon</string>
@@ -21,15 +21,15 @@
   </styles>
   <editedStyles>
     <entry>
-      <string>model.Staffer</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>model.Student</string>
+      <string>model.agents.Staffer</string>
       <null/>
     </entry>
     <entry>
       <string>gis.GISDensityMeter</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>model.agents.Student</string>
       <null/>
     </entry>
     <entry>
@@ -47,7 +47,7 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>451302176</hashCode>
+    <hashCode>-456193446</hashCode>
   </schedParams>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
@@ -56,16 +56,12 @@
       <int>2</int>
     </entry>
     <entry>
-      <string>World Map</string>
-      <int>1</int>
-    </entry>
-    <entry>
-      <string>model.Staffer</string>
+      <string>model.agents.Staffer</string>
       <int>5</int>
     </entry>
     <entry>
-      <string>model.Student</string>
-      <int>6</int>
+      <string>World Map</string>
+      <int>1</int>
     </entry>
     <entry>
       <string>gis.GISDensityMeter</string>
@@ -74,6 +70,10 @@
     <entry>
       <string>Compass</string>
       <int>0</int>
+    </entry>
+    <entry>
+      <string>model.agents.Student</string>
+      <int>6</int>
     </entry>
     <entry>
       <string>gis.GISPolygon</string>
