@@ -1,9 +1,16 @@
 package model.learning;
 
-import java.util.HashMap;
+import java.util.Map;
 import gis.GISPolygon;
 
-public class LearningFactory {
+public final class LearningFactory {
+
+	/**
+	 * Private constructor
+	 */
+	private LearningFactory() {
+		throw new UnsupportedOperationException("Utility class");
+	}
 
 	/**
 	 * Instantiate a new learning mechanism
@@ -11,15 +18,13 @@ public class LearningFactory {
 	 * @param learningStyle Learning style
 	 */
 	public static LearningMechanism makeLearningMechanism(LearningStyle learningStyle,
-			HashMap<String, GISPolygon> teachingFacilities, HashMap<String, GISPolygon> sharedAreas,
-			HashMap<String, GISPolygon> eatingPlaces) {
-		switch (learningStyle) {
-		case Q_LEARNING:
+			Map<String, GISPolygon> teachingFacilities, Map<String, GISPolygon> sharedAreas,
+			Map<String, GISPolygon> eatingPlaces) {
+		if (learningStyle == LearningStyle.Q_LEARNING) {
 			return new QLearningMechanism(teachingFacilities, sharedAreas, eatingPlaces);
-		default:
-			break;
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 }

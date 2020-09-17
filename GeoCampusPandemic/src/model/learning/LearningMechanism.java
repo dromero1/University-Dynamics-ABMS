@@ -1,6 +1,6 @@
 package model.learning;
 
-import java.util.HashMap;
+import java.util.Map;
 import gis.GISPolygon;
 
 public abstract class LearningMechanism {
@@ -8,17 +8,17 @@ public abstract class LearningMechanism {
 	/**
 	 * Teaching facilities
 	 */
-	protected HashMap<String, GISPolygon> teachingFacilities;
+	protected Map<String, GISPolygon> teachingFacilities;
 
 	/**
 	 * Shared areas
 	 */
-	protected HashMap<String, GISPolygon> sharedAreas;
+	protected Map<String, GISPolygon> sharedAreas;
 
 	/**
 	 * Eating places
 	 */
-	protected HashMap<String, GISPolygon> eatingPlaces;
+	protected Map<String, GISPolygon> eatingPlaces;
 
 	/**
 	 * Create a new learning mechanism
@@ -27,8 +27,8 @@ public abstract class LearningMechanism {
 	 * @param sharedAreas        Shared areas
 	 * @param eatingPlaces       Eating places
 	 */
-	public LearningMechanism(HashMap<String, GISPolygon> teachingFacilities, HashMap<String, GISPolygon> sharedAreas,
-			HashMap<String, GISPolygon> eatingPlaces) {
+	public LearningMechanism(Map<String, GISPolygon> teachingFacilities, Map<String, GISPolygon> sharedAreas,
+			Map<String, GISPolygon> eatingPlaces) {
 		this.teachingFacilities = teachingFacilities;
 		this.sharedAreas = sharedAreas;
 		this.eatingPlaces = eatingPlaces;

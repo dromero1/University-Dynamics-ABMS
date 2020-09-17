@@ -1,14 +1,17 @@
 package model.agents;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
+
+import config.SourceFeatures;
 import gis.GISDensityMeter;
 import gis.GISPolygon;
 import model.disease.Compartment;
@@ -81,7 +84,7 @@ public abstract class CommunityMember {
 	/**
 	 * Scheduled actions
 	 */
-	protected HashMap<SchedulableAction, ArrayList<ISchedulableAction>> scheduledActions;
+	protected Map<SchedulableAction, List<ISchedulableAction>> scheduledActions;
 
 	/**
 	 * Create a new community member agent
@@ -93,7 +96,7 @@ public abstract class CommunityMember {
 		this.simulationBuilder = simulationBuilder;
 		this.compartment = compartment;
 		this.isVehicleUser = Randomizer.getRandomVehicleUsage();
-		this.scheduledActions = new HashMap<>();
+		this.scheduledActions = new EnumMap<>(SchedulableAction.class);
 	}
 
 	/**
@@ -160,7 +163,7 @@ public abstract class CommunityMember {
 		double expelInterval = TickConverter.minutesToTicks(PARTICLE_EXPULSION_INTERVAL);
 		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(1, this, expelInterval,
 				"expelParticles");
-		ArrayList<ISchedulableAction> actions = new ArrayList<>();
+		List<ISchedulableAction> actions = new ArrayList<>();
 		actions.add(expelAction);
 		this.scheduledActions.put(SchedulableAction.EXPEL_PARTICLES, actions);
 		// Schedule removal
@@ -310,7 +313,7 @@ public abstract class CommunityMember {
 	 * @param polygons Map of polygons to choose from
 	 * @param strategy Selection strategy
 	 */
-	protected GISPolygon getRandomPolygon(HashMap<String, GISPolygon> polygons, SelectionStrategy strategy) {
+	protected GISPolygon getRandomPolygon(Map<String, GISPolygon> polygons, SelectionStrategy strategy) {
 		GISPolygon selectedPolygon = null;
 		switch (strategy) {
 		case RL_BASED:
@@ -344,8 +347,9 @@ public abstract class CommunityMember {
 		String sink = polygon.getId();
 		// Get shortest paths
 		Graph<String, DefaultWeightedEdge> routes = this.simulationBuilder.routes;
-		HashMap<String, GraphPath<String, DefaultWeightedEdge>> shortestPaths = this.simulationBuilder.shortestPaths;
-		GraphPath<String, DefaultWeightedEdge> path = shortestPaths.get(source + "-" + sink);
+		Map<String, GraphPath<String, DefaultWeightedEdge>> shortestPaths = this.simulationBuilder.shortestPaths;
+		String pathId = source + SourceFeatures.ENTITY_SEPARATOR + sink;
+		GraphPath<String, DefaultWeightedEdge> path = shortestPaths.get(pathId);
 		List<String> vertexes = path.getVertexList();
 		List<DefaultWeightedEdge> edges = path.getEdgeList();
 		// Schedule relocations
@@ -436,7 +440,7 @@ public abstract class CommunityMember {
 	 * Get random in-out spot
 	 */
 	private GISPolygon getRandomInOutSpot() {
-		HashMap<String, GISPolygon> inOuts = null;
+		Map<String, GISPolygon> inOuts = null;
 		if (this.isVehicleUser) {
 			inOuts = this.simulationBuilder.vehicleInOuts;
 		} else {

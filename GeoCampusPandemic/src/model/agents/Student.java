@@ -2,6 +2,8 @@ package model.agents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import gis.GISPolygon;
 import model.disease.Compartment;
 import model.learning.SelectionStrategy;
@@ -24,7 +26,7 @@ public class Student extends CommunityMember {
 	/**
 	 * Change frequency between fun places (unit: hours)
 	 */
-	public static final double FUN_CHANGE_FREQUENCY = 1;
+	public static final double FUN_CHANGE_FREQUENCY = 3;
 
 	/**
 	 * Student id
@@ -39,7 +41,7 @@ public class Student extends CommunityMember {
 	/**
 	 * Scheduled departures
 	 */
-	protected HashMap<Integer, Double> scheduledDepartures;
+	protected Map<Integer, Double> scheduledDepartures;
 
 	/**
 	 * Create a new student agent
@@ -51,7 +53,7 @@ public class Student extends CommunityMember {
 	public Student(SimulationBuilder contextBuilder, Compartment compartment, String id) {
 		super(contextBuilder, compartment);
 		this.id = id;
-		this.scheduledDepartures = new HashMap<Integer, Double>();
+		this.scheduledDepartures = new HashMap<>();
 	}
 
 	/**
@@ -69,7 +71,7 @@ public class Student extends CommunityMember {
 	 * @param teachingFacilityId Id of the teaching facility
 	 */
 	public void attendActivity(String teachingFacilityId) {
-		HashMap<String, GISPolygon> teachingFacilities = this.simulationBuilder.teachingFacilities;
+		Map<String, GISPolygon> teachingFacilities = this.simulationBuilder.teachingFacilities;
 		GISPolygon teachingFacility = teachingFacilities.get(teachingFacilityId);
 		moveToPolygon(teachingFacility, "");
 	}
@@ -100,7 +102,7 @@ public class Student extends CommunityMember {
 	 */
 	public void haveFun() {
 		// Walk to shared area
-		HashMap<String, GISPolygon> places = this.simulationBuilder.sharedAreas;
+		Map<String, GISPolygon> places = this.simulationBuilder.sharedAreas;
 		places.putAll(this.simulationBuilder.eatingPlaces);
 		GISPolygon polygon = getRandomPolygon(places, SelectionStrategy.RL_BASED);
 		moveToPolygon(polygon, "");
@@ -138,7 +140,7 @@ public class Student extends CommunityMember {
 	@Override
 	protected void scheduleActivities() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		ArrayList<ISchedulableAction> actions = new ArrayList<>();
+		List<ISchedulableAction> actions = new ArrayList<>();
 		for (Group group : this.schedule.getGroups()) {
 			for (AcademicActivity activity : group.getAcademicActivities()) {
 				int day = activity.getDay();
@@ -165,8 +167,8 @@ public class Student extends CommunityMember {
 	@Override
 	protected void scheduleArrivals() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		ArrayList<ISchedulableAction> actions = new ArrayList<>();
-		ArrayList<Integer> days = this.schedule.getCampusDays();
+		List<ISchedulableAction> actions = new ArrayList<>();
+		List<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
 			AcademicActivity firstActivity = this.schedule.getFirstAcademicActivityInDay(day);
 			double arrivalTime = Randomizer.getRandomStudentArrivalTime();
@@ -185,8 +187,8 @@ public class Student extends CommunityMember {
 	@Override
 	protected void scheduleDepartures() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		ArrayList<ISchedulableAction> actions = new ArrayList<>();
-		ArrayList<Integer> days = this.schedule.getCampusDays();
+		List<ISchedulableAction> actions = new ArrayList<>();
+		List<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
 			AcademicActivity lastActivity = this.schedule.getLastAcademicActivityInDay(day);
 			double departureTime = Randomizer.getRandomStudentDepartureTime();
@@ -206,8 +208,8 @@ public class Student extends CommunityMember {
 	@Override
 	protected void scheduleLunch() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		ArrayList<ISchedulableAction> actions = new ArrayList<>();
-		ArrayList<Integer> days = this.schedule.getCampusDays();
+		List<ISchedulableAction> actions = new ArrayList<>();
+		List<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
 			Pair<Double, Double> lunch = Heuristics.getRandomLunchTime(this.schedule, day);
 			if (lunch == null) {

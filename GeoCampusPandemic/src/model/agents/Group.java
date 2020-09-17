@@ -2,6 +2,7 @@ package model.agents;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Group {
@@ -24,7 +25,7 @@ public class Group {
 	/**
 	 * List of academic activities
 	 */
-	private ArrayList<AcademicActivity> academicActivities;
+	private List<AcademicActivity> academicActivities;
 
 	/**
 	 * Create a new group
@@ -36,7 +37,7 @@ public class Group {
 		this.id = id;
 		this.capacity = capacity;
 		this.enrollmentsCount = 0;
-		this.academicActivities = new ArrayList<AcademicActivity>();
+		this.academicActivities = new ArrayList<>();
 	}
 
 	/**
@@ -82,7 +83,7 @@ public class Group {
 	/**
 	 * Get list of academic activities
 	 */
-	public ArrayList<AcademicActivity> getAcademicActivities() {
+	public List<AcademicActivity> getAcademicActivities() {
 		return this.academicActivities;
 	}
 
@@ -90,7 +91,7 @@ public class Group {
 	 * Get a set of the days in which activities are scheduled
 	 */
 	public Set<Integer> getActivityDays() {
-		Set<Integer> days = new HashSet<Integer>();
+		Set<Integer> days = new HashSet<>();
 		for (AcademicActivity activity : this.academicActivities) {
 			int day = activity.getDay();
 			days.add(day);

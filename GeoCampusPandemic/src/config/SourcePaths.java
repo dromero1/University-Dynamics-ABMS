@@ -1,6 +1,6 @@
 package config;
 
-public final class Paths {
+public class SourcePaths {
 
 	/**
 	 * Limbos geometry
@@ -111,5 +111,12 @@ public final class Paths {
 	 * Workplaces database
 	 */
 	public static final String WORKPLACES_DATABASE = "./data/databases/workplaces.csv";
+
+	/**
+	 * Private constructor
+	 */
+	private SourcePaths() {
+		throw new UnsupportedOperationException("Utility class");
+	}
 
 }

@@ -3,8 +3,10 @@ package datasource;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
@@ -15,19 +17,31 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.opengis.feature.simple.SimpleFeature;
-import config.DBFeatures;
+import config.SourceFeatures;
 import gis.GISDensityMeter;
 import gis.GISPolygon;
 import model.agents.Group;
 
-public class Reader {
+public final class Reader {
+
+	/**
+	 * Source split regular expression
+	 */
+	private static final String SOURCE_SPLIT_REGEX = ";";
+
+	/**
+	 * Private constructor
+	 */
+	private Reader() {
+		throw new UnsupportedOperationException("Utility class");
+	}
 
 	/**
 	 * Load geometry from shapefile
 	 * 
 	 * @param filename File name
 	 */
-	public static ArrayList<SimpleFeature> loadGeometryFromShapefile(String filename) {
+	public static List<SimpleFeature> loadGeometryFromShapefile(String filename) {
 		File file = new File(filename);
 		try {
 			FileDataStore store = FileDataStoreFinder.getDataStore(file);
@@ -41,10 +55,10 @@ public class Reader {
 			featureIterator.close();
 			store.dispose();
 			return simpleFeatures;
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
 	/**
@@ -52,19 +66,18 @@ public class Reader {
 	 * 
 	 * @param filename File name
 	 */
-	public static HashMap<String, Group> readGroupsDatabase(String filename) {
-		HashMap<String, Group> groups = new HashMap<>();
-		try {
-			File file = new File(filename);
-			Scanner scanner = new Scanner(file);
+	public static Map<String, Group> readGroupsDatabase(String filename) {
+		Map<String, Group> groups = new HashMap<>();
+		File file = new File(filename);
+		try (Scanner scanner = new Scanner(file)) {
 			boolean first = true;
 			while (scanner.hasNextLine()) {
 				String data = scanner.nextLine();
 				if (first) {
 					first = false;
 				} else {
-					String[] elements = data.split(";");
-					String groupId = null;
+					String[] elements = data.split(SOURCE_SPLIT_REGEX);
+					StringBuilder rawGroupId = new StringBuilder();
 					int capacity = 0;
 					int day = 0;
 					double startTime = 0;
@@ -72,30 +85,33 @@ public class Reader {
 					String teachingFacilityId = null;
 					for (int i = 0; i < elements.length; i++) {
 						switch (i) {
-						case DBFeatures.GROUPS_SUBJECT_ID_COLUMN:
-							groupId += elements[i];
+						case SourceFeatures.GROUPS_SUBJECT_ID_COLUMN:
+							rawGroupId.append(elements[i]);
 							break;
-						case DBFeatures.GROUPS_GROUP_ID_COLUMN:
-							groupId += "-" + elements[i];
+						case SourceFeatures.GROUPS_GROUP_ID_COLUMN:
+							rawGroupId.append(SourceFeatures.ENTITY_SEPARATOR);
+							rawGroupId.append(elements[i]);
 							break;
-						case DBFeatures.GROUPS_DAY_COLUMN:
+						case SourceFeatures.GROUPS_DAY_COLUMN:
 							day = Integer.parseInt(elements[i]);
 							break;
-						case DBFeatures.GROUPS_START_TIME_COLUMN:
+						case SourceFeatures.GROUPS_START_TIME_COLUMN:
 							startTime = Double.parseDouble(elements[i]);
 							break;
-						case DBFeatures.GROUPS_END_TIME_COLUMN:
+						case SourceFeatures.GROUPS_END_TIME_COLUMN:
 							endTime = Double.parseDouble(elements[i]);
 							break;
-						case DBFeatures.GROUPS_CAPACITY_COLUMN:
+						case SourceFeatures.GROUPS_CAPACITY_COLUMN:
 							capacity = Integer.parseInt(elements[i]);
 							break;
-						case DBFeatures.GROUPS_TEACHING_FACILITY_COLUMN:
+						case SourceFeatures.GROUPS_TEACHING_FACILITY_COLUMN:
 							teachingFacilityId = elements[i];
+							break;
 						default:
 							break;
 						}
 					}
+					String groupId = rawGroupId.toString();
 					if (groups.containsKey(groupId)) {
 						Group group = groups.get(groupId);
 						group.addAcademicActivity(day, startTime, endTime, teachingFacilityId);
@@ -106,9 +122,8 @@ public class Reader {
 					}
 				}
 			}
-			scanner.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		} catch (FileNotFoundException fnfe) {
+			fnfe.printStackTrace();
 		}
 		return groups;
 	}
@@ -118,36 +133,37 @@ public class Reader {
 	 * 
 	 * @param filename File name
 	 */
-	public static HashMap<String, ArrayList<String>> readScheduleSelectionDatabase(String filename) {
-		HashMap<String, ArrayList<String>> scheduleSelection = new HashMap<>();
-		try {
-			File file = new File(filename);
-			Scanner scanner = new Scanner(file);
+	public static Map<String, ArrayList<String>> readScheduleSelectionDatabase(String filename) {
+		Map<String, ArrayList<String>> scheduleSelection = new HashMap<>();
+		File file = new File(filename);
+		try (Scanner scanner = new Scanner(file)) {
 			boolean first = true;
 			while (scanner.hasNextLine()) {
 				String data = scanner.nextLine();
 				if (first) {
 					first = false;
 				} else {
-					String[] elements = data.split(";");
+					String[] elements = data.split(SOURCE_SPLIT_REGEX);
 					String studentId = null;
-					String groupId = null;
+					StringBuilder rawGroupId = new StringBuilder();
 					for (int i = 0; i < elements.length; i++) {
 						switch (i) {
-						case DBFeatures.SELECTION_STUDENT_ID_COLUMN:
+						case SourceFeatures.SELECTION_STUDENT_ID_COLUMN:
 							studentId = elements[i];
 							break;
-						case DBFeatures.SELECTION_SUBJECT_ID_COLUMN:
-							groupId += elements[i];
+						case SourceFeatures.SELECTION_SUBJECT_ID_COLUMN:
+							rawGroupId.append(elements[i]);
 							break;
-						case DBFeatures.SELECTION_GROUP_ID_COLUMN:
-							groupId += "-" + elements[i];
+						case SourceFeatures.SELECTION_GROUP_ID_COLUMN:
+							rawGroupId.append(SourceFeatures.ENTITY_SEPARATOR);
+							rawGroupId.append(elements[i]);
 							break;
 						default:
 							break;
 						}
 					}
 					ArrayList<String> selectedGroups = null;
+					String groupId = rawGroupId.toString();
 					if (scheduleSelection.containsKey(studentId)) {
 						selectedGroups = scheduleSelection.get(studentId);
 						if (!selectedGroups.contains(groupId)) {
@@ -160,9 +176,8 @@ public class Reader {
 					scheduleSelection.put(studentId, selectedGroups);
 				}
 			}
-			scanner.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		} catch (FileNotFoundException fnfe) {
+			fnfe.printStackTrace();
 		}
 		return scheduleSelection;
 	}
@@ -172,18 +187,17 @@ public class Reader {
 	 * 
 	 * @param filename File name
 	 */
-	public static HashMap<String, GISPolygon> readFacilityAttributesDatabase(String filename) {
-		HashMap<String, GISPolygon> attributes = new HashMap<>();
-		try {
-			File file = new File(filename);
-			Scanner scanner = new Scanner(file);
+	public static Map<String, GISPolygon> readFacilityAttributesDatabase(String filename) {
+		Map<String, GISPolygon> attributes = new HashMap<>();
+		File file = new File(filename);
+		try (Scanner scanner = new Scanner(file)) {
 			boolean first = true;
 			while (scanner.hasNextLine()) {
 				String data = scanner.nextLine();
 				if (first) {
 					first = false;
 				} else {
-					String[] elements = data.split(";");
+					String[] elements = data.split(SOURCE_SPLIT_REGEX);
 					String id = null;
 					double area = 0;
 					double weight = 0;
@@ -191,19 +205,19 @@ public class Reader {
 					String link = null;
 					for (int i = 0; i < elements.length; i++) {
 						switch (i) {
-						case DBFeatures.FACILITIES_ATTRIBUTES_ID_COLUMN:
+						case SourceFeatures.FACILITIES_ATTRIBUTES_ID_COLUMN:
 							id = elements[i];
 							break;
-						case DBFeatures.FACILITIES_ATTRIBUTES_AREA_COLUMN:
+						case SourceFeatures.FACILITIES_ATTRIBUTES_AREA_COLUMN:
 							area = Double.parseDouble(elements[i]);
 							break;
-						case DBFeatures.FACILITIES_ATTRIBUTES_WEIGHT_COLUMN:
+						case SourceFeatures.FACILITIES_ATTRIBUTES_WEIGHT_COLUMN:
 							weight = Double.parseDouble(elements[i]);
 							break;
-						case DBFeatures.FACILITIES_ATTRIBUTES_ACTIVE_COLUMN:
+						case SourceFeatures.FACILITIES_ATTRIBUTES_ACTIVE_COLUMN:
 							active = elements[i].equals("1");
 							break;
-						case DBFeatures.FACILITIES_ATTRIBUTES_LINK_COLUMN:
+						case SourceFeatures.FACILITIES_ATTRIBUTES_LINK_COLUMN:
 							link = elements[i];
 							break;
 						default:
@@ -211,7 +225,7 @@ public class Reader {
 						}
 					}
 					GISPolygon polygon = null;
-					if (area > 0.0) {
+					if (area > 0) {
 						polygon = new GISDensityMeter(area, weight, active, link);
 					} else {
 						polygon = new GISPolygon(weight, active, link);
@@ -219,9 +233,8 @@ public class Reader {
 					attributes.put(id, polygon);
 				}
 			}
-			scanner.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		} catch (FileNotFoundException fnfe) {
+			fnfe.printStackTrace();
 		}
 		return attributes;
 	}
@@ -231,26 +244,25 @@ public class Reader {
 	 * 
 	 * @param filename File name
 	 */
-	public static HashMap<String, Double> readWorkplacesDatabase(String filename) {
-		HashMap<String, Double> workplaces = new HashMap<>();
-		try {
-			File file = new File(filename);
-			Scanner scanner = new Scanner(file);
+	public static Map<String, Double> readWorkplacesDatabase(String filename) {
+		Map<String, Double> workplaces = new HashMap<>();
+		File file = new File(filename);
+		try (Scanner scanner = new Scanner(file)) {
 			boolean first = true;
 			while (scanner.hasNextLine()) {
 				String data = scanner.nextLine();
 				if (first) {
 					first = false;
 				} else {
-					String[] elements = data.split(";");
+					String[] elements = data.split(SOURCE_SPLIT_REGEX);
 					String id = null;
 					double weight = 0;
 					for (int i = 0; i < elements.length; i++) {
 						switch (i) {
-						case DBFeatures.WORKPLACES_ID_COLUMN:
+						case SourceFeatures.WORKPLACES_ID_COLUMN:
 							id = elements[i];
 							break;
-						case DBFeatures.WORKPLACES_WEIGHT_COLUMN:
+						case SourceFeatures.WORKPLACES_WEIGHT_COLUMN:
 							weight = Double.parseDouble(elements[i]);
 							break;
 						default:
@@ -260,9 +272,8 @@ public class Reader {
 					workplaces.put(id, weight);
 				}
 			}
-			scanner.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		} catch (FileNotFoundException fnfe) {
+			fnfe.printStackTrace();
 		}
 		return workplaces;
 	}
@@ -274,28 +285,27 @@ public class Reader {
 	 */
 	public static Graph<String, DefaultWeightedEdge> readRoutesDatabase(String filename) {
 		Graph<String, DefaultWeightedEdge> routes = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
-		try {
-			File file = new File(filename);
-			Scanner scanner = new Scanner(file);
+		File file = new File(filename);
+		try (Scanner scanner = new Scanner(file)) {
 			boolean first = true;
 			while (scanner.hasNextLine()) {
 				String data = scanner.nextLine();
 				if (first) {
 					first = false;
 				} else {
-					String[] elements = data.split(";");
+					String[] elements = data.split(SOURCE_SPLIT_REGEX);
 					String origin = null;
 					String destination = null;
 					double weight = 0.0;
 					for (int i = 0; i < elements.length; i++) {
 						switch (i) {
-						case DBFeatures.ROUTES_ORIGIN_COLUMN:
+						case SourceFeatures.ROUTES_ORIGIN_COLUMN:
 							origin = elements[i];
 							break;
-						case DBFeatures.ROUTES_DESTINATION_COLUMN:
+						case SourceFeatures.ROUTES_DESTINATION_COLUMN:
 							destination = elements[i];
 							break;
-						case DBFeatures.ROUTES_DISTANCE_COLUMN:
+						case SourceFeatures.ROUTES_DISTANCE_COLUMN:
 							weight = Double.parseDouble(elements[i]);
 							break;
 						default:
@@ -318,9 +328,8 @@ public class Reader {
 					}
 				}
 			}
-			scanner.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		} catch (FileNotFoundException fnfe) {
+			fnfe.printStackTrace();
 		}
 		return routes;
 	}

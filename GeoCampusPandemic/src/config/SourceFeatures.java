@@ -1,6 +1,6 @@
 package config;
 
-public class DBFeatures {
+public final class SourceFeatures {
 
 	/**
 	 * Groups database - subject id column
@@ -101,5 +101,17 @@ public class DBFeatures {
 	 * Schedule selection database - group id column
 	 */
 	public static final int SELECTION_GROUP_ID_COLUMN = 2;
+
+	/**
+	 * Entity separator
+	 */
+	public static final String ENTITY_SEPARATOR = "-";
+	
+	/**
+	 * Private constructor
+	 */
+	private SourceFeatures() {
+		throw new UnsupportedOperationException("Utility class");
+	}
 
 }

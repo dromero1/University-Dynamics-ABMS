@@ -1,6 +1,8 @@
 package model.agents;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import gis.GISPolygon;
 import model.disease.Compartment;
 import model.util.Randomizer;
@@ -51,7 +53,7 @@ public class Staffer extends CommunityMember {
 	@Override
 	protected void scheduleActivities() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		ArrayList<ISchedulableAction> actions = new ArrayList<>();
+		List<ISchedulableAction> actions = new ArrayList<>();
 		for (int i = 1; i <= WEEKDAYS; i++) {
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, this.workStartTime);
 			ISchedulableAction workAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
@@ -67,7 +69,7 @@ public class Staffer extends CommunityMember {
 	@Override
 	protected void scheduleArrivals() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		ArrayList<ISchedulableAction> actions = new ArrayList<>();
+		List<ISchedulableAction> actions = new ArrayList<>();
 		for (int i = 1; i <= WEEKDAYS; i++) {
 			double arrivalTime = Randomizer.getRandomStafferArrivalTime();
 			double startTime = Math.min(arrivalTime, this.workStartTime - 1);
@@ -85,7 +87,7 @@ public class Staffer extends CommunityMember {
 	@Override
 	protected void scheduleDepartures() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		ArrayList<ISchedulableAction> actions = new ArrayList<>();
+		List<ISchedulableAction> actions = new ArrayList<>();
 		for (int i = 1; i <= WEEKDAYS; i++) {
 			double endTime = Randomizer.getRandomStafferDepartureTime();
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, endTime);
@@ -102,7 +104,7 @@ public class Staffer extends CommunityMember {
 	@Override
 	protected void scheduleLunch() {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		ArrayList<ISchedulableAction> actions = new ArrayList<>();
+		List<ISchedulableAction> actions = new ArrayList<>();
 		for (int i = 1; i <= WEEKDAYS; i++) {
 			double lunchTime = Randomizer.getRandomLunchTime();
 			double lunchDuration = Randomizer.getRandomLunchDuration();

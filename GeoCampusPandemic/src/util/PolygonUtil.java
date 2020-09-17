@@ -8,8 +8,15 @@ import com.vividsolutions.jts.geom.Point;
 import gis.GISPolygon;
 import repast.simphony.gis.util.GeometryUtil;
 
-public class PolygonUtil {
+public final class PolygonUtil {
 
+	/**
+	 * Private constructor
+	 */
+	private PolygonUtil() {
+		throw new UnsupportedOperationException("Utility class");
+	}
+	
 	/**
 	 * Get random point from polygon
 	 * 

@@ -1,7 +1,7 @@
 package model.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 import cern.jet.random.Binomial;
 import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
@@ -12,7 +12,7 @@ import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
 import util.TickConverter;
 
-public class Randomizer {
+public final class Randomizer {
 
 	/**
 	 * Minimum lunch time (unit: hours). Reference: <pending>
@@ -43,7 +43,7 @@ public class Randomizer {
 	 * Maximum staffer arrival time (unit: hours). Reference: <pending>
 	 */
 	public static final double MAX_STAFFER_ARRIVAL_TIME = 9;
-	
+
 	/**
 	 * Minimum staffer departure time (unit: hours). Reference: <pending>
 	 */
@@ -63,7 +63,7 @@ public class Randomizer {
 	 * Maximum student arrival time (unit: hours). Reference: <pending>
 	 */
 	public static final double MAX_STUDENT_ARRIVAL_TIME = 17;
-	
+
 	/**
 	 * Minimum student departure time (unit: hours). Reference: <pending>
 	 */
@@ -142,6 +142,13 @@ public class Randomizer {
 	public static final double SUCCESS_PROBABILITY_GROUPS_TO_ENROLL = 0.71;
 
 	/**
+	 * Private constructor
+	 */
+	private Randomizer() {
+		throw new UnsupportedOperationException("Utility class");
+	}
+
+	/**
 	 * Get random lunch time. Reference: <pending>
 	 */
 	public static double getRandomLunchTime() {
@@ -209,7 +216,7 @@ public class Randomizer {
 	public static double getRandomStudentArrivalTime() {
 		return RandomHelper.nextDoubleFromTo(MIN_STUDENT_ARRIVAL_TIME, MAX_STUDENT_ARRIVAL_TIME);
 	}
-	
+
 	/**
 	 * Get random student's departure time. Reference: <pending>
 	 */
@@ -291,7 +298,7 @@ public class Randomizer {
 	 * 
 	 * @param polygons Map of polygons
 	 */
-	public static GISPolygon getRandomPolygon(HashMap<String, GISPolygon> polygons) {
+	public static GISPolygon getRandomPolygon(Map<String, GISPolygon> polygons) {
 		ArrayList<GISPolygon> polyList = new ArrayList<>();
 		for (GISPolygon polygon : polygons.values()) {
 			if (!polygon.isActive()) {
@@ -308,7 +315,7 @@ public class Randomizer {
 	 * 
 	 * @param polygons Map of polygons
 	 */
-	public static GISPolygon getRandomPolygonWeightBased(HashMap<String, GISPolygon> polygons) {
+	public static GISPolygon getRandomPolygonWeightBased(Map<String, GISPolygon> polygons) {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		double cummulativeProbability = 0;
 		for (GISPolygon polygon : polygons.values()) {
@@ -329,7 +336,7 @@ public class Randomizer {
 	 * 
 	 * @param polygons Map of polygons
 	 */
-	public static GISPolygon getRandomPolygonWorkWeightBased(HashMap<String, GISPolygon> polygons) {
+	public static GISPolygon getRandomPolygonWorkWeightBased(Map<String, GISPolygon> polygons) {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		double cummulativeProbability = 0;
 		for (GISPolygon polygon : polygons.values()) {

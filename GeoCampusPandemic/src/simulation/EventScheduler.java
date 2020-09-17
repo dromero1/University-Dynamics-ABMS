@@ -6,7 +6,7 @@ import repast.simphony.engine.schedule.ISchedule;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.essentials.RepastEssentials;
 
-public class EventScheduler {
+public final class EventScheduler {
 
 	/**
 	 * Instance
@@ -14,7 +14,7 @@ public class EventScheduler {
 	private static EventScheduler instance;
 
 	/**
-	 * Create a new event scheduler
+	 * Private constructor
 	 */
 	private EventScheduler() {
 	}

@@ -2,7 +2,7 @@ package util;
 
 import repast.simphony.util.collections.Pair;
 
-public class TickConverter {
+public final class TickConverter {
 
 	/**
 	 * Ticks per minute (unit: ticks)
@@ -19,6 +19,13 @@ public class TickConverter {
 	 */
 	public static final int TICKS_PER_DAY = 24;
 
+	/**
+	 * Private constructor
+	 */
+	private TickConverter() {
+		throw new UnsupportedOperationException("Utility class");
+	}
+	
 	/**
 	 * Day and time to ticks
 	 * 

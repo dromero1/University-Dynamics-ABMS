@@ -2,6 +2,8 @@ package model.learning;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import gis.GISPolygon;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.util.collections.Pair;
@@ -11,7 +13,7 @@ public class QLearningMechanism extends LearningMechanism {
 	/**
 	 * Q-values for state-action pairs
 	 */
-	private HashMap<String, ArrayList<Pair<String, Double>>> qValues;
+	private Map<String, List<Pair<String, Double>>> qValues;
 
 	/**
 	 * Last state
@@ -26,17 +28,17 @@ public class QLearningMechanism extends LearningMechanism {
 	/**
 	 * Epsilon parameter for epsilon-greedy action selection
 	 */
-	private static final double EPSILON = 0.1;
+	private static final double EPSILON = 0.2;
 
 	/**
 	 * Learning rate for update rule
 	 */
-	private static final double LEARNING_RATE = 0.3;
+	private static final double LEARNING_RATE = 0.5;
 
 	/**
 	 * Discount factor for update rule
 	 */
-	private static final double DISCOUNT_FACTOR = 0.4;
+	private static final double DISCOUNT_FACTOR = 0.8;
 
 	/**
 	 * Create a new learning mechanism
@@ -45,8 +47,8 @@ public class QLearningMechanism extends LearningMechanism {
 	 * @param sharedAreas        Shared areas
 	 * @param eatingPlaces       Eating places
 	 */
-	public QLearningMechanism(HashMap<String, GISPolygon> teachingFacilities, HashMap<String, GISPolygon> sharedAreas,
-			HashMap<String, GISPolygon> eatingPlaces) {
+	public QLearningMechanism(Map<String, GISPolygon> teachingFacilities, Map<String, GISPolygon> sharedAreas,
+			Map<String, GISPolygon> eatingPlaces) {
 		super(teachingFacilities, sharedAreas, eatingPlaces);
 	}
 
@@ -60,11 +62,11 @@ public class QLearningMechanism extends LearningMechanism {
 		for (String teachingFacility : this.teachingFacilities.keySet()) {
 			ArrayList<Pair<String, Double>> destinations = new ArrayList<>();
 			for (String sharedArea : this.sharedAreas.keySet()) {
-				double q = RandomHelper.nextDoubleFromTo(1.0, 2.0);
+				double q = RandomHelper.nextDoubleFromTo(-1.0, 1.0);
 				destinations.add(new Pair<>(sharedArea, q));
 			}
 			for (String eatingPlace : this.eatingPlaces.keySet()) {
-				double q = RandomHelper.nextDoubleFromTo(1.0, 2.0);
+				double q = RandomHelper.nextDoubleFromTo(-1.0, 1.0);
 				destinations.add(new Pair<>(eatingPlace, q));
 			}
 			this.qValues.put(teachingFacility, destinations);
@@ -73,7 +75,7 @@ public class QLearningMechanism extends LearningMechanism {
 		for (String sharedArea : this.sharedAreas.keySet()) {
 			ArrayList<Pair<String, Double>> destinations = new ArrayList<>();
 			for (String eatingPlace : this.eatingPlaces.keySet()) {
-				double q = RandomHelper.nextDoubleFromTo(1.0, 2.0);
+				double q = RandomHelper.nextDoubleFromTo(-1.0, 1.0);
 				destinations.add(new Pair<>(eatingPlace, q));
 			}
 			this.qValues.put(sharedArea, destinations);
@@ -82,7 +84,7 @@ public class QLearningMechanism extends LearningMechanism {
 		for (String eatingPlace : this.eatingPlaces.keySet()) {
 			ArrayList<Pair<String, Double>> destinations = new ArrayList<>();
 			for (String sharedArea : this.sharedAreas.keySet()) {
-				double q = RandomHelper.nextDoubleFromTo(1.0, 2.0);
+				double q = RandomHelper.nextDoubleFromTo(-1.0, 1.0);
 				destinations.add(new Pair<>(sharedArea, q));
 			}
 			this.qValues.put(eatingPlace, destinations);
@@ -97,13 +99,13 @@ public class QLearningMechanism extends LearningMechanism {
 	@Override
 	public String selectAction(String currentLocation) {
 		this.lastState = currentLocation;
-		ArrayList<Pair<String, Double>> destinations = this.qValues.get(currentLocation);
+		List<Pair<String, Double>> destinations = this.qValues.get(currentLocation);
 		Pair<String, Double> selectedDestination = null;
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		int index = -1;
 		if (r < 1 - EPSILON) {
 			double topValue = Double.NEGATIVE_INFINITY;
-			ArrayList<Pair<String, Double>> ties = new ArrayList<>();
+			List<Pair<String, Double>> ties = new ArrayList<>();
 			for (Pair<String, Double> destination : destinations) {
 				double qValue = destination.getSecond();
 				if (qValue > topValue) {
@@ -133,18 +135,18 @@ public class QLearningMechanism extends LearningMechanism {
 	public void updateLearning(String newState, double reward) {
 		if (this.lastState != null) {
 			double maxQ = Double.NEGATIVE_INFINITY;
-			ArrayList<Pair<String, Double>> newStateActionValues = this.qValues.get(newState);
+			List<Pair<String, Double>> newStateActionValues = this.qValues.get(newState);
 			for (Pair<String, Double> stateActionValue : newStateActionValues) {
 				double q = stateActionValue.getSecond();
 				if (q > maxQ) {
 					maxQ = q;
 				}
 			}
-			ArrayList<Pair<String, Double>> lastStateActionValues = this.qValues.get(this.lastState);
+			List<Pair<String, Double>> lastStateActionValues = this.qValues.get(this.lastState);
 			for (int i = 0; i < lastStateActionValues.size(); i++) {
 				Pair<String, Double> stateActionValue = lastStateActionValues.get(i);
 				String action = stateActionValue.getFirst();
-				if (action == this.lastAction) {
+				if (action.equals(this.lastAction)) {
 					double q = stateActionValue.getSecond();
 					q = q + LEARNING_RATE * (reward + DISCOUNT_FACTOR * maxQ - q);
 					stateActionValue.setSecond(q);
