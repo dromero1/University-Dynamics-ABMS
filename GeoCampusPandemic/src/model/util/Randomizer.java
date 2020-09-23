@@ -7,9 +7,8 @@ import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
 import gis.GISPolygon;
 import model.disease.PatientType;
-import repast.simphony.engine.environment.RunEnvironment;
-import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
+import simulation.ParametersAdapter;
 import util.TickConverter;
 
 public final class Randomizer {
@@ -175,8 +174,7 @@ public final class Randomizer {
 	 * Get random vehicle usage. Reference: <pending>
 	 */
 	public static boolean getRandomVehicleUsage() {
-		Parameters simParams = RunEnvironment.getInstance().getParameters();
-		double vehicleUsageRatio = simParams.getDouble("vehicleUsageRatio");
+		double vehicleUsageRatio = ParametersAdapter.getVehicleUsageRatio();
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		return r < vehicleUsageRatio;
 	}

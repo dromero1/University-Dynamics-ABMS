@@ -9,8 +9,8 @@
 		defaultValue="random" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="random RL-based" />
-	<parameter name="learningStyle" displayName="Learning style"
-		type="java.lang.String" defaultValue="Q-learning" isReadOnly="false"
+	<parameter name="learningStyle" displayName="Learning stlye"
+		type="java.lang.String" defaultValue="random" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="Q-learning SARSA Bandits" />
 	<parameter name="infectionRadius"
@@ -26,11 +26,11 @@
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="socialDistancing"
-		displayName="Social Distancing" type="double" defaultValue="2.0"
+		displayName="Social distancing" type="double" defaultValue="2.0"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 	<parameter name="vehicleUsageRatio"
-		displayName="Vehicle Usage Ratio" type="double" defaultValue="0.3"
+		displayName="Vehicle ssage ratio" type="double" defaultValue="0.3"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 	<parameter name="infectedStudents"

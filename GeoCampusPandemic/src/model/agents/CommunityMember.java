@@ -27,8 +27,8 @@ import repast.simphony.engine.schedule.ISchedule;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.essentials.RepastEssentials;
 import repast.simphony.gis.util.GeometryUtil;
-import repast.simphony.parameter.Parameters;
 import simulation.EventScheduler;
+import simulation.ParametersAdapter;
 import simulation.SimulationBuilder;
 import util.PolygonUtil;
 import util.TickConverter;
@@ -135,7 +135,8 @@ public abstract class CommunityMember {
 	 * Go have lunch at a designated eating place
 	 */
 	public void haveLunch() {
-		GISPolygon polygon = getRandomPolygon(this.simulationBuilder.eatingPlaces, SelectionStrategy.RL_BASED);
+		SelectionStrategy selectionStrategy = ParametersAdapter.getSelectionStrategy();
+		GISPolygon polygon = getRandomPolygon(this.simulationBuilder.eatingPlaces, selectionStrategy);
 		moveToPolygon(polygon, "");
 	}
 
@@ -222,8 +223,7 @@ public abstract class CommunityMember {
 		String currentLocation = polygon.getId();
 		if (this.learningMechanism.containsState(currentLocation)) {
 			GISDensityMeter densityMeter = (GISDensityMeter) this.currentPolygon;
-			Parameters simParams = RunEnvironment.getInstance().getParameters();
-			double socialDistancing = simParams.getDouble("socialDistancing");
+			double socialDistancing = ParametersAdapter.getSocialDistancing();
 			double density = densityMeter.measureDensityCorrected();
 			double reward = 1.0 / socialDistancing - density;
 			this.learningMechanism.updateLearning(currentLocation, reward);
@@ -395,7 +395,8 @@ public abstract class CommunityMember {
 	 * Initialize learning
 	 */
 	private void initLearning() {
-		this.learningMechanism = LearningFactory.makeLearningMechanism(LearningStyle.Q_LEARNING,
+		LearningStyle learningStyle = ParametersAdapter.getLearningStyle();
+		this.learningMechanism = LearningFactory.makeLearningMechanism(learningStyle,
 				this.simulationBuilder.teachingFacilities, this.simulationBuilder.sharedAreas,
 				this.simulationBuilder.eatingPlaces);
 	}
@@ -414,8 +415,7 @@ public abstract class CommunityMember {
 	 * Infect nearby susceptible individuals
 	 */
 	private void infect() {
-		Parameters simParams = RunEnvironment.getInstance().getParameters();
-		double distance = simParams.getDouble("infectionRadius");
+		double distance = ParametersAdapter.getInfectionRadius();
 		Geometry searchArea = GeometryUtil.generateBuffer(this.simulationBuilder.geography,
 				this.simulationBuilder.geography.getGeometry(this), distance);
 		Envelope searchEnvelope = searchArea.getEnvelopeInternal();

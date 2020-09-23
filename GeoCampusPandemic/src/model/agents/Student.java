@@ -13,6 +13,7 @@ import repast.simphony.engine.schedule.ISchedulableAction;
 import repast.simphony.essentials.RepastEssentials;
 import repast.simphony.util.collections.Pair;
 import simulation.EventScheduler;
+import simulation.ParametersAdapter;
 import simulation.SimulationBuilder;
 import util.TickConverter;
 
@@ -104,7 +105,8 @@ public class Student extends CommunityMember {
 		// Walk to shared area
 		Map<String, GISPolygon> places = this.simulationBuilder.sharedAreas;
 		places.putAll(this.simulationBuilder.eatingPlaces);
-		GISPolygon polygon = getRandomPolygon(places, SelectionStrategy.RL_BASED);
+		SelectionStrategy selectionStrategy = ParametersAdapter.getSelectionStrategy();
+		GISPolygon polygon = getRandomPolygon(places, selectionStrategy);
 		moveToPolygon(polygon, "");
 		// Schedule having fun in another place
 		EventScheduler eventScheduler = EventScheduler.getInstance();
