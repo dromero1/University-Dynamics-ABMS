@@ -22,6 +22,8 @@ public final class LearningFactory {
 			Map<String, GISPolygon> eatingPlaces) {
 		if (learningStyle == LearningStyle.Q_LEARNING) {
 			return new QLearningMechanism(teachingFacilities, sharedAreas, eatingPlaces);
+		} else if (learningStyle == LearningStyle.SARSA) {
+			return new QLearningMechanism(teachingFacilities, sharedAreas, eatingPlaces);
 		} else {
 			return null;
 		}

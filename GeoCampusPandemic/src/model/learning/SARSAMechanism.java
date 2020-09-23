@@ -5,16 +5,16 @@ import java.util.Map;
 import gis.GISPolygon;
 import repast.simphony.util.collections.Pair;
 
-public class QLearningMechanism extends TDLearningMechanism {
+public class SARSAMechanism extends TDLearningMechanism {
 
 	/**
-	 * Create a new Q-learning mechanism
+	 * Create a new SARSA mechanism
 	 * 
 	 * @param teachingFacilities Teaching facilities
 	 * @param sharedAreas        Shared areas
 	 * @param eatingPlaces       Eating places
 	 */
-	public QLearningMechanism(Map<String, GISPolygon> teachingFacilities, Map<String, GISPolygon> sharedAreas,
+	public SARSAMechanism(Map<String, GISPolygon> teachingFacilities, Map<String, GISPolygon> sharedAreas,
 			Map<String, GISPolygon> eatingPlaces) {
 		super(teachingFacilities, sharedAreas, eatingPlaces);
 	}
@@ -28,12 +28,14 @@ public class QLearningMechanism extends TDLearningMechanism {
 	@Override
 	public void updateLearning(String newState, double reward) {
 		if (this.lastState != null) {
-			double maxQ = Double.NEGATIVE_INFINITY;
+			double qPrime = 0.0;
+			String newAction = selectAction(newState);
 			List<Pair<String, Double>> newStateActionValues = this.qValues.get(newState);
 			for (Pair<String, Double> stateActionValue : newStateActionValues) {
-				double q = stateActionValue.getSecond();
-				if (q > maxQ) {
-					maxQ = q;
+				String action = stateActionValue.getFirst();
+				if (action.equals(newAction)) {
+					qPrime = stateActionValue.getSecond();
+					break;
 				}
 			}
 			List<Pair<String, Double>> lastStateActionValues = this.qValues.get(this.lastState);
@@ -42,7 +44,7 @@ public class QLearningMechanism extends TDLearningMechanism {
 				String action = stateActionValue.getFirst();
 				if (action.equals(this.lastAction)) {
 					double q = stateActionValue.getSecond();
-					q = q + LEARNING_RATE * (reward + DISCOUNT_FACTOR * maxQ - q);
+					q = q + LEARNING_RATE * (reward + DISCOUNT_FACTOR * qPrime - q);
 					stateActionValue.setSecond(q);
 					lastStateActionValues.set(i, stateActionValue);
 				}
