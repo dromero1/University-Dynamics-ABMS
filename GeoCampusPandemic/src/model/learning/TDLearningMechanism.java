@@ -11,6 +11,16 @@ import repast.simphony.util.collections.Pair;
 public abstract class TDLearningMechanism extends LearningMechanism {
 
 	/**
+	 * Q-value initialization from value
+	 */
+	private static final double Q_VALUE_INIT_TO = 0;
+
+	/**
+	 * Q-value initialization to value
+	 */
+	private static final double Q_VALUE_INIT_FROM = 0;
+
+	/**
 	 * Q-values for state-action pairs
 	 */
 	protected Map<String, List<Pair<String, Double>>> qValues;
@@ -28,12 +38,12 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 	/**
 	 * Epsilon parameter for epsilon-greedy action selection
 	 */
-	protected static final double EPSILON = 0.2;
+	protected static final double EPSILON = 0.1;
 
 	/**
 	 * Learning rate for update rule
 	 */
-	protected static final double LEARNING_RATE = 0.5;
+	protected static final double LEARNING_RATE = 0.1;
 
 	/**
 	 * Discount factor for update rule
@@ -62,11 +72,11 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 		for (String teachingFacility : this.teachingFacilities.keySet()) {
 			ArrayList<Pair<String, Double>> destinations = new ArrayList<>();
 			for (String sharedArea : this.sharedAreas.keySet()) {
-				double q = RandomHelper.nextDoubleFromTo(-1.0, 1.0);
+				double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM, Q_VALUE_INIT_TO);
 				destinations.add(new Pair<>(sharedArea, q));
 			}
 			for (String eatingPlace : this.eatingPlaces.keySet()) {
-				double q = RandomHelper.nextDoubleFromTo(-1.0, 1.0);
+				double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM, Q_VALUE_INIT_TO);
 				destinations.add(new Pair<>(eatingPlace, q));
 			}
 			this.qValues.put(teachingFacility, destinations);
@@ -75,7 +85,7 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 		for (String sharedArea : this.sharedAreas.keySet()) {
 			ArrayList<Pair<String, Double>> destinations = new ArrayList<>();
 			for (String eatingPlace : this.eatingPlaces.keySet()) {
-				double q = RandomHelper.nextDoubleFromTo(-1.0, 1.0);
+				double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM, Q_VALUE_INIT_TO);
 				destinations.add(new Pair<>(eatingPlace, q));
 			}
 			this.qValues.put(sharedArea, destinations);
@@ -84,7 +94,7 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 		for (String eatingPlace : this.eatingPlaces.keySet()) {
 			ArrayList<Pair<String, Double>> destinations = new ArrayList<>();
 			for (String sharedArea : this.sharedAreas.keySet()) {
-				double q = RandomHelper.nextDoubleFromTo(-1.0, 1.0);
+				double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM, Q_VALUE_INIT_TO);
 				destinations.add(new Pair<>(sharedArea, q));
 			}
 			this.qValues.put(eatingPlace, destinations);
@@ -117,10 +127,11 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 				}
 			}
 			index = RandomHelper.nextIntFromTo(0, ties.size() - 1);
+			selectedDestination = ties.get(index);
 		} else {
 			index = RandomHelper.nextIntFromTo(0, destinations.size() - 1);
+			selectedDestination = destinations.get(index);
 		}
-		selectedDestination = destinations.get(index);
 		this.lastAction = selectedDestination.getFirst();
 		return this.lastAction;
 	}

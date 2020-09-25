@@ -24,6 +24,8 @@ public final class LearningFactory {
 			return new QLearningMechanism(teachingFacilities, sharedAreas, eatingPlaces);
 		} else if (learningStyle == LearningStyle.SARSA) {
 			return new SARSAMechanism(teachingFacilities, sharedAreas, eatingPlaces);
+		} else if (learningStyle == LearningStyle.BANDITS) {
+			return new BanditsMechanism(teachingFacilities, sharedAreas, eatingPlaces);
 		} else {
 			return null;
 		}
