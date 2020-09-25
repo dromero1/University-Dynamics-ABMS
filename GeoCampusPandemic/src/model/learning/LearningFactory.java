@@ -23,7 +23,7 @@ public final class LearningFactory {
 		if (learningStyle == LearningStyle.Q_LEARNING) {
 			return new QLearningMechanism(teachingFacilities, sharedAreas, eatingPlaces);
 		} else if (learningStyle == LearningStyle.SARSA) {
-			return new QLearningMechanism(teachingFacilities, sharedAreas, eatingPlaces);
+			return new SARSAMechanism(teachingFacilities, sharedAreas, eatingPlaces);
 		} else {
 			return null;
 		}
