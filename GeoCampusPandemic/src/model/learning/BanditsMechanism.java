@@ -12,12 +12,12 @@ public class BanditsMechanism extends LearningMechanism {
 	/**
 	 * Q-value initialization from value
 	 */
-	private static final double Q_VALUE_INIT_TO = 0;
+	private static final double Q_VALUE_INIT_TO = 0.0;
 
 	/**
 	 * Q-value initialization to value
 	 */
-	private static final double Q_VALUE_INIT_FROM = 0;
+	private static final double Q_VALUE_INIT_FROM = -1.0;
 
 	/**
 	 * Q-values for states
@@ -49,10 +49,6 @@ public class BanditsMechanism extends LearningMechanism {
 	@Override
 	public void init() {
 		this.qValues = new HashMap<>();
-		for (String teachingFacility : this.teachingFacilities.keySet()) {
-			double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM, Q_VALUE_INIT_TO);
-			this.qValues.put(teachingFacility, q);
-		}
 		for (String eatingPlace : this.eatingPlaces.keySet()) {
 			double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM, Q_VALUE_INIT_TO);
 			this.qValues.put(eatingPlace, q);
