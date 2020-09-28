@@ -17,7 +17,7 @@ public class BanditsMechanism extends LearningMechanism {
 	/**
 	 * Q-value initialization to value
 	 */
-	private static final double Q_VALUE_INIT_FROM = -1.0;
+	private static final double Q_VALUE_INIT_FROM = 0.0;
 
 	/**
 	 * Q-values for states
