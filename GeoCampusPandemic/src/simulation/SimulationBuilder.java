@@ -33,7 +33,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	/**
 	 * End tick (unit: hours)
 	 */
-	public static final double END_TICK = 4320;
+	public static final double END_TICK = 1080;
 
 	/**
 	 * Geography projection id

@@ -18,7 +18,7 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 	/**
 	 * Q-value initialization to value
 	 */
-	private static final double Q_VALUE_INIT_FROM = -1.0;
+	private static final double Q_VALUE_INIT_FROM = 0.0;
 
 	/**
 	 * Q-values for state-action pairs
@@ -81,18 +81,13 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 			}
 			this.qValues.put(teachingFacility, destinations);
 		}
-		// Shared areas to eating places
+		// Shared areas to eating places and shared areas
 		for (String sharedArea : this.sharedAreas.keySet()) {
 			ArrayList<Pair<String, Double>> destinations = new ArrayList<>();
 			for (String eatingPlace : this.eatingPlaces.keySet()) {
 				double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM, Q_VALUE_INIT_TO);
 				destinations.add(new Pair<>(eatingPlace, q));
 			}
-			this.qValues.put(sharedArea, destinations);
-		}
-		// Shared areas to shared areas
-		for (String sharedArea : this.sharedAreas.keySet()) {
-			ArrayList<Pair<String, Double>> destinations = new ArrayList<>();
 			for (String nextSharedArea : this.sharedAreas.keySet()) {
 				if (sharedArea.equals(nextSharedArea)) {
 					continue;
