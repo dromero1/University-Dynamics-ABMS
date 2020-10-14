@@ -13,7 +13,7 @@
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="Q-learning SARSA Bandits " />
 	<parameter name="infectedStudents"
-		displayName="Infected students" type="int" defaultValue="0"
+		displayName="Infected students" type="int" defaultValue="1"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="learningRate" displayName="Learning rate"
