@@ -33,7 +33,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	/**
 	 * End tick (unit: hours)
 	 */
-	public static final double END_TICK = 1080;
+	public static final double END_TICK = 2880;
 
 	/**
 	 * Geography projection id
@@ -249,12 +249,13 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 */
 	private List<Student> createStudents(int susceptibleStudents, int infectedStudents) {
 		List<Student> students = new ArrayList<>();
+		double outbreakTick = ParametersAdapter.getOutbreakTick();
 		for (int i = 0; i < infectedStudents; i++) {
-			Student student = new Student(this, Compartment.INFECTED, Integer.toString(i));
+			Student student = new Student(this, Compartment.INFECTED, Integer.toString(i), outbreakTick);
 			students.add(student);
 		}
 		for (int i = 0; i < susceptibleStudents; i++) {
-			Student student = new Student(this, Compartment.SUSCEPTIBLE, Integer.toString(i));
+			Student student = new Student(this, Compartment.SUSCEPTIBLE, Integer.toString(i), outbreakTick);
 			students.add(student);
 		}
 		return students;
@@ -268,12 +269,13 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 */
 	private List<Staffer> createStaffers(int susceptibleStaffers, int infectedStaffers) {
 		List<Staffer> staffers = new ArrayList<>();
-		for (int i = 0; i < susceptibleStaffers; i++) {
-			Staffer staffer = new Staffer(this, Compartment.SUSCEPTIBLE);
+		double outbreakTick = ParametersAdapter.getOutbreakTick();
+		for (int i = 0; i < infectedStaffers; i++) {
+			Staffer staffer = new Staffer(this, Compartment.INFECTED, outbreakTick);
 			staffers.add(staffer);
 		}
-		for (int i = 0; i < infectedStaffers; i++) {
-			Staffer staffer = new Staffer(this, Compartment.INFECTED);
+		for (int i = 0; i < susceptibleStaffers; i++) {
+			Staffer staffer = new Staffer(this, Compartment.SUSCEPTIBLE, outbreakTick);
 			staffers.add(staffer);
 		}
 		return staffers;

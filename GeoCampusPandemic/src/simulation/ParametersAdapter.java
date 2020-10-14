@@ -28,6 +28,11 @@ public class ParametersAdapter {
 	private static final String SELECTION_STRATEGY_PARAM_ID = "selectionStrategy";
 
 	/**
+	 * Learning style parameter id
+	 */
+	private static final String LEARNING_STYLE_PARAM_ID = "learningStyle";
+
+	/**
 	 * Epsilon parameter id
 	 */
 	private static final String EPSILON_PARAM_ID = "epsilon";
@@ -43,9 +48,9 @@ public class ParametersAdapter {
 	private static final String DISCOUNT_FACTOR_PARAM_ID = "discountFactor";
 
 	/**
-	 * Learning style parameter id
+	 * Outbreak tick parameter id
 	 */
-	private static final String LEARNING_STYLE_PARAM_ID = "learningStyle";
+	private static final String OUTBREAK_TICK_PARAM_ID = "outbreakTick";
 
 	/**
 	 * Get vehicle usage ratio
@@ -125,6 +130,14 @@ public class ParametersAdapter {
 		return simParams.getDouble(DISCOUNT_FACTOR_PARAM_ID);
 	}
 
+	/**
+	 * Get outbreak tick
+	 */
+	public static double getOutbreakTick() {
+		Parameters simParams = RunEnvironment.getInstance().getParameters();
+		return simParams.getDouble(OUTBREAK_TICK_PARAM_ID);
+	}
+	
 	/**
 	 * Private constructor
 	 */

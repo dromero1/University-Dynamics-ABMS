@@ -50,9 +50,10 @@ public class Student extends CommunityMember {
 	 * @param contextBuilder Reference to the simulation builder
 	 * @param comparment     Compartment
 	 * @param id             Student id
+	 * @param outbreakTick   Outbreak tick
 	 */
-	public Student(SimulationBuilder contextBuilder, Compartment compartment, String id) {
-		super(contextBuilder, compartment);
+	public Student(SimulationBuilder contextBuilder, Compartment compartment, String id, double outbreakTick) {
+		super(contextBuilder, compartment, outbreakTick);
 		this.id = id;
 		this.scheduledDepartures = new HashMap<>();
 	}

@@ -33,9 +33,10 @@ public class Staffer extends CommunityMember {
 	 * 
 	 * @param contextBuilder Reference to the simulation builder
 	 * @param compartment    Compartment
+	 * @param outbreakTick   Outbreak tick
 	 */
-	public Staffer(SimulationBuilder contextBuilder, Compartment compartment) {
-		super(contextBuilder, compartment);
+	public Staffer(SimulationBuilder contextBuilder, Compartment compartment, double outbreakTick) {
+		super(contextBuilder, compartment, outbreakTick);
 		this.workplace = Randomizer.getRandomPolygonWorkWeightBased(this.simulationBuilder.workplaces);
 		this.workStartTime = Randomizer.getRandomStafferArrivalTime();
 	}

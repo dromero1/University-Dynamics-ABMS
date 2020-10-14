@@ -51,6 +51,11 @@ public abstract class CommunityMember {
 	protected Compartment compartment;
 
 	/**
+	 * Time to outbreak (unit: hours)
+	 */
+	protected double outbreakTick;
+
+	/**
 	 * Time to incubation end (unit: hours)
 	 */
 	protected double incubationEnd;
@@ -91,10 +96,12 @@ public abstract class CommunityMember {
 	 * 
 	 * @param simulationBuilder Reference to the simulation builder
 	 * @param compartment       Compartment
+	 * @param outbreakTick      Outbreak tick
 	 */
-	public CommunityMember(SimulationBuilder simulationBuilder, Compartment compartment) {
+	public CommunityMember(SimulationBuilder simulationBuilder, Compartment compartment, double outbreakTick) {
 		this.simulationBuilder = simulationBuilder;
 		this.compartment = compartment;
+		this.outbreakTick = outbreakTick;
 		this.isVehicleUser = Randomizer.getRandomVehicleUsage();
 		this.scheduledActions = new EnumMap<>(SchedulableAction.class);
 	}
@@ -378,16 +385,11 @@ public abstract class CommunityMember {
 	 * Initialize disease
 	 */
 	private void initDisease() {
-		switch (this.compartment) {
-		case EXPOSED:
-			transitionToExposed();
-			break;
-		case INFECTED:
+		if (this.compartment == Compartment.INFECTED) {
+			this.compartment = Compartment.SUSCEPTIBLE;
 			this.incubationEnd = -TickConverter.daysToTicks(Randomizer.INFECTION_MIN);
-			transitionToInfected();
-			break;
-		default:
-			break;
+			EventScheduler eventScheduler = EventScheduler.getInstance();
+			eventScheduler.scheduleOneTimeEvent(this.outbreakTick, this, "transitionToInfected");
 		}
 	}
 

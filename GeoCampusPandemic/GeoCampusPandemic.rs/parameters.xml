@@ -51,4 +51,8 @@
 		displayName="Susceptible staffers" type="int" defaultValue="200"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+	<parameter name="outbreakTick"
+		displayName="Outbreak tick" type="double" defaultValue="2160"
+		isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 </parameters>
