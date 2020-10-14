@@ -1,18 +1,14 @@
 <repast.simphony.data2.engine.FileSinkDescriptor
 	simphonyVersion="2.7.0">
-	<name>Aggregate Epidemic File Sink</name>
-	<dataSet>AggregateEpidemicTimeSeries</dataSet>
+	<name>Aggregate Density File Sink</name>
+	<dataSet>AggregateDensityTimeSeries</dataSet>
 	<delimiter>,</delimiter>
 	<format>TABULAR</format>
 	<sourceIds class="linked-hash-set">
 		<string>run</string>
 		<string>tick</string>
-		<string>susceptible</string>
-		<string>exposed</string>
-		<string>infected</string>
-		<string>immune</string>
-		<string>dead</string>
+		<string>meanDensity</string>
 	</sourceIds>
-	<fileName>output/Epidemic.csv</fileName>
+	<fileName>output/Density.csv</fileName>
 	<addTimeStamp>false</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

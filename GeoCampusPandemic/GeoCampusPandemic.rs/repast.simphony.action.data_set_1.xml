@@ -1,64 +1,28 @@
 <repast.simphony.data2.engine.DataSetDescriptor
 	simphonyVersion="2.7.0">
-	<name>AggregateEpidemicTimeSeries</name>
+	<name>AggregateDensityTimeSeries</name>
 	<type>AGGREGATE</type>
 	<inclTick>true</inclTick>
 	<inclBatchRun>true</inclBatchRun>
 	<inclRandomSeed>false</inclRandomSeed>
 	<scheduleParams>
-		<start>1.0</start>
+		<start>0.0</start>
 		<interval>1.0</interval>
 		<priority>-Infinity</priority>
 		<pType>LAST</pType>
 		<duration>-1.0</duration>
 		<frequency>REPEAT</frequency>
-		<hashCode>1268406276</hashCode>
+		<hashCode>635357738</hashCode>
 	</scheduleParams>
 	<atEnd>false</atEnd>
 	<methodDataSources class="linked-hash-map">
 		<entry>
-			<string>susceptible</string>
+			<string>meanDensity</string>
 			<repast.simphony.data2.engine.MethodDataSourceDefinition>
-				<id>susceptible</id>
-				<className>model.agents.CommunityMember</className>
-				<methodName>isSusceptible</methodName>
-				<aggType>SUM</aggType>
-			</repast.simphony.data2.engine.MethodDataSourceDefinition>
-		</entry>
-		<entry>
-			<string>exposed</string>
-			<repast.simphony.data2.engine.MethodDataSourceDefinition>
-				<id>exposed</id>
-				<className>model.agents.CommunityMember</className>
-				<methodName>isExposed</methodName>
-				<aggType>SUM</aggType>
-			</repast.simphony.data2.engine.MethodDataSourceDefinition>
-		</entry>
-		<entry>
-			<string>infected</string>
-			<repast.simphony.data2.engine.MethodDataSourceDefinition>
-				<id>infected</id>
-				<className>model.agents.CommunityMember</className>
-				<methodName>isInfected</methodName>
-				<aggType>SUM</aggType>
-			</repast.simphony.data2.engine.MethodDataSourceDefinition>
-		</entry>
-		<entry>
-			<string>immune</string>
-			<repast.simphony.data2.engine.MethodDataSourceDefinition>
-				<id>immune</id>
-				<className>model.agents.CommunityMember</className>
-				<methodName>isImmune</methodName>
-				<aggType>SUM</aggType>
-			</repast.simphony.data2.engine.MethodDataSourceDefinition>
-		</entry>
-		<entry>
-			<string>dead</string>
-			<repast.simphony.data2.engine.MethodDataSourceDefinition>
-				<id>dead</id>
-				<className>model.agents.CommunityMember</className>
-				<methodName>isDead</methodName>
-				<aggType>SUM</aggType>
+				<id>meanDensity</id>
+				<className>gis.GISDensityMeter</className>
+				<methodName>measureDensityCorrected</methodName>
+				<aggType>MEAN</aggType>
 			</repast.simphony.data2.engine.MethodDataSourceDefinition>
 		</entry>
 	</methodDataSources>
