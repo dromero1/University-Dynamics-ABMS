@@ -7,6 +7,7 @@ import java.util.Map;
 import gis.GISPolygon;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.util.collections.Pair;
+import simulation.ParametersAdapter;
 
 public abstract class TDLearningMechanism extends LearningMechanism {
 
@@ -38,17 +39,17 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 	/**
 	 * Epsilon parameter for epsilon-greedy action selection
 	 */
-	protected static final double EPSILON = 0.1;
+	protected double epsilon;
 
 	/**
 	 * Learning rate for update rule
 	 */
-	protected static final double LEARNING_RATE = 0.1;
+	protected double learningRate;
 
 	/**
 	 * Discount factor for update rule
 	 */
-	protected static final double DISCOUNT_FACTOR = 0.8;
+	protected double discountFactor;
 
 	/**
 	 * Create a new TD-learning mechanism
@@ -109,6 +110,16 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 	}
 
 	/**
+	 * Fix learning parameters
+	 */
+	@Override
+	public void fixParameters() {
+		this.epsilon = ParametersAdapter.getEpsilon();
+		this.learningRate = ParametersAdapter.getLearningRate();
+		this.discountFactor = ParametersAdapter.getDiscountFactor();
+	}
+
+	/**
 	 * Select action
 	 * 
 	 * @param currentLocation Current location
@@ -120,7 +131,7 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 		Pair<String, Double> selectedDestination = null;
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		int index = -1;
-		if (r < 1 - EPSILON) {
+		if (r < 1 - this.epsilon) {
 			double topValue = Double.NEGATIVE_INFINITY;
 			List<Pair<String, Double>> ties = new ArrayList<>();
 			for (Pair<String, Double> destination : destinations) {

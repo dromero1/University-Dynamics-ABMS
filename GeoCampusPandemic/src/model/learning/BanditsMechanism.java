@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import gis.GISPolygon;
 import repast.simphony.random.RandomHelper;
+import simulation.ParametersAdapter;
 
 public class BanditsMechanism extends LearningMechanism {
 
@@ -27,12 +28,12 @@ public class BanditsMechanism extends LearningMechanism {
 	/**
 	 * Epsilon parameter for epsilon-greedy action selection
 	 */
-	protected static final double EPSILON = 0.1;
+	protected double epsilon;
 
 	/**
 	 * Learning rate for update rule
 	 */
-	protected static final double LEARNING_RATE = 0.1;
+	protected double learningRate;
 
 	/**
 	 * Create a new Bandits mechanism
@@ -46,6 +47,9 @@ public class BanditsMechanism extends LearningMechanism {
 		super(teachingFacilities, sharedAreas, eatingPlaces);
 	}
 
+	/**
+	 * Initialize learning
+	 */
 	@Override
 	public void init() {
 		this.qValues = new HashMap<>();
@@ -59,12 +63,26 @@ public class BanditsMechanism extends LearningMechanism {
 		}
 	}
 
+	/**
+	 * Fix learning parameters
+	 */
+	@Override
+	public void fixParameters() {
+		this.epsilon = ParametersAdapter.getEpsilon();
+		this.learningRate = ParametersAdapter.getLearningRate();
+	}
+
+	/**
+	 * Select action
+	 * 
+	 * @param currentLocation Current location
+	 */
 	@Override
 	public String selectAction(String currentLocation) {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		List<String> actions = new ArrayList<>(this.qValues.keySet());
 		int index = -1;
-		if (r < 1 - EPSILON) {
+		if (r < 1 - this.epsilon) {
 			double topValue = Double.NEGATIVE_INFINITY;
 			List<String> ties = new ArrayList<>();
 			for (String action : actions) {
@@ -85,13 +103,24 @@ public class BanditsMechanism extends LearningMechanism {
 		}
 	}
 
+	/**
+	 * Update learning
+	 * 
+	 * @param newState New state
+	 * @param reward   Reward
+	 */
 	@Override
 	public void updateLearning(String newState, double reward) {
 		double lastQ = this.qValues.get(newState);
-		double newQ = lastQ + LEARNING_RATE * (reward - lastQ);
+		double newQ = lastQ + this.learningRate * (reward - lastQ);
 		this.qValues.put(newState, newQ);
 	}
 
+	/**
+	 * Returns true if this learning mechanism contains the specified state
+	 * 
+	 * @param state State
+	 */
 	@Override
 	public boolean containsState(String state) {
 		return this.qValues.containsKey(state);

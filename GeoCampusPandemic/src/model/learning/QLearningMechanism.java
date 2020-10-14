@@ -42,7 +42,7 @@ public class QLearningMechanism extends TDLearningMechanism {
 				String action = stateActionValue.getFirst();
 				if (action.equals(this.lastAction)) {
 					double q = stateActionValue.getSecond();
-					q = q + LEARNING_RATE * (reward + DISCOUNT_FACTOR * maxQ - q);
+					q = q + this.learningRate * (reward + this.discountFactor * maxQ - q);
 					stateActionValue.setSecond(q);
 					lastStateActionValues.set(i, stateActionValue);
 				}

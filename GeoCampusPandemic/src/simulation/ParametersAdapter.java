@@ -28,6 +28,21 @@ public class ParametersAdapter {
 	private static final String SELECTION_STRATEGY_PARAM_ID = "selectionStrategy";
 
 	/**
+	 * Epsilon parameter id
+	 */
+	private static final String EPSILON_PARAM_ID = "epsilon";
+
+	/**
+	 * Learning rate parameter id
+	 */
+	private static final String LEARNING_RATE_PARAM_ID = "learningRate";
+
+	/**
+	 * Discount factor parameter id
+	 */
+	private static final String DISCOUNT_FACTOR_PARAM_ID = "discountFactor";
+
+	/**
 	 * Learning style parameter id
 	 */
 	private static final String LEARNING_STYLE_PARAM_ID = "learningStyle";
@@ -84,6 +99,30 @@ public class ParametersAdapter {
 			return LearningStyle.BANDITS;
 		}
 		return null;
+	}
+
+	/**
+	 * Get epsilon
+	 */
+	public static double getEpsilon() {
+		Parameters simParams = RunEnvironment.getInstance().getParameters();
+		return simParams.getDouble(EPSILON_PARAM_ID);
+	}
+
+	/**
+	 * Get learning rate
+	 */
+	public static double getLearningRate() {
+		Parameters simParams = RunEnvironment.getInstance().getParameters();
+		return simParams.getDouble(LEARNING_RATE_PARAM_ID);
+	}
+
+	/**
+	 * Get discount factor
+	 */
+	public static double getDiscountFactor() {
+		Parameters simParams = RunEnvironment.getInstance().getParameters();
+		return simParams.getDouble(DISCOUNT_FACTOR_PARAM_ID);
 	}
 
 	/**

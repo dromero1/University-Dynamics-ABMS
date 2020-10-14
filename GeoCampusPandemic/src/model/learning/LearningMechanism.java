@@ -41,6 +41,11 @@ public abstract class LearningMechanism {
 	public abstract void init();
 
 	/**
+	 * Fix learning parameters
+	 */
+	public abstract void fixParameters();
+	
+	/**
 	 * Select action
 	 * 
 	 * @param currentLocation Current location

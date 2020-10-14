@@ -44,7 +44,7 @@ public class SARSAMechanism extends TDLearningMechanism {
 				String action = stateActionValue.getFirst();
 				if (action.equals(this.lastAction)) {
 					double q = stateActionValue.getSecond();
-					q = q + LEARNING_RATE * (reward + DISCOUNT_FACTOR * qPrime - q);
+					q = q + this.learningRate * (reward + this.discountFactor * qPrime - q);
 					stateActionValue.setSecond(q);
 					lastStateActionValues.set(i, stateActionValue);
 				}
