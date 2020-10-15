@@ -387,7 +387,7 @@ public abstract class CommunityMember {
 	private void initDisease() {
 		if (this.compartment == Compartment.INFECTED) {
 			this.compartment = Compartment.SUSCEPTIBLE;
-			this.incubationEnd = -TickConverter.daysToTicks(Randomizer.INFECTION_MIN);
+			this.incubationEnd = this.outbreakTick - TickConverter.daysToTicks(Randomizer.INFECTION_MIN);
 			EventScheduler eventScheduler = EventScheduler.getInstance();
 			eventScheduler.scheduleOneTimeEvent(this.outbreakTick, this, "transitionToInfected");
 		}

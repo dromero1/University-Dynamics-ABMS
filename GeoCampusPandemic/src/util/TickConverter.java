@@ -25,7 +25,7 @@ public final class TickConverter {
 	private TickConverter() {
 		throw new UnsupportedOperationException("Utility class");
 	}
-	
+
 	/**
 	 * Day and time to ticks
 	 * 
