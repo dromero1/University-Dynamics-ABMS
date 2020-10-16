@@ -10,7 +10,6 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
-
 import config.SourceFeatures;
 import gis.GISDensityMeter;
 import gis.GISPolygon;
