@@ -170,7 +170,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		this.shortestPaths = Heuristics.findShortestPaths(this.routes);
 		// Read groups
 		Map<String, Group> groups = Reader.readGroupsDatabase(SourcePaths.GROUPS_DATABASE);
-		// Add students to simulation
+		// Add students to the simulation
 		Parameters simParams = RunEnvironment.getInstance().getParameters();
 		List<Student> students = createStudents(simParams.getInteger("susceptibleStudents"),
 				simParams.getInteger("infectedStudents"));
@@ -181,7 +181,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 				context.add(student);
 			}
 		}
-		// Add staffers to simulation
+		// Add staffers to the simulation
 		List<Staffer> staffers = createStaffers(simParams.getInteger("susceptibleStaffers"),
 				simParams.getInteger("infectedStaffers"));
 		for (Staffer staff : staffers) {
