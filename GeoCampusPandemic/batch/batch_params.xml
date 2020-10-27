@@ -13,7 +13,7 @@
 	<parameter name="epsilon" type="constant"
 		constant_type="double" value="0.1"></parameter>
 	<parameter name="selectionStrategy" type="constant"
-		constant_type="java.lang.String" value="random"></parameter>
+		constant_type="java.lang.String" value="RL-based"></parameter>
 	<parameter name="susceptibleStudents" type="constant"
 		constant_type="int" value="10000"></parameter>
 	<parameter name="socialDistancing" type="constant"
