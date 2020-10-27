@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<sweep runs="5">
+<sweep runs="6">
 	<parameter name="infectionRadius" type="constant"
 		constant_type="double" value="2.0"></parameter>
 	<parameter name="infectedStaffers" type="constant"
@@ -9,7 +9,7 @@
 	<parameter name="infectedStudents" type="constant"
 		constant_type="int" value="1"></parameter>
 	<parameter name="learningRate" type="constant"
-		constant_type="double" value="0.1"></parameter>
+		constant_type="double" value="0.05"></parameter>
 	<parameter name="epsilon" type="constant"
 		constant_type="double" value="0.1"></parameter>
 	<parameter name="selectionStrategy" type="constant"
@@ -19,7 +19,7 @@
 	<parameter name="socialDistancing" type="constant"
 		constant_type="double" value="2.0"></parameter>
 	<parameter name="discountFactor" type="constant"
-		constant_type="double" value="0.8"></parameter>
+		constant_type="double" value="0.7"></parameter>
 	<parameter name="vehicleUsageRatio" type="constant"
 		constant_type="double" value="0.3"></parameter>
 	<parameter name="susceptibleStaffers" type="constant"
