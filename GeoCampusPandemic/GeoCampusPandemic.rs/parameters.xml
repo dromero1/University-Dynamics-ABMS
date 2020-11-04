@@ -11,7 +11,7 @@
 	<parameter name="learningStyle" displayName="Learning style"
 		type="java.lang.String" defaultValue="Q-learning" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		values="Q-learning SARSA Bandits" />
+		values="Q-learning Bandits" />
 	<parameter name="infectedStudents"
 		displayName="Infected students" type="int" defaultValue="1"
 		isReadOnly="false"

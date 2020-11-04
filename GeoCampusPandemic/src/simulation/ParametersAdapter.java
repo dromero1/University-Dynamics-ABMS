@@ -98,8 +98,6 @@ public class ParametersAdapter {
 		String value = simParams.getString(LEARNING_STYLE_PARAM_ID);
 		if (value.equals("Q-learning")) {
 			return LearningStyle.Q_LEARNING;
-		} else if (value.equals("SARSA")) {
-			return LearningStyle.SARSA;
 		} else if (value.equals("Bandits")) {
 			return LearningStyle.BANDITS;
 		}

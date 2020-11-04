@@ -33,6 +33,7 @@ public abstract class LearningMechanism {
 		this.sharedAreas = sharedAreas;
 		this.eatingPlaces = eatingPlaces;
 		init();
+		fixParameters();
 	}
 
 	/**
