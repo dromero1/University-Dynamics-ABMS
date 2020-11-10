@@ -30,7 +30,7 @@
 		displayName="Selection strategy" type="java.lang.String"
 		defaultValue="random" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		values="random RL-based " />
+		values="random RL-based" />
 	<parameter name="susceptibleStudents"
 		displayName="Susceptible students" type="int" defaultValue="10000"
 		isReadOnly="false"
