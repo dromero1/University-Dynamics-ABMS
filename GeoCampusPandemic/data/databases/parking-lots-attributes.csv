@@ -1,8 +1,8 @@
-Place;Area;Weight;Active;Link
-PING;0.0;0.0;0;
-PARG;0.0;0.0;0;
-PREC;0.0;0.0;0;
-PPRO;0.0;0.0;0;
-PPRI;0.0;0.0;0;
-PCID;0.0;0.0;0;
-PCAR;0.0;0.0;0;
+Place,Area,Weight,Active,Link
+PING,0.0,0.0,0,
+PARG,0.0,0.0,0,
+PREC,0.0,0.0,0,
+PPRO,0.0,0.0,0,
+PPRI,0.0,0.0,0,
+PCID,0.0,0.0,0,
+PCAR,0.0,0.0,0,

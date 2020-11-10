@@ -27,7 +27,7 @@ public final class Reader {
 	/**
 	 * Source split regular expression
 	 */
-	private static final String SOURCE_SPLIT_REGEX = ";";
+	private static final String SOURCE_SPLIT_REGEX = ",";
 
 	/**
 	 * Private constructor
