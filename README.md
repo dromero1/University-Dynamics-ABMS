@@ -1,6 +1,6 @@
 # GeoCampusPandemic
 
-*An agent-based model of community dynamics on a university campus during a pandemic scenario*
+*Integrating adaptive learning for crowding-reduction in an agent-based model of an epidemic outbreak*
 
 Few agent-based studies have examined how the social conduct of a community impacts the outcomes of an epidemic event. In particular, little is known about the effect of learning-oriented social distancing within small territories facing an outbreak. In this paper, an agent-based model of a university campus is developed to assess the influence of a crowding-reduction Reinforcement Learning device in the side effects of a scheduled COVID-19 upsurge. The developed model delivers promising results as the adaptive mechanism prompts meaningful reductions in density figures. Notwithstanding, no substantial proof was found to support the epidemic was affected at all. Altogether, the results suggest that macro-level public health policies do not translate swiftly to a small population, especially if the intricate details of social behavior are considered.
 
