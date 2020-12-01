@@ -1,4 +1,4 @@
-# GeoCampusPandemic
+# geo-campus-pandemic
 
 *Integrating adaptive learning for crowding-reduction in an agent-based model of an epidemic outbreak*
 
