@@ -2,7 +2,6 @@ package model.agents;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import gis.GISPolygon;
 import model.disease.Compartment;
 import model.util.Randomizer;

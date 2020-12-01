@@ -453,7 +453,7 @@ public abstract class CommunityMember {
 	/**
 	 * Unschedule action
 	 * 
-	 * @param schedulableAction Action to unscheduled
+	 * @param schedulableAction Action to unschedule
 	 */
 	private void unscheduleAction(SchedulableAction schedulableAction) {
 		ISchedule schedule = RunEnvironment.getInstance().getCurrentSchedule();

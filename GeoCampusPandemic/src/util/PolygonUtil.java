@@ -16,7 +16,7 @@ public final class PolygonUtil {
 	private PolygonUtil() {
 		throw new UnsupportedOperationException("Utility class");
 	}
-	
+
 	/**
 	 * Get random point from polygon
 	 * 

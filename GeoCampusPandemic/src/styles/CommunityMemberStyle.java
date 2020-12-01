@@ -2,7 +2,6 @@ package styles;
 
 import model.agents.CommunityMember;
 import model.disease.Compartment;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;

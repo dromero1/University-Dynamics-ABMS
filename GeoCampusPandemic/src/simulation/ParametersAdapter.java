@@ -135,7 +135,7 @@ public class ParametersAdapter {
 		Parameters simParams = RunEnvironment.getInstance().getParameters();
 		return simParams.getDouble(OUTBREAK_TICK_PARAM_ID);
 	}
-	
+
 	/**
 	 * Private constructor
 	 */
