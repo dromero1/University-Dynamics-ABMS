@@ -106,7 +106,7 @@ public final class SourceFeatures {
 	 * Entity separator
 	 */
 	public static final String ENTITY_SEPARATOR = "-";
-	
+
 	/**
 	 * Private constructor
 	 */
