@@ -30,7 +30,8 @@ public class AcademicActivity {
 	 * @param endTime            End time
 	 * @param teachingFacilityId Id of teaching facility
 	 */
-	public AcademicActivity(int day, double startTime, double endTime, String teachingFacilityId) {
+	public AcademicActivity(int day, double startTime, double endTime,
+			String teachingFacilityId) {
 		this.day = day;
 		this.startTime = startTime;
 		this.endTime = endTime;

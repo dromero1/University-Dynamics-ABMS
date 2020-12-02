@@ -15,7 +15,8 @@ public class GISDensityMeter extends GISPolygon {
 	 * @param active Active
 	 * @param link   Link
 	 */
-	public GISDensityMeter(double area, double weight, boolean active, String link) {
+	public GISDensityMeter(double area, double weight, boolean active,
+			String link) {
 		super(weight, active, link);
 		this.area = area;
 	}

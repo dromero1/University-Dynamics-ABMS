@@ -158,7 +158,8 @@ public final class Randomizer {
 	 * Get random lunch duration. Reference: <pending>
 	 */
 	public static double getRandomLunchDuration() {
-		Normal normal = RandomHelper.createNormal(MEAN_LUNCH_DURATION, STD_LUNCH_DURATION);
+		Normal normal = RandomHelper.createNormal(MEAN_LUNCH_DURATION,
+				STD_LUNCH_DURATION);
 		return normal.nextDouble();
 	}
 
@@ -166,7 +167,8 @@ public final class Randomizer {
 	 * Get random arrival shift. Reference: <pending>
 	 */
 	public static double getRandomArrivalShift() {
-		Normal normal = RandomHelper.createNormal(MEAN_ARRIVAL_SHIFT, STD_ARRIVAL_SHIFT);
+		Normal normal = RandomHelper.createNormal(MEAN_ARRIVAL_SHIFT,
+				STD_ARRIVAL_SHIFT);
 		return normal.nextDouble();
 	}
 
@@ -183,14 +185,16 @@ public final class Randomizer {
 	 * Get random walking speed. Reference: <pending>
 	 */
 	public static double getRandomWalkingSpeed() {
-		return RandomHelper.nextDoubleFromTo(MIN_WALKING_SPEED, MAX_WALKING_SPEED);
+		return RandomHelper.nextDoubleFromTo(MIN_WALKING_SPEED,
+				MAX_WALKING_SPEED);
 	}
 
 	/**
 	 * Get random number of groups to enroll to. Reference: <pending>
 	 */
 	public static int getRandomGroupsToEnrollTo() {
-		Binomial binomial = RandomHelper.createBinomial(TRIALS_GROUPS_TO_ENROLL, SUCCESS_PROBABILITY_GROUPS_TO_ENROLL);
+		Binomial binomial = RandomHelper.createBinomial(TRIALS_GROUPS_TO_ENROLL,
+				SUCCESS_PROBABILITY_GROUPS_TO_ENROLL);
 		return binomial.nextInt();
 	}
 
@@ -198,36 +202,42 @@ public final class Randomizer {
 	 * Get random staffer's arrival time. Reference: <pending>
 	 */
 	public static double getRandomStafferArrivalTime() {
-		return RandomHelper.nextDoubleFromTo(MIN_STAFFER_ARRIVAL_TIME, MAX_STAFFER_ARRIVAL_TIME);
+		return RandomHelper.nextDoubleFromTo(MIN_STAFFER_ARRIVAL_TIME,
+				MAX_STAFFER_ARRIVAL_TIME);
 	}
 
 	/**
 	 * Get random staffer's departure time. Reference: <pending>
 	 */
 	public static double getRandomStafferDepartureTime() {
-		return RandomHelper.nextDoubleFromTo(MIN_STAFFER_DEPARTURE_TIME, MAX_STAFFER_DEPARTURE_TIME);
+		return RandomHelper.nextDoubleFromTo(MIN_STAFFER_DEPARTURE_TIME,
+				MAX_STAFFER_DEPARTURE_TIME);
 	}
 
 	/**
 	 * Get random student's arrival time. Reference: <pending>
 	 */
 	public static double getRandomStudentArrivalTime() {
-		return RandomHelper.nextDoubleFromTo(MIN_STUDENT_ARRIVAL_TIME, MAX_STUDENT_ARRIVAL_TIME);
+		return RandomHelper.nextDoubleFromTo(MIN_STUDENT_ARRIVAL_TIME,
+				MAX_STUDENT_ARRIVAL_TIME);
 	}
 
 	/**
 	 * Get random student's departure time. Reference: <pending>
 	 */
 	public static double getRandomStudentDepartureTime() {
-		return RandomHelper.nextDoubleFromTo(MIN_STUDENT_DEPARTURE_TIME, MAX_STUDENT_DEPARTURE_TIME);
+		return RandomHelper.nextDoubleFromTo(MIN_STUDENT_DEPARTURE_TIME,
+				MAX_STUDENT_DEPARTURE_TIME);
 	}
 
 	/**
 	 * Get random incubation period (unit: days). Reference: <pending>
 	 */
 	public static double getRandomIncubationPeriod() {
-		double t = Math.pow(MEAN_INCUBATION_PERIOD, 2) + Math.pow(STD_INCUBATION_PERIOD, 2);
-		double mu = Math.log(Math.pow(MEAN_INCUBATION_PERIOD, 2) / Math.sqrt(t));
+		double t = Math.pow(MEAN_INCUBATION_PERIOD, 2)
+				+ Math.pow(STD_INCUBATION_PERIOD, 2);
+		double mu = Math
+				.log(Math.pow(MEAN_INCUBATION_PERIOD, 2) / Math.sqrt(t));
 		double sigma = Math.log(t / Math.pow(MEAN_INCUBATION_PERIOD, 2));
 		Normal normal = RandomHelper.createNormal(mu, sigma);
 		double y = normal.nextDouble();
@@ -274,7 +284,8 @@ public final class Randomizer {
 	 */
 	public static boolean isGettingExposed(double incubationDiff) {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
-		Gamma gamma = RandomHelper.createGamma(INFECTION_ALPHA, 1.0 / INFECTION_BETA);
+		Gamma gamma = RandomHelper.createGamma(INFECTION_ALPHA,
+				1.0 / INFECTION_BETA);
 		double days = TickConverter.ticksToDays(incubationDiff);
 		if (days < INFECTION_MIN) {
 			return false;
@@ -287,7 +298,8 @@ public final class Randomizer {
 	 * Get random time to discharge (unit: days). Reference: <pending>
 	 */
 	public static double getRandomTimeToDischarge() {
-		Gamma gamma = RandomHelper.createGamma(DISCHARGE_ALPHA, 1.0 / DISCHARGE_BETA);
+		Gamma gamma = RandomHelper.createGamma(DISCHARGE_ALPHA,
+				1.0 / DISCHARGE_BETA);
 		return gamma.nextDouble();
 	}
 
@@ -296,7 +308,8 @@ public final class Randomizer {
 	 * 
 	 * @param polygons Map of polygons
 	 */
-	public static GISPolygon getRandomPolygon(Map<String, GISPolygon> polygons) {
+	public static GISPolygon getRandomPolygon(
+			Map<String, GISPolygon> polygons) {
 		ArrayList<GISPolygon> polyList = new ArrayList<>();
 		for (GISPolygon polygon : polygons.values()) {
 			if (!polygon.isActive()) {
@@ -313,7 +326,8 @@ public final class Randomizer {
 	 * 
 	 * @param polygons Map of polygons
 	 */
-	public static GISPolygon getRandomPolygonWeightBased(Map<String, GISPolygon> polygons) {
+	public static GISPolygon getRandomPolygonWeightBased(
+			Map<String, GISPolygon> polygons) {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		double cummulativeProbability = 0;
 		for (GISPolygon polygon : polygons.values()) {
@@ -334,7 +348,8 @@ public final class Randomizer {
 	 * 
 	 * @param polygons Map of polygons
 	 */
-	public static GISPolygon getRandomPolygonWorkWeightBased(Map<String, GISPolygon> polygons) {
+	public static GISPolygon getRandomPolygonWorkWeightBased(
+			Map<String, GISPolygon> polygons) {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		double cummulativeProbability = 0;
 		for (GISPolygon polygon : polygons.values()) {

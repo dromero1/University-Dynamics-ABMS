@@ -34,9 +34,11 @@ public class Staffer extends CommunityMember {
 	 * @param compartment    Compartment
 	 * @param outbreakTick   Outbreak tick
 	 */
-	public Staffer(SimulationBuilder contextBuilder, Compartment compartment, double outbreakTick) {
+	public Staffer(SimulationBuilder contextBuilder, Compartment compartment,
+			double outbreakTick) {
 		super(contextBuilder, compartment, outbreakTick);
-		this.workplace = Randomizer.getRandomPolygonWorkWeightBased(this.simulationBuilder.workplaces);
+		this.workplace = Randomizer.getRandomPolygonWorkWeightBased(
+				this.simulationBuilder.workplaces);
 		this.workStartTime = Randomizer.getRandomStafferArrivalTime();
 	}
 
@@ -55,9 +57,11 @@ public class Staffer extends CommunityMember {
 		EventScheduler eventScheduler = EventScheduler.getInstance();
 		List<ISchedulableAction> actions = new ArrayList<>();
 		for (int i = 1; i <= WEEKDAYS; i++) {
-			double ticksToEvent = TickConverter.dayTimeToTicks(i, this.workStartTime);
-			ISchedulableAction workAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
-					TickConverter.TICKS_PER_WEEK, "work");
+			double ticksToEvent = TickConverter.dayTimeToTicks(i,
+					this.workStartTime);
+			ISchedulableAction workAction = eventScheduler
+					.scheduleRecurringEvent(ticksToEvent, this,
+							TickConverter.TICKS_PER_WEEK, "work");
 			actions.add(workAction);
 		}
 		this.scheduledActions.put(SchedulableAction.ATTEND_ACTIVITY, actions);
@@ -74,8 +78,9 @@ public class Staffer extends CommunityMember {
 			double arrivalTime = Randomizer.getRandomStafferArrivalTime();
 			double startTime = Math.min(arrivalTime, this.workStartTime - 1);
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, startTime);
-			ISchedulableAction arriveCampusAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
-					TickConverter.TICKS_PER_WEEK, "haveLunch");
+			ISchedulableAction arriveCampusAction = eventScheduler
+					.scheduleRecurringEvent(ticksToEvent, this,
+							TickConverter.TICKS_PER_WEEK, "haveLunch");
 			actions.add(arriveCampusAction);
 		}
 		this.scheduledActions.put(SchedulableAction.ARRIVE_CAMPUS, actions);
@@ -91,8 +96,9 @@ public class Staffer extends CommunityMember {
 		for (int i = 1; i <= WEEKDAYS; i++) {
 			double endTime = Randomizer.getRandomStafferDepartureTime();
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, endTime);
-			ISchedulableAction returnHomeAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
-					TickConverter.TICKS_PER_WEEK, "returnHome");
+			ISchedulableAction returnHomeAction = eventScheduler
+					.scheduleRecurringEvent(ticksToEvent, this,
+							TickConverter.TICKS_PER_WEEK, "returnHome");
 			actions.add(returnHomeAction);
 		}
 		this.scheduledActions.put(SchedulableAction.RETURN_HOME, actions);
@@ -109,12 +115,14 @@ public class Staffer extends CommunityMember {
 			double lunchTime = Randomizer.getRandomLunchTime();
 			double lunchDuration = Randomizer.getRandomLunchDuration();
 			double ticksToEvent = TickConverter.dayTimeToTicks(i, lunchTime);
-			ISchedulableAction haveLunchAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
-					TickConverter.TICKS_PER_WEEK, "haveLunch");
+			ISchedulableAction haveLunchAction = eventScheduler
+					.scheduleRecurringEvent(ticksToEvent, this,
+							TickConverter.TICKS_PER_WEEK, "haveLunch");
 			actions.add(haveLunchAction);
 			ticksToEvent += lunchDuration;
-			ISchedulableAction workAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
-					TickConverter.TICKS_PER_WEEK, "work");
+			ISchedulableAction workAction = eventScheduler
+					.scheduleRecurringEvent(ticksToEvent, this,
+							TickConverter.TICKS_PER_WEEK, "work");
 			actions.add(workAction);
 		}
 		this.scheduledActions.put(SchedulableAction.HAVE_LUNCH, actions);

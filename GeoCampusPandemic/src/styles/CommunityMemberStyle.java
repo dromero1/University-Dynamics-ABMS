@@ -46,23 +46,29 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 		Dimension dimension = new Dimension(WIDTH, HEIGHT);
 		this.textureMap = new HashMap<String, WWTexture>();
 		// Black circle
-		BufferedImage image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE,
+		BufferedImage image = PatternFactory.createPattern(
+				PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE,
 				Color.BLACK);
 		this.textureMap.put("black-circle", new BasicWWTexture(image));
 		// Orange circle
-		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE, Color.ORANGE);
+		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE,
+				dimension, STANDARD_SCALE, Color.ORANGE);
 		this.textureMap.put("orange-circle", new BasicWWTexture(image));
 		// Green circle
-		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE, Color.GREEN);
+		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE,
+				dimension, STANDARD_SCALE, Color.GREEN);
 		this.textureMap.put("green-circle", new BasicWWTexture(image));
 		// Red circle
-		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE, Color.RED);
+		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE,
+				dimension, STANDARD_SCALE, Color.RED);
 		this.textureMap.put("red-circle", new BasicWWTexture(image));
 		// Blue circle
-		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE, Color.BLUE);
+		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE,
+				dimension, STANDARD_SCALE, Color.BLUE);
 		textureMap.put("blue-circle", new BasicWWTexture(image));
 		// Gray circle
-		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE, dimension, STANDARD_SCALE, Color.GRAY);
+		image = PatternFactory.createPattern(PatternFactory.PATTERN_CIRCLE,
+				dimension, STANDARD_SCALE, Color.GRAY);
 		this.textureMap.put("gray-circle", new BasicWWTexture(image));
 	}
 
@@ -73,7 +79,8 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 	 * @param texture         Texture
 	 */
 	@Override
-	public WWTexture getTexture(CommunityMember communityMember, WWTexture texture) {
+	public WWTexture getTexture(CommunityMember communityMember,
+			WWTexture texture) {
 		Compartment compartment = communityMember.getCompartment();
 		switch (compartment) {
 		case DEAD:
@@ -139,7 +146,8 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 	 * @param mark            Place mark
 	 */
 	@Override
-	public PlaceMark getPlaceMark(CommunityMember communityMember, PlaceMark mark) {
+	public PlaceMark getPlaceMark(CommunityMember communityMember,
+			PlaceMark mark) {
 		if (mark == null) {
 			mark = new PlaceMark();
 		}
@@ -215,7 +223,8 @@ public class CommunityMemberStyle implements MarkStyle<CommunityMember> {
 	 * @param lineMaterial    Line material
 	 */
 	@Override
-	public Material getLineMaterial(CommunityMember communityMember, Material lineMaterial) {
+	public Material getLineMaterial(CommunityMember communityMember,
+			Material lineMaterial) {
 		if (lineMaterial == null) {
 			lineMaterial = new Material(Color.RED);
 		}

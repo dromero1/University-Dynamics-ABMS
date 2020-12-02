@@ -41,13 +41,16 @@ public final class Reader {
 	 * 
 	 * @param filename File name
 	 */
-	public static List<SimpleFeature> loadGeometryFromShapefile(String filename) {
+	public static List<SimpleFeature> loadGeometryFromShapefile(
+			String filename) {
 		File file = new File(filename);
 		try {
 			FileDataStore store = FileDataStoreFinder.getDataStore(file);
 			SimpleFeatureSource featureSource = store.getFeatureSource();
-			SimpleFeatureCollection featureCollection = featureSource.getFeatures();
-			SimpleFeatureIterator featureIterator = featureCollection.features();
+			SimpleFeatureCollection featureCollection = featureSource
+					.getFeatures();
+			SimpleFeatureIterator featureIterator = featureCollection
+					.features();
 			ArrayList<SimpleFeature> simpleFeatures = new ArrayList<>();
 			while (featureIterator.hasNext()) {
 				simpleFeatures.add(featureIterator.next());
@@ -114,10 +117,12 @@ public final class Reader {
 					String groupId = rawGroupId.toString();
 					if (groups.containsKey(groupId)) {
 						Group group = groups.get(groupId);
-						group.addAcademicActivity(day, startTime, endTime, teachingFacilityId);
+						group.addAcademicActivity(day, startTime, endTime,
+								teachingFacilityId);
 					} else {
 						Group group = new Group(groupId, capacity);
-						group.addAcademicActivity(day, startTime, endTime, teachingFacilityId);
+						group.addAcademicActivity(day, startTime, endTime,
+								teachingFacilityId);
 						groups.put(groupId, group);
 					}
 				}
@@ -133,7 +138,8 @@ public final class Reader {
 	 * 
 	 * @param filename File name
 	 */
-	public static Map<String, ArrayList<String>> readScheduleSelectionDatabase(String filename) {
+	public static Map<String, ArrayList<String>> readScheduleSelectionDatabase(
+			String filename) {
 		Map<String, ArrayList<String>> scheduleSelection = new HashMap<>();
 		File file = new File(filename);
 		try (Scanner scanner = new Scanner(file)) {
@@ -187,7 +193,8 @@ public final class Reader {
 	 * 
 	 * @param filename File name
 	 */
-	public static Map<String, GISPolygon> readFacilityAttributesDatabase(String filename) {
+	public static Map<String, GISPolygon> readFacilityAttributesDatabase(
+			String filename) {
 		Map<String, GISPolygon> attributes = new HashMap<>();
 		File file = new File(filename);
 		try (Scanner scanner = new Scanner(file)) {
@@ -226,7 +233,8 @@ public final class Reader {
 					}
 					GISPolygon polygon = null;
 					if (area > 0) {
-						polygon = new GISDensityMeter(area, weight, active, link);
+						polygon = new GISDensityMeter(area, weight, active,
+								link);
 					} else {
 						polygon = new GISPolygon(weight, active, link);
 					}
@@ -283,8 +291,10 @@ public final class Reader {
 	 * 
 	 * @param filename File name
 	 */
-	public static Graph<String, DefaultWeightedEdge> readRoutesDatabase(String filename) {
-		Graph<String, DefaultWeightedEdge> routes = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+	public static Graph<String, DefaultWeightedEdge> readRoutesDatabase(
+			String filename) {
+		Graph<String, DefaultWeightedEdge> routes = new DefaultDirectedWeightedGraph<>(
+				DefaultWeightedEdge.class);
 		File file = new File(filename);
 		try (Scanner scanner = new Scanner(file)) {
 			boolean first = true;
@@ -318,11 +328,13 @@ public final class Reader {
 					if (!routes.containsVertex(destination)) {
 						routes.addVertex(destination);
 					}
-					DefaultWeightedEdge edge1 = routes.addEdge(origin, destination);
+					DefaultWeightedEdge edge1 = routes.addEdge(origin,
+							destination);
 					if (edge1 != null) {
 						routes.setEdgeWeight(edge1, weight);
 					}
-					DefaultWeightedEdge edge2 = routes.addEdge(destination, origin);
+					DefaultWeightedEdge edge2 = routes.addEdge(destination,
+							origin);
 					if (edge2 != null) {
 						routes.setEdgeWeight(edge2, weight);
 					}

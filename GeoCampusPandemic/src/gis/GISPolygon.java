@@ -80,7 +80,8 @@ public class GISPolygon {
 	 * @param geography Reference to geography projection
 	 * @param geometry  Reference to geometry
 	 */
-	public void setGeometryInGeography(Geography<Object> geography, Geometry geometry) {
+	public void setGeometryInGeography(Geography<Object> geography,
+			Geometry geometry) {
 		this.geography = geography;
 		this.geometry = geometry;
 		this.geography.move(this, this.geometry);

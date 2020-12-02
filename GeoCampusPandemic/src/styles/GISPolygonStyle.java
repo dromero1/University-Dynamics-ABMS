@@ -20,7 +20,8 @@ public class GISPolygonStyle implements SurfaceShapeStyle<GISPolygon> {
 	 * @param shape   Shape
 	 */
 	@Override
-	public SurfaceShape getSurfaceShape(GISPolygon polygon, SurfaceShape shape) {
+	public SurfaceShape getSurfaceShape(GISPolygon polygon,
+			SurfaceShape shape) {
 		return new SurfacePolygon();
 	}
 

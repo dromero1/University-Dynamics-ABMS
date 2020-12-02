@@ -17,13 +17,17 @@ public final class LearningFactory {
 	 * 
 	 * @param learningStyle Learning style
 	 */
-	public static LearningMechanism makeLearningMechanism(LearningStyle learningStyle,
-			Map<String, GISPolygon> teachingFacilities, Map<String, GISPolygon> sharedAreas,
+	public static LearningMechanism makeLearningMechanism(
+			LearningStyle learningStyle,
+			Map<String, GISPolygon> teachingFacilities,
+			Map<String, GISPolygon> sharedAreas,
 			Map<String, GISPolygon> eatingPlaces) {
 		if (learningStyle == LearningStyle.Q_LEARNING) {
-			return new QLearningMechanism(teachingFacilities, sharedAreas, eatingPlaces);
+			return new QLearningMechanism(teachingFacilities, sharedAreas,
+					eatingPlaces);
 		} else if (learningStyle == LearningStyle.BANDITS) {
-			return new BanditsMechanism(teachingFacilities, sharedAreas, eatingPlaces);
+			return new BanditsMechanism(teachingFacilities, sharedAreas,
+					eatingPlaces);
 		} else {
 			return null;
 		}

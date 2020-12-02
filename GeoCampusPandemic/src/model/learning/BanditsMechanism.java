@@ -42,7 +42,8 @@ public class BanditsMechanism extends LearningMechanism {
 	 * @param sharedAreas        Shared areas
 	 * @param eatingPlaces       Eating places
 	 */
-	public BanditsMechanism(Map<String, GISPolygon> teachingFacilities, Map<String, GISPolygon> sharedAreas,
+	public BanditsMechanism(Map<String, GISPolygon> teachingFacilities,
+			Map<String, GISPolygon> sharedAreas,
 			Map<String, GISPolygon> eatingPlaces) {
 		super(teachingFacilities, sharedAreas, eatingPlaces);
 	}
@@ -54,11 +55,13 @@ public class BanditsMechanism extends LearningMechanism {
 	public void init() {
 		this.qValues = new HashMap<>();
 		for (String eatingPlace : this.eatingPlaces.keySet()) {
-			double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM, Q_VALUE_INIT_TO);
+			double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM,
+					Q_VALUE_INIT_TO);
 			this.qValues.put(eatingPlace, q);
 		}
 		for (String sharedArea : this.sharedAreas.keySet()) {
-			double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM, Q_VALUE_INIT_TO);
+			double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM,
+					Q_VALUE_INIT_TO);
 			this.qValues.put(sharedArea, q);
 		}
 	}

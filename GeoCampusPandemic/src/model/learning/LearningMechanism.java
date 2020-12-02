@@ -27,7 +27,8 @@ public abstract class LearningMechanism {
 	 * @param sharedAreas        Shared areas
 	 * @param eatingPlaces       Eating places
 	 */
-	public LearningMechanism(Map<String, GISPolygon> teachingFacilities, Map<String, GISPolygon> sharedAreas,
+	public LearningMechanism(Map<String, GISPolygon> teachingFacilities,
+			Map<String, GISPolygon> sharedAreas,
 			Map<String, GISPolygon> eatingPlaces) {
 		this.teachingFacilities = teachingFacilities;
 		this.sharedAreas = sharedAreas;
@@ -45,7 +46,7 @@ public abstract class LearningMechanism {
 	 * Fix learning parameters
 	 */
 	public abstract void fixParameters();
-	
+
 	/**
 	 * Select action
 	 * 

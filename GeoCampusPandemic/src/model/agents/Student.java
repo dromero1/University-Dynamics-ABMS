@@ -20,7 +20,8 @@ import util.TickConverter;
 public class Student extends CommunityMember {
 
 	/**
-	 * Minimum time difference between activities in order to have fun (unit: hours)
+	 * Minimum time difference between activities in order to have fun (unit:
+	 * hours)
 	 */
 	public static final double MIN_TIME_TO_FUN = 0.5;
 
@@ -52,7 +53,8 @@ public class Student extends CommunityMember {
 	 * @param id             Student id
 	 * @param outbreakTick   Outbreak tick
 	 */
-	public Student(SimulationBuilder contextBuilder, Compartment compartment, String id, double outbreakTick) {
+	public Student(SimulationBuilder contextBuilder, Compartment compartment,
+			String id, double outbreakTick) {
 		super(contextBuilder, compartment, outbreakTick);
 		this.id = id;
 		this.scheduledDepartures = new HashMap<>();
@@ -74,21 +76,23 @@ public class Student extends CommunityMember {
 	 */
 	public void attendActivity(String teachingFacilityId) {
 		Map<String, GISPolygon> teachingFacilities = this.simulationBuilder.teachingFacilities;
-		GISPolygon teachingFacility = teachingFacilities.get(teachingFacilityId);
+		GISPolygon teachingFacility = teachingFacilities
+				.get(teachingFacilityId);
 		moveToPolygon(teachingFacility, "");
 	}
 
 	/**
-	 * Leave an academic activity. The student determines what to do next. If he/she
-	 * has an activity in less than MIN_TIME_TO_FUN ticks he/she prefers to go
-	 * there. In the other case, the student goes to have fun.
+	 * Leave an academic activity. The student determines what to do next. If
+	 * he/she has an activity in less than MIN_TIME_TO_FUN ticks he/she prefers
+	 * to go there. In the other case, the student goes to have fun.
 	 */
 	public void leaveActivity() {
 		double tick = RepastEssentials.GetTickCount();
 		Pair<Integer, Double> dayTime = TickConverter.tickToDayTime(tick);
 		int day = dayTime.getFirst();
 		double hour = dayTime.getSecond();
-		AcademicActivity nextActivity = this.schedule.getNextAcademicActivity(day, hour);
+		AcademicActivity nextActivity = this.schedule
+				.getNextAcademicActivity(day, hour);
 		if (nextActivity != null) {
 			double delta = nextActivity.getStartTime() - hour;
 			if (delta < MIN_TIME_TO_FUN) {
@@ -106,7 +110,8 @@ public class Student extends CommunityMember {
 		// Walk to shared area
 		Map<String, GISPolygon> places = this.simulationBuilder.sharedAreas;
 		places.putAll(this.simulationBuilder.eatingPlaces);
-		SelectionStrategy selectionStrategy = ParametersAdapter.getSelectionStrategy();
+		SelectionStrategy selectionStrategy = ParametersAdapter
+				.getSelectionStrategy();
 		GISPolygon polygon = getRandomPolygon(places, selectionStrategy);
 		moveToPolygon(polygon, "");
 		// Schedule having fun in another place
@@ -116,7 +121,8 @@ public class Student extends CommunityMember {
 		int day = dayTime.getFirst();
 		double hour = dayTime.getSecond();
 		double timeToNextEvent = -1;
-		AcademicActivity nextActivity = this.schedule.getNextAcademicActivity(day, hour);
+		AcademicActivity nextActivity = this.schedule
+				.getNextAcademicActivity(day, hour);
 		if (nextActivity != null) {
 			timeToNextEvent = nextActivity.getStartTime();
 		} else if (this.scheduledDepartures.containsKey(day)) {
@@ -125,7 +131,8 @@ public class Student extends CommunityMember {
 		if (timeToNextEvent > tick) {
 			double delta = timeToNextEvent - hour;
 			if (delta > FUN_CHANGE_FREQUENCY) {
-				eventScheduler.scheduleOneTimeEvent(FUN_CHANGE_FREQUENCY, this, "haveFun");
+				eventScheduler.scheduleOneTimeEvent(FUN_CHANGE_FREQUENCY, this,
+						"haveFun");
 			}
 		}
 	}
@@ -150,14 +157,18 @@ public class Student extends CommunityMember {
 				double arrivalShift = Randomizer.getRandomArrivalShift();
 				double startTime = activity.getStartTime() - arrivalShift;
 				String teachingFacilityId = activity.getTeachingFacilityId();
-				double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
-				ISchedulableAction attendActivityAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
-						TickConverter.TICKS_PER_WEEK, "attendActivity", teachingFacilityId);
+				double ticksToEvent = TickConverter.dayTimeToTicks(day,
+						startTime);
+				ISchedulableAction attendActivityAction = eventScheduler
+						.scheduleRecurringEvent(ticksToEvent, this,
+								TickConverter.TICKS_PER_WEEK, "attendActivity",
+								teachingFacilityId);
 				actions.add(attendActivityAction);
 				double endTime = activity.getEndTime();
 				ticksToEvent = TickConverter.dayTimeToTicks(day, endTime);
-				ISchedulableAction leaveActivityAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
-						TickConverter.TICKS_PER_WEEK, "leaveActivity");
+				ISchedulableAction leaveActivityAction = eventScheduler
+						.scheduleRecurringEvent(ticksToEvent, this,
+								TickConverter.TICKS_PER_WEEK, "leaveActivity");
 				actions.add(leaveActivityAction);
 			}
 		}
@@ -173,12 +184,16 @@ public class Student extends CommunityMember {
 		List<ISchedulableAction> actions = new ArrayList<>();
 		List<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
-			AcademicActivity firstActivity = this.schedule.getFirstAcademicActivityInDay(day);
+			AcademicActivity firstActivity = this.schedule
+					.getFirstAcademicActivityInDay(day);
 			double arrivalTime = Randomizer.getRandomStudentArrivalTime();
-			double startTime = Math.min(firstActivity.getStartTime() - UB_ARRIVAL_SHIFT, arrivalTime);
+			double startTime = Math.min(
+					firstActivity.getStartTime() - UB_ARRIVAL_SHIFT,
+					arrivalTime);
 			double ticksToEvent = TickConverter.dayTimeToTicks(day, startTime);
-			ISchedulableAction arriveCampusAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
-					TickConverter.TICKS_PER_WEEK, "haveFun");
+			ISchedulableAction arriveCampusAction = eventScheduler
+					.scheduleRecurringEvent(ticksToEvent, this,
+							TickConverter.TICKS_PER_WEEK, "haveFun");
 			actions.add(arriveCampusAction);
 		}
 		this.scheduledActions.put(SchedulableAction.ARRIVE_CAMPUS, actions);
@@ -193,12 +208,14 @@ public class Student extends CommunityMember {
 		List<ISchedulableAction> actions = new ArrayList<>();
 		List<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
-			AcademicActivity lastActivity = this.schedule.getLastAcademicActivityInDay(day);
+			AcademicActivity lastActivity = this.schedule
+					.getLastAcademicActivityInDay(day);
 			double departureTime = Randomizer.getRandomStudentDepartureTime();
 			double endTime = Math.max(lastActivity.getEndTime(), departureTime);
 			double ticksToEvent = TickConverter.dayTimeToTicks(day, endTime);
-			ISchedulableAction returnHomeAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
-					TickConverter.TICKS_PER_WEEK, "returnHome");
+			ISchedulableAction returnHomeAction = eventScheduler
+					.scheduleRecurringEvent(ticksToEvent, this,
+							TickConverter.TICKS_PER_WEEK, "returnHome");
 			actions.add(returnHomeAction);
 			this.scheduledDepartures.put(day, endTime);
 		}
@@ -214,19 +231,22 @@ public class Student extends CommunityMember {
 		List<ISchedulableAction> actions = new ArrayList<>();
 		List<Integer> days = this.schedule.getCampusDays();
 		for (Integer day : days) {
-			Pair<Double, Double> lunch = Heuristics.getRandomLunchTime(this.schedule, day);
+			Pair<Double, Double> lunch = Heuristics
+					.getRandomLunchTime(this.schedule, day);
 			if (lunch == null) {
 				continue;
 			}
 			double lunchTime = lunch.getFirst();
 			double lunchDuration = lunch.getSecond();
 			double ticksToEvent = TickConverter.dayTimeToTicks(day, lunchTime);
-			ISchedulableAction haveLunchAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
-					TickConverter.TICKS_PER_WEEK, "haveLunch");
+			ISchedulableAction haveLunchAction = eventScheduler
+					.scheduleRecurringEvent(ticksToEvent, this,
+							TickConverter.TICKS_PER_WEEK, "haveLunch");
 			actions.add(haveLunchAction);
 			ticksToEvent += lunchDuration;
-			ISchedulableAction haveFunAction = eventScheduler.scheduleRecurringEvent(ticksToEvent, this,
-					TickConverter.TICKS_PER_WEEK, "haveFun");
+			ISchedulableAction haveFunAction = eventScheduler
+					.scheduleRecurringEvent(ticksToEvent, this,
+							TickConverter.TICKS_PER_WEEK, "haveFun");
 			actions.add(haveFunAction);
 		}
 		this.scheduledActions.put(SchedulableAction.HAVE_LUNCH, actions);

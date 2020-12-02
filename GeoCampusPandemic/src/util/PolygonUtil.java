@@ -25,7 +25,8 @@ public final class PolygonUtil {
 	public static Point getRandomPoint(GISPolygon polygon) {
 		GeometryFactory geometryFactory = new GeometryFactory();
 		Geometry geometry = polygon.getGeometry();
-		List<Coordinate> coordinates = GeometryUtil.generateRandomPointsInPolygon(geometry, 1);
+		List<Coordinate> coordinates = GeometryUtil
+				.generateRandomPointsInPolygon(geometry, 1);
 		Coordinate coordinate = coordinates.get(0);
 		return geometryFactory.createPoint(coordinate);
 	}

@@ -68,7 +68,8 @@ public class Schedule {
 					if (firstActivity == null) {
 						firstActivity = activity;
 					} else {
-						if (firstActivity.getStartTime() > activity.getStartTime()) {
+						if (firstActivity.getStartTime() > activity
+								.getStartTime()) {
 							firstActivity = activity;
 						}
 					}
@@ -111,11 +112,13 @@ public class Schedule {
 		AcademicActivity nextActivity = null;
 		for (Group group : this.groups) {
 			for (AcademicActivity activity : group.getAcademicActivities()) {
-				if (activity.getDay() == day && activity.getStartTime() > hour) {
+				if (activity.getDay() == day
+						&& activity.getStartTime() > hour) {
 					if (nextActivity == null) {
 						nextActivity = activity;
 					} else {
-						if (nextActivity.getStartTime() > activity.getStartTime()) {
+						if (nextActivity.getStartTime() > activity
+								.getStartTime()) {
 							nextActivity = activity;
 						}
 					}
@@ -140,7 +143,8 @@ public class Schedule {
 					double activityEnd = activity.getEndTime();
 					double eventEnd = eventStart + duration;
 					if ((eventEnd >= activityStart && eventEnd <= activityEnd)
-							|| (eventStart >= activityStart && eventStart <= activityEnd)) {
+							|| (eventStart >= activityStart
+									&& eventStart <= activityEnd)) {
 						return true;
 					}
 				}

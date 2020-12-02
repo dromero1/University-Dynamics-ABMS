@@ -58,7 +58,8 @@ public final class Heuristics {
 	 * @param scheduleSelection Heuristic-based schedule selection
 	 * @param groups            Available groups
 	 */
-	public static Schedule buildHeuristicSchedule(String studentId, Map<String, ArrayList<String>> scheduleSelection,
+	public static Schedule buildHeuristicSchedule(String studentId,
+			Map<String, ArrayList<String>> scheduleSelection,
 			Map<String, Group> groups) {
 		Schedule schedule = null;
 		if (scheduleSelection.containsKey(studentId)) {
@@ -80,14 +81,18 @@ public final class Heuristics {
 	 * @param schedule Student's schedule
 	 * @param day      Day
 	 */
-	public static Pair<Double, Double> getRandomLunchTime(Schedule schedule, int day) {
+	public static Pair<Double, Double> getRandomLunchTime(Schedule schedule,
+			int day) {
 		Pair<Double, Double> lunch = null;
-		AcademicActivity firstActivity = schedule.getFirstAcademicActivityInDay(day);
-		AcademicActivity lastActivity = schedule.getLastAcademicActivityInDay(day);
+		AcademicActivity firstActivity = schedule
+				.getFirstAcademicActivityInDay(day);
+		AcademicActivity lastActivity = schedule
+				.getLastAcademicActivityInDay(day);
 		for (int i = 0; i < 100; i++) {
 			double lunchTime = Randomizer.getRandomLunchTime();
 			double lunchDuration = Randomizer.getRandomLunchDuration();
-			if (lunchTime > firstActivity.getStartTime() && lunchTime < lastActivity.getEndTime()
+			if (lunchTime > firstActivity.getStartTime()
+					&& lunchTime < lastActivity.getEndTime()
 					&& !schedule.collides(day, lunchTime, lunchDuration)) {
 				lunch = new Pair<>(lunchTime, lunchDuration);
 				break;
@@ -104,13 +109,16 @@ public final class Heuristics {
 	public static Map<String, GraphPath<String, DefaultWeightedEdge>> findShortestPaths(
 			Graph<String, DefaultWeightedEdge> routes) {
 		HashMap<String, GraphPath<String, DefaultWeightedEdge>> paths = new HashMap<>();
-		DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(routes);
+		DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(
+				routes);
 		for (String source : routes.vertexSet()) {
-			SingleSourcePaths<String, DefaultWeightedEdge> iPaths = dijkstraAlg.getPaths(source);
+			SingleSourcePaths<String, DefaultWeightedEdge> iPaths = dijkstraAlg
+					.getPaths(source);
 			for (String sink : routes.vertexSet()) {
 				String id = source + SourceFeatures.ENTITY_SEPARATOR + sink;
 				if (!paths.containsKey(id)) {
-					GraphPath<String, DefaultWeightedEdge> path = iPaths.getPath(sink);
+					GraphPath<String, DefaultWeightedEdge> path = iPaths
+							.getPath(sink);
 					paths.put(id, path);
 				}
 			}

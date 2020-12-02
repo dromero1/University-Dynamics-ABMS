@@ -48,8 +48,10 @@ public class Group {
 	 * @param endTime            End time
 	 * @param teachingFacilityId Id of teaching facility
 	 */
-	public void addAcademicActivity(int day, double startTime, double endTime, String teachingFacilityId) {
-		AcademicActivity activity = new AcademicActivity(day, startTime, endTime, teachingFacilityId);
+	public void addAcademicActivity(int day, double startTime, double endTime,
+			String teachingFacilityId) {
+		AcademicActivity activity = new AcademicActivity(day, startTime,
+				endTime, teachingFacilityId);
 		this.academicActivities.add(activity);
 	}
 

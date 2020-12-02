@@ -111,53 +111,62 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		// Create geography projection
 		this.geography = createGeographyProjection(context);
 		// Initialize teaching facilities
-		this.teachingFacilities = readPolygons(SourcePaths.TEACHING_FACILITIES_GEOMETRY_SHAPEFILE,
+		this.teachingFacilities = readPolygons(
+				SourcePaths.TEACHING_FACILITIES_GEOMETRY_SHAPEFILE,
 				SourcePaths.TEACHING_FACILITIES_ATTRIBUTES_DATABASE);
 		for (GISPolygon teachingFacility : this.teachingFacilities.values()) {
 			context.add(teachingFacility);
 		}
 		// Initialize shared areas
-		this.sharedAreas = readPolygons(SourcePaths.SHARED_AREAS_GEOMETRY_SHAPEFILE,
+		this.sharedAreas = readPolygons(
+				SourcePaths.SHARED_AREAS_GEOMETRY_SHAPEFILE,
 				SourcePaths.SHARED_AREAS_ATTRIBUTES_DATABASE);
 		for (GISPolygon sharedArea : this.sharedAreas.values()) {
 			context.add(sharedArea);
 		}
 		// Initialize eating places
-		this.eatingPlaces = readPolygons(SourcePaths.EATING_PLACES_GEOMETRY_SHAPEFILE,
+		this.eatingPlaces = readPolygons(
+				SourcePaths.EATING_PLACES_GEOMETRY_SHAPEFILE,
 				SourcePaths.EATING_PLACES_ATTRIBUTES_DATABASE);
 		for (GISPolygon eatingPlace : this.eatingPlaces.values()) {
 			context.add(eatingPlace);
 		}
 		// Initialize in-outs spots
-		this.inOuts = readPolygons(SourcePaths.INOUTS_GEOMETRY_SHAPEFILE, SourcePaths.INOUT_SPOTS_ATTRIBUTES_DATABASE);
+		this.inOuts = readPolygons(SourcePaths.INOUTS_GEOMETRY_SHAPEFILE,
+				SourcePaths.INOUT_SPOTS_ATTRIBUTES_DATABASE);
 		for (GISPolygon inOut : inOuts.values()) {
 			context.add(inOut);
 		}
 		// Initialize vehicle in-out spots
-		this.vehicleInOuts = readPolygons(SourcePaths.VEHICLE_INOUTS_GEOMETRY_SHAPEFILE,
+		this.vehicleInOuts = readPolygons(
+				SourcePaths.VEHICLE_INOUTS_GEOMETRY_SHAPEFILE,
 				SourcePaths.VEHICLE_INOUT_SPOTS_ATTRIBUTES_DATABASE);
 		for (GISPolygon vehicleInOut : vehicleInOuts.values()) {
 			context.add(vehicleInOut);
 		}
 		// Initialize transit areas
-		this.transitAreas = readPolygons(SourcePaths.TRANSIT_AREAS_GEOMETRY_SHAPEFILE,
+		this.transitAreas = readPolygons(
+				SourcePaths.TRANSIT_AREAS_GEOMETRY_SHAPEFILE,
 				SourcePaths.TRANSIT_AREAS_ATTRIBUTES_DATABASE);
 		for (GISPolygon transitArea : transitAreas.values()) {
 			context.add(transitArea);
 		}
 		// Initialize parking lots
-		this.parkingLots = readPolygons(SourcePaths.PARKING_LOTS_GEOMETRY_SHAPEFILE,
+		this.parkingLots = readPolygons(
+				SourcePaths.PARKING_LOTS_GEOMETRY_SHAPEFILE,
 				SourcePaths.PARKING_LOTS_ATTRIBUTES_DATABASE);
 		for (GISPolygon parkingLot : parkingLots.values()) {
 			context.add(parkingLot);
 		}
 		// Initialize limbos
-		this.limbos = readPolygons(SourcePaths.LIMBOS_GEOMETRY_SHAPEFILE, SourcePaths.LIMBOS_ATTRIBUTES_DATABASE);
+		this.limbos = readPolygons(SourcePaths.LIMBOS_GEOMETRY_SHAPEFILE,
+				SourcePaths.LIMBOS_ATTRIBUTES_DATABASE);
 		for (GISPolygon limbo : this.limbos.values()) {
 			context.add(limbo);
 		}
 		// Initialize other facilities
-		Map<String, GISPolygon> otherFacitilies = readPolygons(SourcePaths.OTHER_FACILITIES_GEOMETRY_SHAPEFILE,
+		Map<String, GISPolygon> otherFacitilies = readPolygons(
+				SourcePaths.OTHER_FACILITIES_GEOMETRY_SHAPEFILE,
 				SourcePaths.OTHER_FACILITIES_ATTRIBUTES_DATABASE);
 		for (GISPolygon otherFacility : otherFacitilies.values()) {
 			context.add(otherFacility);
@@ -169,10 +178,12 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		// Find shortest paths
 		this.shortestPaths = Heuristics.findShortestPaths(this.routes);
 		// Read groups
-		Map<String, Group> groups = Reader.readGroupsDatabase(SourcePaths.GROUPS_DATABASE);
+		Map<String, Group> groups = Reader
+				.readGroupsDatabase(SourcePaths.GROUPS_DATABASE);
 		// Add students to the simulation
 		Parameters simParams = RunEnvironment.getInstance().getParameters();
-		List<Student> students = createStudents(simParams.getInteger("susceptibleStudents"),
+		List<Student> students = createStudents(
+				simParams.getInteger("susceptibleStudents"),
 				simParams.getInteger("infectedStudents"));
 		for (Student student : students) {
 			Schedule schedule = Heuristics.buildRandomSchedule(groups);
@@ -182,7 +193,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 			}
 		}
 		// Add staffers to the simulation
-		List<Staffer> staffers = createStaffers(simParams.getInteger("susceptibleStaffers"),
+		List<Staffer> staffers = createStaffers(
+				simParams.getInteger("susceptibleStaffers"),
 				simParams.getInteger("infectedStaffers"));
 		for (Staffer staff : staffers) {
 			context.add(staff);
@@ -197,10 +209,13 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * 
 	 * @param context Simulation context
 	 */
-	private Geography<Object> createGeographyProjection(Context<Object> context) {
+	private Geography<Object> createGeographyProjection(
+			Context<Object> context) {
 		GeographyParameters<Object> params = new GeographyParameters<>();
-		GeographyFactory geographyFactory = GeographyFactoryFinder.createGeographyFactory(null);
-		return geographyFactory.createGeography(GEOGRAPHY_PROJECTION_ID, context, params);
+		GeographyFactory geographyFactory = GeographyFactoryFinder
+				.createGeographyFactory(null);
+		return geographyFactory.createGeography(GEOGRAPHY_PROJECTION_ID,
+				context, params);
 	}
 
 	/**
@@ -209,12 +224,16 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * @param geometryPath   Path to geometry file
 	 * @param attributesPath Path to attributes file
 	 */
-	private Map<String, GISPolygon> readPolygons(String geometryPath, String attributesPath) {
+	private Map<String, GISPolygon> readPolygons(String geometryPath,
+			String attributesPath) {
 		Map<String, GISPolygon> polygons = new HashMap<>();
-		List<SimpleFeature> features = Reader.loadGeometryFromShapefile(geometryPath);
-		Map<String, GISPolygon> attributes = Reader.readFacilityAttributesDatabase(attributesPath);
+		List<SimpleFeature> features = Reader
+				.loadGeometryFromShapefile(geometryPath);
+		Map<String, GISPolygon> attributes = Reader
+				.readFacilityAttributesDatabase(attributesPath);
 		for (SimpleFeature feature : features) {
-			MultiPolygon multiPolygon = (MultiPolygon) feature.getDefaultGeometry();
+			MultiPolygon multiPolygon = (MultiPolygon) feature
+					.getDefaultGeometry();
 			Geometry geometry = multiPolygon.getGeometryN(0);
 			String id = (String) feature.getAttribute(1);
 			GISPolygon polygon = attributes.get(id);
@@ -230,7 +249,8 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 */
 	private Map<String, GISPolygon> readWorkplaces() {
 		Map<String, GISPolygon> placesToWork = new HashMap<>();
-		Map<String, Double> places = Reader.readWorkplacesDatabase(SourcePaths.WORKPLACES_DATABASE);
+		Map<String, Double> places = Reader
+				.readWorkplacesDatabase(SourcePaths.WORKPLACES_DATABASE);
 		for (Map.Entry<String, Double> workplace : places.entrySet()) {
 			String workplaceId = workplace.getKey();
 			GISPolygon polygon = getPolygonById(workplaceId);
@@ -247,15 +267,18 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * @param susceptibleStudents Number of susceptible students
 	 * @param infectedStudents    Number of infected students
 	 */
-	private List<Student> createStudents(int susceptibleStudents, int infectedStudents) {
+	private List<Student> createStudents(int susceptibleStudents,
+			int infectedStudents) {
 		List<Student> students = new ArrayList<>();
 		double outbreakTick = ParametersAdapter.getOutbreakTick();
 		for (int i = 0; i < infectedStudents; i++) {
-			Student student = new Student(this, Compartment.INFECTED, Integer.toString(i), outbreakTick);
+			Student student = new Student(this, Compartment.INFECTED,
+					Integer.toString(i), outbreakTick);
 			students.add(student);
 		}
 		for (int i = 0; i < susceptibleStudents; i++) {
-			Student student = new Student(this, Compartment.SUSCEPTIBLE, Integer.toString(i), outbreakTick);
+			Student student = new Student(this, Compartment.SUSCEPTIBLE,
+					Integer.toString(i), outbreakTick);
 			students.add(student);
 		}
 		return students;
@@ -267,15 +290,18 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	 * @param susceptibleStaffers Number of susceptible staffers
 	 * @param infectedStaffers    Number of infected staffers
 	 */
-	private List<Staffer> createStaffers(int susceptibleStaffers, int infectedStaffers) {
+	private List<Staffer> createStaffers(int susceptibleStaffers,
+			int infectedStaffers) {
 		List<Staffer> staffers = new ArrayList<>();
 		double outbreakTick = ParametersAdapter.getOutbreakTick();
 		for (int i = 0; i < infectedStaffers; i++) {
-			Staffer staffer = new Staffer(this, Compartment.INFECTED, outbreakTick);
+			Staffer staffer = new Staffer(this, Compartment.INFECTED,
+					outbreakTick);
 			staffers.add(staffer);
 		}
 		for (int i = 0; i < susceptibleStaffers; i++) {
-			Staffer staffer = new Staffer(this, Compartment.SUSCEPTIBLE, outbreakTick);
+			Staffer staffer = new Staffer(this, Compartment.SUSCEPTIBLE,
+					outbreakTick);
 			staffers.add(staffer);
 		}
 		return staffers;
