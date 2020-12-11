@@ -5,7 +5,7 @@ public class GISDensityMeter extends GISPolygon {
 	/**
 	 * Area
 	 */
-	protected double area;
+	private double area;
 
 	/**
 	 * Create a new geo-spatial density meter
@@ -22,17 +22,10 @@ public class GISDensityMeter extends GISPolygon {
 	}
 
 	/**
-	 * Measure density (instant)
+	 * Measure density
 	 */
 	public double measureDensity() {
 		return this.instantAgentCount / this.area;
-	}
-
-	/**
-	 * Measure density (without last departures)
-	 */
-	public double measureDensityCorrected() {
-		return this.arrivals / this.area;
 	}
 
 	/**

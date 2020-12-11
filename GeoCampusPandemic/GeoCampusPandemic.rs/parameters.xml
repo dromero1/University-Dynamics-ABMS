@@ -28,7 +28,7 @@
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 	<parameter name="selectionStrategy"
 		displayName="Selection strategy" type="java.lang.String"
-		defaultValue="random" isReadOnly="false"
+		defaultValue="RL-based" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="random RL-based" />
 	<parameter name="susceptibleStudents"
@@ -51,8 +51,7 @@
 		displayName="Susceptible staffers" type="int" defaultValue="200"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-	<parameter name="outbreakTick"
-		displayName="Outbreak tick" type="double" defaultValue="1440"
-		isReadOnly="false"
+	<parameter name="outbreakTick" displayName="Outbreak tick"
+		type="double" defaultValue="1440" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 </parameters>

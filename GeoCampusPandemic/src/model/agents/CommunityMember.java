@@ -239,7 +239,7 @@ public abstract class CommunityMember {
 		if (this.learningMechanism.containsState(currentLocation)) {
 			GISDensityMeter densityMeter = (GISDensityMeter) this.currentPolygon;
 			double socialDistancing = ParametersAdapter.getSocialDistancing();
-			double density = densityMeter.measureDensityCorrected();
+			double density = densityMeter.measureDensity();
 			double reward = 1.0 / socialDistancing - density;
 			this.learningMechanism.updateLearning(currentLocation, reward);
 		}
