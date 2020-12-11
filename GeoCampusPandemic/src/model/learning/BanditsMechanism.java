@@ -11,16 +11,6 @@ import simulation.ParametersAdapter;
 public class BanditsMechanism extends LearningMechanism {
 
 	/**
-	 * Q-value initialization from value
-	 */
-	private static final double Q_VALUE_INIT_TO = 0.0;
-
-	/**
-	 * Q-value initialization to value
-	 */
-	private static final double Q_VALUE_INIT_FROM = 0.0;
-
-	/**
 	 * Q-values for states
 	 */
 	protected Map<String, Double> qValues;
@@ -53,15 +43,17 @@ public class BanditsMechanism extends LearningMechanism {
 	 */
 	@Override
 	public void init() {
+		double minInitQValue = ParametersAdapter.getMinimumInitialQValue();
+		double maxInitQValue = ParametersAdapter.getMaximumInitialQValue();
 		this.qValues = new HashMap<>();
 		for (String eatingPlace : this.eatingPlaces.keySet()) {
-			double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM,
-					Q_VALUE_INIT_TO);
+			double q = RandomHelper.nextDoubleFromTo(minInitQValue,
+					maxInitQValue);
 			this.qValues.put(eatingPlace, q);
 		}
 		for (String sharedArea : this.sharedAreas.keySet()) {
-			double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM,
-					Q_VALUE_INIT_TO);
+			double q = RandomHelper.nextDoubleFromTo(minInitQValue,
+					maxInitQValue);
 			this.qValues.put(sharedArea, q);
 		}
 	}

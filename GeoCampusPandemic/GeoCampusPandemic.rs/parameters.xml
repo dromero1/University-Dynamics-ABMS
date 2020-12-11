@@ -4,16 +4,12 @@
 		displayName="Infection radius (meters)" type="double"
 		defaultValue="2.0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
-	<parameter name="infectedStaffers"
-		displayName="Infected staffers" type="int" defaultValue="0"
-		isReadOnly="false"
-		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="learningStyle" displayName="Learning style"
 		type="java.lang.String" defaultValue="Q-learning" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="Q-learning Bandits" />
-	<parameter name="infectedStudents"
-		displayName="Infected students" type="int" defaultValue="1"
+	<parameter name="exposedStudents"
+		displayName="Exposed students" type="int" defaultValue="1"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="learningRate" displayName="Learning rate"
@@ -54,4 +50,16 @@
 	<parameter name="outbreakTick" displayName="Outbreak tick"
 		type="double" defaultValue="1440" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+	<parameter name="particleExpulsionInterval"
+		displayName="Particle expulsion interval (minutes)" type="double"
+		defaultValue="15" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
+	<parameter name="minInitQValue"
+		displayName="Minimum initial Q-value" type="double" defaultValue="0.0"
+		isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
+	<parameter name="maxInitQValue"
+		displayName="Maximum initial Q-value" type="double" defaultValue="0.1"
+		isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 </parameters>

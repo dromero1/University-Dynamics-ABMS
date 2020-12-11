@@ -24,7 +24,6 @@ import repast.simphony.context.space.gis.GeographyFactory;
 import repast.simphony.context.space.gis.GeographyFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
-import repast.simphony.parameter.Parameters;
 import repast.simphony.space.gis.Geography;
 import repast.simphony.space.gis.GeographyParameters;
 
@@ -33,7 +32,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 	/**
 	 * End tick (unit: hours)
 	 */
-	public static final double END_TICK = 3600;
+	public static final double END_TICK = 4320;
 
 	/**
 	 * Geography projection id
@@ -181,10 +180,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 		Map<String, Group> groups = Reader
 				.readGroupsDatabase(SourcePaths.GROUPS_DATABASE);
 		// Add students to the simulation
-		Parameters simParams = RunEnvironment.getInstance().getParameters();
-		List<Student> students = createStudents(
-				simParams.getInteger("susceptibleStudents"),
-				simParams.getInteger("infectedStudents"));
+		List<Student> students = createStudents();
 		for (Student student : students) {
 			Schedule schedule = Heuristics.buildRandomSchedule(groups);
 			if (schedule != null && schedule.getGroupCount() > 0) {
@@ -193,9 +189,7 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 			}
 		}
 		// Add staffers to the simulation
-		List<Staffer> staffers = createStaffers(
-				simParams.getInteger("susceptibleStaffers"),
-				simParams.getInteger("infectedStaffers"));
+		List<Staffer> staffers = createStaffers();
 		for (Staffer staff : staffers) {
 			context.add(staff);
 		}
@@ -263,16 +257,14 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 
 	/**
 	 * Create students
-	 * 
-	 * @param susceptibleStudents Number of susceptible students
-	 * @param infectedStudents    Number of infected students
 	 */
-	private List<Student> createStudents(int susceptibleStudents,
-			int infectedStudents) {
+	private List<Student> createStudents() {
 		List<Student> students = new ArrayList<>();
+		int susceptibleStudents = ParametersAdapter.getSusceptibleStudents();
+		int exposedStudents = ParametersAdapter.getExposedStudents();
 		double outbreakTick = ParametersAdapter.getOutbreakTick();
-		for (int i = 0; i < infectedStudents; i++) {
-			Student student = new Student(this, Compartment.INFECTED,
+		for (int i = 0; i < exposedStudents; i++) {
+			Student student = new Student(this, Compartment.EXPOSED,
 					Integer.toString(i), outbreakTick);
 			students.add(student);
 		}
@@ -286,19 +278,11 @@ public class SimulationBuilder implements ContextBuilder<Object> {
 
 	/**
 	 * Create staffers
-	 * 
-	 * @param susceptibleStaffers Number of susceptible staffers
-	 * @param infectedStaffers    Number of infected staffers
 	 */
-	private List<Staffer> createStaffers(int susceptibleStaffers,
-			int infectedStaffers) {
+	private List<Staffer> createStaffers() {
 		List<Staffer> staffers = new ArrayList<>();
 		double outbreakTick = ParametersAdapter.getOutbreakTick();
-		for (int i = 0; i < infectedStaffers; i++) {
-			Staffer staffer = new Staffer(this, Compartment.INFECTED,
-					outbreakTick);
-			staffers.add(staffer);
-		}
+		int susceptibleStaffers = ParametersAdapter.getSusceptibleStaffers();
 		for (int i = 0; i < susceptibleStaffers; i++) {
 			Staffer staffer = new Staffer(this, Compartment.SUSCEPTIBLE,
 					outbreakTick);

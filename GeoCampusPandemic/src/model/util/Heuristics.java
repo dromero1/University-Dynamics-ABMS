@@ -19,6 +19,11 @@ import repast.simphony.util.collections.Pair;
 public final class Heuristics {
 
 	/**
+	 * Number of trials for lunch time assignment
+	 */
+	private static final int TRIALS_4_LUNCH_TIME_ASSIGNMENT = 100;
+
+	/**
 	 * Private constructor
 	 */
 	private Heuristics() {
@@ -88,7 +93,7 @@ public final class Heuristics {
 				.getFirstAcademicActivityInDay(day);
 		AcademicActivity lastActivity = schedule
 				.getLastAcademicActivityInDay(day);
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < TRIALS_4_LUNCH_TIME_ASSIGNMENT; i++) {
 			double lunchTime = Randomizer.getRandomLunchTime();
 			double lunchDuration = Randomizer.getRandomLunchDuration();
 			if (lunchTime > firstActivity.getStartTime()

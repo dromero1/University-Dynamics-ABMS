@@ -12,16 +12,6 @@ import simulation.ParametersAdapter;
 public abstract class TDLearningMechanism extends LearningMechanism {
 
 	/**
-	 * Q-value initialization from value
-	 */
-	private static final double Q_VALUE_INIT_TO = 0.0;
-
-	/**
-	 * Q-value initialization to value
-	 */
-	private static final double Q_VALUE_INIT_FROM = 0.0;
-
-	/**
 	 * Q-values for state-action pairs
 	 */
 	protected Map<String, List<Pair<String, Double>>> qValues;
@@ -69,18 +59,20 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 	 */
 	@Override
 	public void init() {
+		double minInitQValue = ParametersAdapter.getMinimumInitialQValue();
+		double maxInitQValue = ParametersAdapter.getMaximumInitialQValue();
 		this.qValues = new HashMap<>();
 		// Teaching facilities to shared areas and eating places
 		for (String teachingFacility : this.teachingFacilities.keySet()) {
 			ArrayList<Pair<String, Double>> destinations = new ArrayList<>();
 			for (String sharedArea : this.sharedAreas.keySet()) {
-				double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM,
-						Q_VALUE_INIT_TO);
+				double q = RandomHelper.nextDoubleFromTo(minInitQValue,
+						maxInitQValue);
 				destinations.add(new Pair<>(sharedArea, q));
 			}
 			for (String eatingPlace : this.eatingPlaces.keySet()) {
-				double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM,
-						Q_VALUE_INIT_TO);
+				double q = RandomHelper.nextDoubleFromTo(minInitQValue,
+						maxInitQValue);
 				destinations.add(new Pair<>(eatingPlace, q));
 			}
 			this.qValues.put(teachingFacility, destinations);
@@ -89,16 +81,16 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 		for (String sharedArea : this.sharedAreas.keySet()) {
 			ArrayList<Pair<String, Double>> destinations = new ArrayList<>();
 			for (String eatingPlace : this.eatingPlaces.keySet()) {
-				double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM,
-						Q_VALUE_INIT_TO);
+				double q = RandomHelper.nextDoubleFromTo(minInitQValue,
+						maxInitQValue);
 				destinations.add(new Pair<>(eatingPlace, q));
 			}
 			for (String nextSharedArea : this.sharedAreas.keySet()) {
 				if (sharedArea.equals(nextSharedArea)) {
 					continue;
 				}
-				double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM,
-						Q_VALUE_INIT_TO);
+				double q = RandomHelper.nextDoubleFromTo(minInitQValue,
+						maxInitQValue);
 				destinations.add(new Pair<>(nextSharedArea, q));
 			}
 			this.qValues.put(sharedArea, destinations);
@@ -107,8 +99,8 @@ public abstract class TDLearningMechanism extends LearningMechanism {
 		for (String eatingPlace : this.eatingPlaces.keySet()) {
 			ArrayList<Pair<String, Double>> destinations = new ArrayList<>();
 			for (String sharedArea : this.sharedAreas.keySet()) {
-				double q = RandomHelper.nextDoubleFromTo(Q_VALUE_INIT_FROM,
-						Q_VALUE_INIT_TO);
+				double q = RandomHelper.nextDoubleFromTo(minInitQValue,
+						maxInitQValue);
 				destinations.add(new Pair<>(sharedArea, q));
 			}
 			this.qValues.put(eatingPlace, destinations);

@@ -35,11 +35,6 @@ import util.TickConverter;
 public abstract class CommunityMember {
 
 	/**
-	 * Particle expulsion interval (unit: minutes)
-	 */
-	public static final double PARTICLE_EXPULSION_INTERVAL = 15;
-
-	/**
 	 * Upper bound of arrival shifts (unit: hours)
 	 */
 	protected static final double UB_ARRIVAL_SHIFT = 1.0;
@@ -111,9 +106,9 @@ public abstract class CommunityMember {
 	 */
 	@ScheduledMethod(start = 0)
 	public void init() {
+		returnHome();
 		initDisease();
 		initLearning();
-		returnHome();
 		scheduleRecurringEvents();
 	}
 
@@ -173,8 +168,9 @@ public abstract class CommunityMember {
 		PatientType patientType = Randomizer.getRandomPatientType();
 		// Schedule regular particle expulsion
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		double expelInterval = TickConverter
-				.minutesToTicks(PARTICLE_EXPULSION_INTERVAL);
+		double expulsionInterval = ParametersAdapter
+				.getParticleExpulsionInterval();
+		double expelInterval = TickConverter.minutesToTicks(expulsionInterval);
 		ISchedulableAction expelAction = eventScheduler.scheduleRecurringEvent(
 				1, this, expelInterval, "expelParticles");
 		List<ISchedulableAction> actions = new ArrayList<>();
@@ -240,7 +236,7 @@ public abstract class CommunityMember {
 			GISDensityMeter densityMeter = (GISDensityMeter) this.currentPolygon;
 			double socialDistancing = ParametersAdapter.getSocialDistancing();
 			double density = densityMeter.measureDensity();
-			double reward = 1.0 / socialDistancing - density;
+			double reward = (1.0 / socialDistancing) - density;
 			this.learningMechanism.updateLearning(currentLocation, reward);
 		}
 	}
@@ -400,13 +396,8 @@ public abstract class CommunityMember {
 	 * Initialize disease
 	 */
 	private void initDisease() {
-		if (this.compartment == Compartment.INFECTED) {
-			this.compartment = Compartment.SUSCEPTIBLE;
-			this.incubationEnd = this.outbreakTick
-					- TickConverter.daysToTicks(Randomizer.INFECTION_MIN);
-			EventScheduler eventScheduler = EventScheduler.getInstance();
-			eventScheduler.scheduleOneTimeEvent(this.outbreakTick, this,
-					"transitionToInfected");
+		if (this.compartment == Compartment.EXPOSED) {
+			transitionToExposed();
 		}
 	}
 
