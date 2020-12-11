@@ -35,7 +35,7 @@ import util.TickConverter;
 public abstract class CommunityMember {
 
 	/**
-	 * Upper bound of arrival shifts (unit: hours)
+	 * Upper bound of arrival shift (unit: hours)
 	 */
 	protected static final double UB_ARRIVAL_SHIFT = 1.0;
 
