@@ -397,6 +397,7 @@ public abstract class CommunityMember {
 	 */
 	private void initDisease() {
 		if (this.compartment == Compartment.EXPOSED) {
+			this.compartment = Compartment.SUSCEPTIBLE;
 			EventScheduler eventScheduler = EventScheduler.getInstance();
 			eventScheduler.scheduleOneTimeEvent(this.outbreakTick, this,
 					"transitionToExposed");
