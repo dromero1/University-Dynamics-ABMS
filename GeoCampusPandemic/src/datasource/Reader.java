@@ -138,9 +138,9 @@ public final class Reader {
 	 * 
 	 * @param filename File name
 	 */
-	public static Map<String, ArrayList<String>> readScheduleSelectionDatabase(
+	public static Map<String, List<String>> readScheduleSelectionDatabase(
 			String filename) {
-		Map<String, ArrayList<String>> scheduleSelection = new HashMap<>();
+		Map<String, List<String>> scheduleSelection = new HashMap<>();
 		File file = new File(filename);
 		try (Scanner scanner = new Scanner(file)) {
 			boolean first = true;
@@ -168,7 +168,7 @@ public final class Reader {
 							break;
 						}
 					}
-					ArrayList<String> selectedGroups = null;
+					List<String> selectedGroups = null;
 					String groupId = rawGroupId.toString();
 					if (scheduleSelection.containsKey(studentId)) {
 						selectedGroups = scheduleSelection.get(studentId);
