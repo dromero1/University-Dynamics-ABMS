@@ -87,8 +87,8 @@ public class Student extends CommunityMember {
 	 * to go there. In the other case, the student goes to have fun.
 	 */
 	public void leaveActivity() {
-		double tick = RepastEssentials.GetTickCount();
-		Pair<Integer, Double> dayTime = TickConverter.tickToDayTime(tick);
+		double ticks = RepastEssentials.GetTickCount();
+		Pair<Integer, Double> dayTime = TickConverter.ticksToDayTime(ticks);
 		int day = dayTime.getFirst();
 		double hour = dayTime.getSecond();
 		AcademicActivity nextActivity = this.schedule
@@ -116,8 +116,8 @@ public class Student extends CommunityMember {
 		moveToPolygon(polygon, "");
 		// Schedule having fun in another place
 		EventScheduler eventScheduler = EventScheduler.getInstance();
-		double tick = RepastEssentials.GetTickCount();
-		Pair<Integer, Double> dayTime = TickConverter.tickToDayTime(tick);
+		double ticks = RepastEssentials.GetTickCount();
+		Pair<Integer, Double> dayTime = TickConverter.ticksToDayTime(ticks);
 		int day = dayTime.getFirst();
 		double hour = dayTime.getSecond();
 		double timeToNextEvent = -1;
@@ -128,7 +128,7 @@ public class Student extends CommunityMember {
 		} else if (this.scheduledDepartures.containsKey(day)) {
 			timeToNextEvent = this.scheduledDepartures.get(day);
 		}
-		if (timeToNextEvent > tick) {
+		if (timeToNextEvent > ticks) {
 			double delta = timeToNextEvent - hour;
 			if (delta > FUN_CHANGE_FREQUENCY) {
 				eventScheduler.scheduleOneTimeEvent(FUN_CHANGE_FREQUENCY, this,

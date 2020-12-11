@@ -37,13 +37,13 @@ public final class TickConverter {
 	}
 
 	/**
-	 * Tick to day and time
+	 * Ticks to day and time
 	 * 
-	 * @param tick Tick
+	 * @param ticks Ticks
 	 */
-	public static Pair<Integer, Double> tickToDayTime(double tick) {
-		int day = (int) Math.floor(((tick / TICKS_PER_DAY) % 7) + 1);
-		double time = (((tick / TICKS_PER_DAY) % 7) + 1 - day) * TICKS_PER_DAY;
+	public static Pair<Integer, Double> ticksToDayTime(double ticks) {
+		int day = (int) Math.floor(((ticks / TICKS_PER_DAY) % 7) + 1);
+		double time = (((ticks / TICKS_PER_DAY) % 7) + 1 - day) * TICKS_PER_DAY;
 		return new Pair<>(day, time);
 	}
 
