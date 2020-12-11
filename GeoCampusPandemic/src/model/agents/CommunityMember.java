@@ -106,9 +106,9 @@ public abstract class CommunityMember {
 	 */
 	@ScheduledMethod(start = 0)
 	public void init() {
-		returnHome();
 		initDisease();
 		initLearning();
+		returnHome();
 		scheduleRecurringEvents();
 	}
 
