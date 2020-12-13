@@ -83,6 +83,13 @@ public class ParametersAdapter {
 	private static final String MAX_INIT_Q_VALUE_PARAM_ID = "maxInitQValue";
 
 	/**
+	 * Private constructor
+	 */
+	private ParametersAdapter() {
+		throw new UnsupportedOperationException("Utility class");
+	}
+
+	/**
 	 * Get exposed students
 	 */
 	public static int getExposedStudents() {
@@ -212,13 +219,6 @@ public class ParametersAdapter {
 	public static double getMaximumInitialQValue() {
 		Parameters simParams = RunEnvironment.getInstance().getParameters();
 		return simParams.getDouble(MAX_INIT_Q_VALUE_PARAM_ID);
-	}
-
-	/**
-	 * Private constructor
-	 */
-	private ParametersAdapter() {
-		throw new UnsupportedOperationException("Utility class");
 	}
 
 }
