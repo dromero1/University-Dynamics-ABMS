@@ -5,7 +5,7 @@ import model.learning.SelectionStrategy;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
 
-public class ParametersAdapter {
+public final class ParametersAdapter {
 
 	/**
 	 * Exposed students parameter id
