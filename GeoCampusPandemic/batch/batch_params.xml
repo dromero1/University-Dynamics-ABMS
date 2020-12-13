@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<sweep runs="10">
+<sweep runs="7">
 	<parameter name="particleExpulsionInterval" type="constant"
 		constant_type="double" value="15.0"></parameter>
 	<parameter name="maxInitQValue" type="constant"
@@ -15,7 +15,7 @@
 	<parameter name="epsilon" type="constant"
 		constant_type="double" value="0.1"></parameter>
 	<parameter name="selectionStrategy" type="constant"
-		constant_type="java.lang.String" value="random"></parameter>
+		constant_type="java.lang.String" value="RL-based"></parameter>
 	<parameter name="minInitQValue" type="constant"
 		constant_type="double" value="0.0"></parameter>
 	<parameter name="susceptibleStudents" type="constant"
