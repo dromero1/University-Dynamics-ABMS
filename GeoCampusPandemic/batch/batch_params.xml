@@ -23,7 +23,7 @@
 	<parameter name="socialDistancing" type="constant"
 		constant_type="double" value="2.0"></parameter>
 	<parameter name="discountFactor" type="constant"
-		constant_type="double" value="0.8"></parameter>
+		constant_type="double" value="0.95"></parameter>
 	<parameter name="vehicleUsageRatio" type="constant"
 		constant_type="double" value="0.3"></parameter>
 	<parameter name="susceptibleStaffers" type="constant"
