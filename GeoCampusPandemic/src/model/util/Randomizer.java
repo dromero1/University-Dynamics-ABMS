@@ -14,123 +14,122 @@ import util.TickConverter;
 public final class Randomizer {
 
 	/**
-	 * Minimum lunch time (unit: hours). Reference: <pending>
+	 * Minimum lunch time (unit: hours)
 	 */
 	public static final double MIN_LUNCH_TIME = 11.5;
 
 	/**
-	 * Maximum lunch time (unit: hours). Reference: <pending>
+	 * Maximum lunch time (unit: hours)
 	 */
 	public static final double MAX_LUNCH_TIME = 14;
 
 	/**
-	 * Mean lunch duration (unit: hours). Reference: <pending>
+	 * Mean lunch duration (unit: hours)
 	 */
 	public static final double MEAN_LUNCH_DURATION = 0.66;
 
 	/**
-	 * Standard deviation of lunch duration (unit: hours). Reference: <pending>
+	 * Standard deviation of lunch duration (unit: hours)
 	 */
 	public static final double STD_LUNCH_DURATION = 0.16;
 
 	/**
-	 * Minimum staffer arrival time (unit: hours). Reference: <pending>
+	 * Minimum staffer arrival time (unit: hours)
 	 */
 	public static final double MIN_STAFFER_ARRIVAL_TIME = 7;
 
 	/**
-	 * Maximum staffer arrival time (unit: hours). Reference: <pending>
+	 * Maximum staffer arrival time (unit: hours)
 	 */
 	public static final double MAX_STAFFER_ARRIVAL_TIME = 9;
 
 	/**
-	 * Minimum staffer departure time (unit: hours). Reference: <pending>
+	 * Minimum staffer departure time (unit: hours)
 	 */
 	public static final double MIN_STAFFER_DEPARTURE_TIME = 17;
 
 	/**
-	 * Maximum staffer departure time (unit: hours). Reference: <pending>
+	 * Maximum staffer departure time (unit: hours)
 	 */
 	public static final double MAX_STAFFER_DEPARTURE_TIME = 19;
 
 	/**
-	 * Minimum student arrival time (unit: hours). Reference: <pending>
+	 * Minimum student arrival time (unit: hours)
 	 */
 	public static final double MIN_STUDENT_ARRIVAL_TIME = 6;
 
 	/**
-	 * Maximum student arrival time (unit: hours). Reference: <pending>
+	 * Maximum student arrival time (unit: hours)
 	 */
 	public static final double MAX_STUDENT_ARRIVAL_TIME = 17;
 
 	/**
-	 * Minimum student departure time (unit: hours). Reference: <pending>
+	 * Minimum student departure time (unit: hours)
 	 */
 	public static final double MIN_STUDENT_DEPARTURE_TIME = 17;
 
 	/**
-	 * Maximum student departure time (unit: hours). Reference: <pending>
+	 * Maximum student departure time (unit: hours)
 	 */
 	public static final double MAX_STUDENT_DEPARTURE_TIME = 19;
 
 	/**
-	 * Mean arrival shift (unit: hours). Reference: <pending>
+	 * Mean arrival shift (unit: hours)
 	 */
 	public static final double MEAN_ARRIVAL_SHIFT = 10.0 / 60;
 
 	/**
-	 * Standard deviation of arrival shift (unit: hours). Reference: <pending>
+	 * Standard deviation of arrival shift (unit: hours)
 	 */
 	public static final double STD_ARRIVAL_SHIFT = 5.0 / 60;
 
 	/**
-	 * Minimum walking speed (unit: meters/minute). Reference: <pending>
+	 * Minimum walking speed (unit: meters/minute)
 	 */
 	public static final double MIN_WALKING_SPEED = 70;
 
 	/**
-	 * Maximum walking speed (unit: meters/minute). Reference: <pending>
+	 * Maximum walking speed (unit: meters/minute)
 	 */
 	public static final double MAX_WALKING_SPEED = 100;
 
 	/**
-	 * Infection alpha parameter. Reference: <pending>
+	 * Infection alpha parameter
 	 */
 	public static final double INFECTION_ALPHA = 2.11;
 
 	/**
-	 * Infection beta parameter. Reference: <pending>
+	 * Infection beta parameter
 	 */
 	public static final double INFECTION_BETA = 1.3;
 
 	/**
-	 * Infection minimum parameter (unit: days). Reference: <pending>
+	 * Infection minimum parameter (unit: days)
 	 */
 	public static final double INFECTION_MIN = -2.4;
 
 	/**
-	 * Discharge alpha parameter. Reference: <pending>
+	 * Discharge alpha parameter
 	 */
 	public static final double DISCHARGE_ALPHA = 1.99;
 
 	/**
-	 * Discharge beta parameter. Reference: <pending>
+	 * Discharge beta parameter
 	 */
 	public static final double DISCHARGE_BETA = 7.77;
 
 	/**
-	 * Incubation period mean parameter (unit: days). Reference: <pending>
+	 * Incubation period mean parameter (unit: days)
 	 */
 	public static final double MEAN_INCUBATION_PERIOD = 5.52;
 
 	/**
-	 * Incubation period standard deviation parameter (unit: days). Reference:
-	 * <pending>
+	 * Incubation period standard deviation parameter (unit: days)
 	 */
 	public static final double STD_INCUBATION_PERIOD = 2.41;
 
 	/**
-	 * Groups to enroll trials parameter (unit: groups). Reference: <pending>
+	 * Groups to enroll trials parameter (unit: groups)
 	 */
 	public static final int TRIALS_GROUPS_TO_ENROLL = 7;
 
@@ -148,14 +147,14 @@ public final class Randomizer {
 	}
 
 	/**
-	 * Get random lunch time. Reference: <pending>
+	 * Get random lunch time
 	 */
 	public static double getRandomLunchTime() {
 		return RandomHelper.nextDoubleFromTo(MIN_LUNCH_TIME, MAX_LUNCH_TIME);
 	}
 
 	/**
-	 * Get random lunch duration. Reference: <pending>
+	 * Get random lunch duration
 	 */
 	public static double getRandomLunchDuration() {
 		Normal normal = RandomHelper.createNormal(MEAN_LUNCH_DURATION,
@@ -164,7 +163,7 @@ public final class Randomizer {
 	}
 
 	/**
-	 * Get random arrival shift. Reference: <pending>
+	 * Get random arrival shift
 	 */
 	public static double getRandomArrivalShift() {
 		Normal normal = RandomHelper.createNormal(MEAN_ARRIVAL_SHIFT,
@@ -173,7 +172,7 @@ public final class Randomizer {
 	}
 
 	/**
-	 * Get random vehicle usage. Reference: <pending>
+	 * Get random vehicle usage
 	 */
 	public static boolean getRandomVehicleUsage() {
 		double vehicleUsageRatio = ParametersAdapter.getVehicleUsageRatio();
@@ -182,7 +181,7 @@ public final class Randomizer {
 	}
 
 	/**
-	 * Get random walking speed. Reference: <pending>
+	 * Get random walking speed
 	 */
 	public static double getRandomWalkingSpeed() {
 		return RandomHelper.nextDoubleFromTo(MIN_WALKING_SPEED,
@@ -190,7 +189,7 @@ public final class Randomizer {
 	}
 
 	/**
-	 * Get random number of groups to enroll to. Reference: <pending>
+	 * Get random number of groups to enroll to
 	 */
 	public static int getRandomGroupsToEnrollTo() {
 		Binomial binomial = RandomHelper.createBinomial(TRIALS_GROUPS_TO_ENROLL,
@@ -199,7 +198,7 @@ public final class Randomizer {
 	}
 
 	/**
-	 * Get random staffer's arrival time. Reference: <pending>
+	 * Get random staffer's arrival time
 	 */
 	public static double getRandomStafferArrivalTime() {
 		return RandomHelper.nextDoubleFromTo(MIN_STAFFER_ARRIVAL_TIME,
@@ -207,7 +206,7 @@ public final class Randomizer {
 	}
 
 	/**
-	 * Get random staffer's departure time. Reference: <pending>
+	 * Get random staffer's departure time
 	 */
 	public static double getRandomStafferDepartureTime() {
 		return RandomHelper.nextDoubleFromTo(MIN_STAFFER_DEPARTURE_TIME,
@@ -215,7 +214,7 @@ public final class Randomizer {
 	}
 
 	/**
-	 * Get random student's arrival time. Reference: <pending>
+	 * Get random student's arrival time
 	 */
 	public static double getRandomStudentArrivalTime() {
 		return RandomHelper.nextDoubleFromTo(MIN_STUDENT_ARRIVAL_TIME,
@@ -223,7 +222,7 @@ public final class Randomizer {
 	}
 
 	/**
-	 * Get random student's departure time. Reference: <pending>
+	 * Get random student's departure time
 	 */
 	public static double getRandomStudentDepartureTime() {
 		return RandomHelper.nextDoubleFromTo(MIN_STUDENT_DEPARTURE_TIME,
@@ -231,7 +230,7 @@ public final class Randomizer {
 	}
 
 	/**
-	 * Get random incubation period (unit: days). Reference: <pending>
+	 * Get random incubation period (unit: days)
 	 */
 	public static double getRandomIncubationPeriod() {
 		double t = Math.pow(MEAN_INCUBATION_PERIOD, 2)
@@ -245,7 +244,7 @@ public final class Randomizer {
 	}
 
 	/**
-	 * Get random patient type. Reference: <pending>
+	 * Get random patient type
 	 */
 	public static PatientType getRandomPatientType() {
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
@@ -295,7 +294,7 @@ public final class Randomizer {
 	}
 
 	/**
-	 * Get random time to discharge (unit: days). Reference: <pending>
+	 * Get random time to discharge (unit: days)
 	 */
 	public static double getRandomTimeToDischarge() {
 		Gamma gamma = RandomHelper.createGamma(DISCHARGE_ALPHA,
