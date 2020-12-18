@@ -207,7 +207,7 @@ public abstract class CommunityMember {
 	}
 
 	/**
-	 * Vanish to limbo. A limbo emulates what's off campus.
+	 * Vanish to a limbo. A limbo emulates what's off campus.
 	 */
 	public void vanishToLimbo() {
 		String limboId = this.lastExit.getLink();
