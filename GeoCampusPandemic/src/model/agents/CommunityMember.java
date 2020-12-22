@@ -292,7 +292,7 @@ public abstract class CommunityMember {
 	}
 
 	/**
-	 * Is active case?
+	 * Is an active case?
 	 */
 	public int isActiveCase() {
 		return this.compartment == Compartment.EXPOSED
