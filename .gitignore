@@ -1,5 +1,6 @@
 GeoCampusPandemic/output/*
 GeoCampusPandemic/Repast.settings
+GeoCampusPandemic/.gitignore
 *.class
 *.log
 *.log*
