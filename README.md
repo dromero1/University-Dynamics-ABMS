@@ -8,31 +8,19 @@ Few agent-based studies have examined how the social conduct of a community impa
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
-
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
+1. Download the appropiate Repast edition at this [link](https://repast.github.io/).
+2. Clone this repo to the workspace folder of Repast IDE.
 
 ```
-until finished
+git clone https://github.com/daromi94/geo-campus-pandemic.git
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+3. Import the model as an existing project.
+4. Start the Repast Simphony Runtime by clickin the run button on the top.
+5. Select the ```GeoCampusPandemic``` option.
+6. Enjoy!
 
 ## Built with
 
@@ -42,7 +30,6 @@ End with an example of getting some data out of the system or using it for a lit
 
 1. Paula Escudero, PhD.
 2. David Romero
-3. Mariana Gómez
 
 See also the list of [contributors](https://github.com/dromero1/GeoCampusPandemic/contributors) who participated in this project.
 
