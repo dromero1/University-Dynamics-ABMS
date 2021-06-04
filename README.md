@@ -11,15 +11,15 @@ These instructions will get you a copy of the project up and running on your loc
 ### Installing
 
 1. Download the appropiate Repast edition at this [link](https://repast.github.io/).
-2. Clone this repo to the workspace folder of Repast IDE.
+2. Clone this repo to Repast IDE's workspace folder.
 
 ```
 git clone https://github.com/daromi94/geo-campus-pandemic.git
 ```
 
 3. Import the model as an existing project.
-4. Start the Repast Simphony Runtime by clicking the ```run``` button on the top.
-5. Select the ```GeoCampusPandemic model``` option.
+4. Start the *Repast Simphony Runtime* by clicking the ```run``` button on the top.
+5. Select the ```GeoCampusPandemic Model``` option.
 6. Enjoy!
 
 ## Built with
