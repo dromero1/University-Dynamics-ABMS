@@ -18,8 +18,8 @@ git clone https://github.com/daromi94/geo-campus-pandemic.git
 ```
 
 3. Import the model as an existing project.
-4. Start the Repast Simphony Runtime by clickin the run button on the top.
-5. Select the ```GeoCampusPandemic``` option.
+4. Start the Repast Simphony Runtime by clicking the ```run``` button on the top.
+5. Select the ```GeoCampusPandemic model``` option.
 6. Enjoy!
 
 ## Built with
