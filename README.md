@@ -31,7 +31,7 @@ git clone https://github.com/daromi94/geo-campus-pandemic.git
 1. Paula Escudero, PhD.
 2. David Romero
 
-See also the list of [contributors](https://github.com/dromero1/GeoCampusPandemic/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/daromi94/geo-campus-pandemic/contributors) who participated in this project.
 
 ## License
 
